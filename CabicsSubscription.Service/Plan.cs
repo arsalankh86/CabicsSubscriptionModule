@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace CabicsSubscription.Service
 {
     public class Plan
     {
+        [Key]
         public int Id { get; set; }
         public int PlanCode { get; set; }
         public string Name { get; set; }
@@ -22,5 +24,7 @@ namespace CabicsSubscription.Service
         public Nullable<double> PerSMSPrice { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public bool IsActive { get; set; }
+
+        public ICollection<Subscription> subscription { get; set; }
     }
 }

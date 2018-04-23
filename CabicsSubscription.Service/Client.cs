@@ -14,5 +14,7 @@ namespace CabicsSubscription.Service
         public string Name { get; set; }
         public string Description { get; set; }
         public string encryptedstring { get; set; }
+
+        public ICollection<Account> Accounts { get; set; }
     }
 }

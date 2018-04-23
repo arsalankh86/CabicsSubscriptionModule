@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,9 +9,8 @@ namespace CabicsSubscription.Service
 {
     public class Subscription
     {
+        [Key]
         public int Id { get; set; }
-        public int AccountId { get; set; }
-        public int PlanId { get; set; }
         public string PlanName { get; set; }
         public int SubscriptionTypeId { get; set; }
         public int SubcriptionStatusCode { get; set; }
@@ -32,6 +32,9 @@ namespace CabicsSubscription.Service
         public DateTime CreatedDateTime { get; set; }
         public bool IsActive { get; set; }
 
-
+        public int AccountId { get; set; }
+        public int PlanId { get; set; }
+        public Plan plan { get; set; }
+        public Account account { get; set; }
     }
 }

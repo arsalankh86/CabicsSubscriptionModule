@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace CabicsSubscription.Service
 {
     public class Account
     {
+        [Key]
         public int Id { get; set; }
         public string AccountCode { get; set; }
         public string FullName { get; set; }
@@ -18,5 +20,11 @@ namespace CabicsSubscription.Service
         public DateTime CreatedDateTime { get; set; }
         public bool IsActive { get; set; }
 
+        //Foreign key for Client
+        public int ClientId { get; set; }
+        public Client client { get; set; }
+
+
+        public ICollection<Subscription> subscription { get; set; }
     }
 }
