@@ -1,0 +1,81 @@
+Tables
+-------
+Client
+	Id
+	name
+	description
+	encryptedstring
+
+Accounts 
+	Id
+	AccountCode
+	FullName
+	Email
+	BalanceCredit	
+	AllCredit
+	CurrentSubscriptionId
+
+Plan
+	Id
+	PlanCode
+	Name
+	Description
+	PlanTypeId
+	IsAutoRenewel	bool
+	CreditPrice
+	Credit
+	No. Of Agents
+	No. of Driver
+	No. of Vehicle
+	Per SMS Price
+	CreatedDate
+	IsActive
+
+	
+Subscription
+	Id
+	AccountId
+	PlanId
+	SubscriptionType
+	StatusCode
+	StartDate
+	EndDate
+	Subscribtion Price
+	No of sms purchase
+	SMS Price
+	Total Price
+	TotalCredit (Subscription.subscriptionPrice * plan.Credit)
+	No. Of Agents
+	No. of Driver
+	No. of Vehicle
+	RemainingCredit
+	RemainingDriver
+	RemainingVehicle
+	RemainingAgent
+
+Credit Deduction Log
+	cab office id
+	Subscription id	
+	CreditDeductionTypeId
+	jobId
+	credits	
+	
+
+SubscriptionStatus
+	StatusCode
+	Status	
+
+PlanType
+	Id	
+	Name
+
+SubscriptionType
+	Id
+	Name
+
+CreditDeductionType
+	Id
+	TypeName
+
+
+
