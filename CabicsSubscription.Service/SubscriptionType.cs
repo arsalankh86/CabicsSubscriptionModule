@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace CabicsSubscription.Service
 {
-    class SubscriptionType
+    public class SubscriptionType
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
