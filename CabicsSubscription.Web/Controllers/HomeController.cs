@@ -19,6 +19,11 @@ namespace CabicsSubscription.Web.Controllers
             return View();
         }
 
+        public ActionResult PurchaseSubscription()
+        {
+            return View();
+        }
+
 
         public ActionResult Dashboard()
         {

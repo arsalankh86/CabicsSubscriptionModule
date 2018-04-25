@@ -15,7 +15,7 @@
         }
     }  
 
-    FetchPlanForView();
+    FetchPlanForView(account);
 
     function FetchPlanForView(account) {
 
@@ -27,16 +27,24 @@
             dataType: "json",
             success: function (data) {
                 console.log(data);
-                var html = '<table><tr><td>Plan Name</td><td>Plan Code</td><td>Description</td><td>Amount</td><td>Credit</td></tr>'
+                var html = '<table border="1"><tr><td>Plan Name</td><td>Plan Code</td><td>Description</td><td>Amount</td><td>Credit</td><td>Purchase</td></tr>'
 
                 $.each(data, function (index, value) {
                     console.log(value);
-                    html += '<tr><td>' + value.Name + '</td><td>' + value.PlanCode + '</td><td></td><td></td><td></td></tr></html>';
+                    html += '<tr><td>' + value.Name + '</td><td>' + value.PlanCode + '</td><td>' + value.Description + '</td><td>' + value.CreditPrice + '</td><td>' + value.Credit + '</td><td>'
+                    +
+                        '<a data-PlanId ="' + value.Id +
+                        '" data-AccountId="' + account +
+                        '" onclick="ShowDetail(this)">Select Plan(S)</a>'
+                    +
+                    '</td ></tr > ';
 
                 });
                 console.log(html);
 
-                $("dvplan").innerhtml(html);
+                html += '</table>';
+
+                $("#dvplan").append(html);
 
                // window.location.href = webUrl + "/Home/Index?data=" + data;
 
@@ -48,5 +56,18 @@
         });
 
     }
+
+    ShowDetail = function (obj) {
+
+        var PlanId = $(obj).attr('data-PlanId');
+        var accountguid = $(obj).attr('data-AccountId');
+
+        window.open('/Home/PurchaseSubscription/' + PlanId + '-' + accountguid);
+
+        return false;
+
+
+    }
+
 
 });
