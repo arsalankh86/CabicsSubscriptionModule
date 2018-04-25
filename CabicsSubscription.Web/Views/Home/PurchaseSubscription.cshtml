@@ -5,4 +5,17 @@
 
 <h2>PurchaseSubscription</h2>
 
+@section PageLevelScripts{
+    <script src="~/Scripts/PartialSubscription.js"></script>
+    <script>
+        $(function () {
+
+            Search.InitalizeEvents();
+        })
+    </script>
+
+}
+
+
 @Html.Partial("_PurchaseSubscription");
+
