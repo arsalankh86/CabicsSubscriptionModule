@@ -206,6 +206,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Dashboard.js" />
+    <Content Include="Scripts\Helper.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -216,6 +218,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ViewPlan.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -231,6 +234,8 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\DashBoard.cshtml" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Home\ViewPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

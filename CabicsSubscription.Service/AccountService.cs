@@ -13,11 +13,11 @@ namespace CabicsSubscription.Service
             using (DataContext context = new DataContext())
             {
 
-                Account account = new Account();
-                account = GetAccountByEmail(accountRegistrationModel.Email);                
+                Account account = GetAccountByEmail(accountRegistrationModel.Email);
 
-                if (String.IsNullOrEmpty(account.Token))
+                if (account == null)
                 {
+                    account = new Account();
                     string guid = Guid.NewGuid().ToString();
                     account.Email = accountRegistrationModel.Email;
                     account.FullName = accountRegistrationModel.Name;
@@ -28,6 +28,7 @@ namespace CabicsSubscription.Service
                     account.IsActive = true;
                     account.Token = guid;
                     context.Accounts.Add(account);
+                    context.SaveChanges();
 
                     return guid;
                 }
