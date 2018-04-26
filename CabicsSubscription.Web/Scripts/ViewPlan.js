@@ -45,6 +45,7 @@
                 html += '</table>';
 
                 $("#dvplan").append(html);
+                $("#divLoader").css("display", "none");
 
                // window.location.href = webUrl + "/Home/Index?data=" + data;
 
@@ -62,7 +63,7 @@
         var PlanId = $(obj).attr('data-PlanId');
         var accountguid = $(obj).attr('data-AccountId');
 
-        window.open('/Home/PurchaseSubscription/' + PlanId + '-' + accountguid);
+        window.open('/Home/PurchaseSubscription?id=' + PlanId + '/' + accountguid);
 
         return false;
 

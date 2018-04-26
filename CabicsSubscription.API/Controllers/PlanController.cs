@@ -16,5 +16,19 @@ namespace CabicsSubscription.API.Controllers
         {
            return planService.GetAllPlan();
         }
+
+        [HttpGet]
+        public Plan GetPlanDetail(int planId)
+        {
+            return planService.GetPlanDetail(planId);
+        }
+
+
+        [HttpGet]
+        public Plan InsertSubscription(int planId)
+        {
+            return planService.GetPlanDetail(planId);
+        }
+
     }
 }

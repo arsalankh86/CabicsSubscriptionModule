@@ -1,191 +1,164 @@
 ﻿var PartialSubscription = new function () {
 
     var dvbuycredit = "#dvbuycredit";
-    var checkOutDate = "#dtcheckOut";
-    var txtAdult = "#txtAdult";
-    var txtChildren = "#txtChildren";
-    var txtDestination = "#txtDestination";
-    var divSearchResults = "#divSearchResult";
-    var txtHotelName = "#txtHotelName";
-    var btnSearch = "#btnSearch";
-    var divChildrenAges = "#divChildrenAges";
-    var lblchildAges = "#lblchildAges";
-    var txtNoOfRooms = "#txtNoOfRooms";
-    this.longitude = 0;
-    this.latitude = 0;
-    var divModalPopUp = "#divModalPopUp";
-    var divModalPopUpBody = "#divModalPopUpBody";
-    var priceList = ".priceList";
+    var fname = "#fname";
+    var lname = "#lname";
+    var crdnumber = "#crdnumber";
+    var expmonth = "#expmonth";
+    var expyear = "#expyear";
+    var add = "#add";
+    var add2 = "#add2";
+    var city = "#city";
+    var state = "#state";
+    var zip = "#zip";
+    var qty = "#qty";
+    var lblprice = "#lblprice";
+    var lbltotal = "#lbltotal";
     var divLoader = "#divLoader";
-    this.currency = "";
-    // working on children ages
-
+    var btnSubmit = "#btnSubmit";
+   
+ 
     this.InitalizeEvents = function () {
         $(divLoader).css("display", "none");
-        $(btnSearch).on("click", function () {
 
-            $(divLoader).css("display", "block");
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({
-                'address': $(txtDestination).val().trim()
-            }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
+        PartialSubscription.SetPlanValue();
 
-                    Search.latitude = results[0].geometry.location.lat();
-                    Search.longitude = results[0].geometry.location.lng();
+        $(btnSubmit).on("click", function () {
 
-                    var children = new Array();
-                    var paramHotel = {
+           
 
-                        Destination: $(txtDestination).val().trim(),
-                        Name: $(txtHotelName).val().trim(),
-                        CheckInDate: $(checkInDate).val().trim(),
-                        CheckOutDate: $(checkOutDate).val().trim(),
-                        NumberOfAdult: $(txtAdult).val().trim(),
-                        NumberOfChildren: $(txtChildren).val().trim(),
-                        NumberOfRooms: $(txtNoOfRooms).val().trim(),
-                        Longitude: Search.longitude,
-                        Latitude: Search.latitude,
-                        Child: children
-                    };
-
-                    if ($(txtChildren).val() > 0) {
-
-                        children = new Array();
-                        for (var i = 1; i <= $(txtChildren).val().trim(); i++) {
-
-
-
-                            var child = {
-                                PersonType: 'CH',
-                                Age: $("#ch" + i).val()
-                            };
-
-                            children.push(child);
-                        }
-                        if (children[0].Age > 0) {
-                            paramHotel.Child = children;
-                            paramHotel.IsChildren = true;
-                        }
-                        else {
-                            alert("Please input children Ages");
-                            return;
-                        }
+            if (PartialSubscription.SetBordersRedForEmptyFields()) {
+                $.ajax({
+                    type: "POST",
+                    url: Configuration.GetHotelApiServerUrl() + "api/hotel/GetHotelData",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(paramHotel),
+                    dataType: "json",
+                    success: Search.OnLoadSuccess,
+                    failure: function (response) {
+                        alert(response.d);
                     }
-                    console.log("paramHotel", paramHotel);
-                    console.log("children", children);
-                    console.log(Configuration.GetHotelApiServerUrl() + "api/hotel/GetHotelData");
-                    if (Search.ValidateField()) {
-                        Search.SetBordersRedForEmptyFields();
-                        $.ajax({
-                            type: "POST",
-                            url: Configuration.GetHotelApiServerUrl() + "api/hotel/GetHotelData",
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(paramHotel),
-                            dataType: "json",
-                            success: Search.OnLoadSuccess,
-                            failure: function (response) {
-                                alert(response.d);
-                            }
-                        });
-                    }
-                    else {
-                        Search.SetBordersRedForEmptyFields();
-                    }
-
-                }
-                else {
-                    // alert("Something got wrong " + status);
-                }
-            });
-
-        });
-
-        $(txtChildren).focusout(function () {
-
-            console.log($(txtChildren).val());
-            $(divChildrenAges).html('');
-            if ($(txtChildren).val() > 0) {
-
-                var html = '';
-                for (var i = 1; i <= $(txtChildren).val(); i++) {
-
-                    html = html + " <label>Child " + i + "</label>" +
-                        " <input type='number'  min='0' value ='0' id='ch" + i + "' placeholder='Age'  class='childAge' /> </br />";
-                }
-                $(divChildrenAges).append(html);
+                });
             }
-            $(divChildrenAges).css('display', 'block');
         });
 
-        $(".childAgelabel").on('click', function () {
+        };
 
+    
 
-            if ($(divChildrenAges).css('display') == 'none')
-                $(divChildrenAges).css('display', 'block');
-            else
-                $(divChildrenAges).css('display', 'none');
+    function GetParameterValues(param) {
+        var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < url.length; i++) {
+            var urlparam = url[i].split('=');
+            if (urlparam[0] == param) {
+                return urlparam[1];
+            }
+        }
+    } 
+
+    this.SetPlanValue = function () {
+       
+        var id = GetParameterValues('id');
+        planid = id.split("/")[0];
+        account = id.split("/")[1];
+
+        $.ajax({
+            type: "Get",
+            url: servicePath + "/Plan/GetPlanDetail?planId=" + planid,
+            //data: JSON.stringify(account),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+
+                var html = 'Buy Credit (' + data.Credit + ' Credit = £' + data.CreditPrice+')';
+                var price = '£'+data.CreditPrice;
+
+                $(dvbuycredit).text(html);
+                $(lblprice).text(price);
+                
+            },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
         });
-
-
-
-        $(checkInDate).datepicker();
-        $(checkOutDate).datepicker();
-
-
-
-
-
-    }
-
-    this.GetLongitudeAndLatitude = function () {
-
-
-    }
-
-    this.ValidateField = function () {
-
-
-        if ($(checkInDate).val().trim() == "")
-            return false;
-
-        if ($(checkOutDate).val().trim() == "")
-            return false;
-
-        if ($(txtAdult).val().trim() == "")
-            return false;
-
-        if ($(txtDestination).val().trim() == "")
-            return false;
-
-        return true;
     }
 
     this.SetBordersRedForEmptyFields = function () {
 
-        if ($(checkInDate).val().trim() == "")
-            $(checkInDate).css('border-color', 'red');
-        else
-            $(checkInDate).css('border-color', '');
-
-        if ($(checkOutDate).val().trim() == "")
-            $(checkOutDate).css('border-color', 'red');
-        else
-            $(checkInDate).css('border-color', '');
-
-        if ($(txtAdult).val().trim() == "")
-            $(txtAdult).css('border-color', 'red');
-        else
-            $(checkInDate).css('border-color', '');
-
-        if ($(txtDestination).val().trim() == "" && $(txtHotelName).val() == "") {
-            $(txtDestination).css('border-color', 'red');
-            $(txtHotelName).css('border-color', 'red');
+        if ($(fname).val().trim() == "") {
+            $(fname).css('border-color', 'red');
+            return false;
         }
-        else {
-            $(txtDestination).css('border-color', '');
-            $(txtHotelName).css('border-color', '');
+        else
+            $(fname).css('border-color', '');
+
+        if ($(lname).val().trim() == "") {
+            $(lname).css('border-color', 'red');
+            return false;
         }
+        else
+            $(lname).css('border-color', '');
+
+        if ($(crdnumber).val().trim() == "") {
+            $(crdnumber).css('border-color', 'red');
+            return false;
+        }
+        else
+            $(crdnumber).css('border-color', '');
+
+        if ($(expmonth).val().trim() == "") {
+            $(expmonth).css('border-color', 'red');
+            return false;
+        }
+        else
+            $(expmonth).css('border-color', '');
+
+        if ($(expyear).val().trim() == "") {
+            $(expyear).css('border-color', 'red');
+            return false;
+        }
+        else
+            $(expyear).css('border-color', '');
+
+        if ($(add).val().trim() == "") {
+            $(add).css('border-color', 'red');
+            return false;
+        }
+        else
+            $(add).css('border-color', '');
+
+        if ($(city).val().trim() == "") {
+            $(city).css('border-color', 'red');
+            return false;
+        }
+        else
+            $(city).css('border-color', '');
+
+        if ($(state).val().trim() == "") {
+            $(state).css('border-color', 'red');
+            return false;
+        }
+        else
+            $(state).css('border-color', '');
+
+
+        if ($(qty).val().trim() == "") {
+            $(qty).css('border-color', 'red');
+            return false;
+        }
+        else
+            $(qty).css('border-color', '');
+
+
+        if ($(zip).val().trim() == "") {
+            $(zip).css('border-color', 'red');
+            return false;
+        }
+        else
+            $(zip).css('border-color', '');
+
+        return true;
     }
 
     this.OnLoadSuccess = function (response) {

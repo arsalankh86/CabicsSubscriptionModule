@@ -15,5 +15,11 @@ namespace CabicsSubscription.Service
             return lstplan;
 
         }
+
+        public Plan GetPlanDetail(int planid)
+        {
+            Plan plan = context.plans.FirstOrDefault(x => x.IsActive == true && x.Id == planid);
+            return plan;
+        }
     }
 }
