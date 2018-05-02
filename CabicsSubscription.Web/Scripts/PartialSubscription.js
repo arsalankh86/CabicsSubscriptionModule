@@ -72,7 +72,7 @@
                 console.log(data);
 
                 var html = 'Buy Credit (' + data.Credit + ' Credit = £' + data.CreditPrice+')';
-                var price = '£'+data.CreditPrice;
+                var price = data.CreditPrice;
 
                 $(dvbuycredit).text(html);
                 $(lblprice).text(price);

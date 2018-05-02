@@ -4,62 +4,126 @@
     <h1 id="plan-name-title">
         <span id="dvbuycredit" name="dvbuycredit">   </span>
     </h1>
-    <div>
-        <div class="form-group">
-            <label for="fname">First Name:</label>
-            <input type="text" class="form-control" id="fname">
-        </div>
-        <div class="form-group">
-            <label for="lname">Last Name:</label>
-            <input type="text" class="form-control" id="lname">
-        </div>
-        <div class="form-group">
-            <label for="crdnumber">Card Number:</label>
-            <input type="text" class="form-control" id="crdnumber">
-        </div>
-        <div class="form-group">
-            <label>Exp. Month:</label>
-            <input type="text" class="form-control" id="expmonth">
-        </div>
-        <div class="form-group">
-            <label>Exp. Yer:</label>
-            <input type="text" class="form-control" id="expyear">
-        </div>
-        <div class="form-group">
-            <label>Streat Address:</label>
-            <input type="text" class="form-control" id="add">
-        </div>
-        <div class="form-group">
-            <label>Address2:</label>
-            <input type="text" class="form-control" id="add2">
-        </div>
-        <div class="form-group">
-            <label>City:</label>
-            <input type="text" class="form-control" id="city">
+    <form id="payment-form" method="post" action="/Home/SubmitContact">
+        <section>
+            <div class="form-group">
+                <label for="fname">First Name:</label>
+                <input type="text" class="form-control" id="fname">
+            </div>
+            <div class="form-group">
+                <label for="lname">Last Name:</label>
+                <input type="text" class="form-control" id="lname">
+            </div>
+            <div class="form-group">
+                <label>Credit: (£<span id="lblprice" name="lblprice"></span>)</label>
+                <input type="text" class="form-control" id="qty" name="qty">
+            </div>
 
-        </div>
-        <div class="form-group">
-            <label>State:</label>
-            <input type="text" class="form-control" id="state">
-        </div>
-        <div class="form-group">
-            <label>Zip:</label>
-            <input type="text" class="form-control" id="zip">
-        </div>
+            <div class="form-group">
+                Total: <input type="text" class="form-control" id="totalamount" name="totalamount" disabled="disabled">
+            </div>
+
+            <div class="bt-drop-in-wrapper">
+                <div id="bt-dropin"></div>
+            </div>
+        </section>
+        <input id="nonce" name="payment_method_nonce" type="hidden" />
+        <button class="button" type="submit"><span>Test Transaction</span></button>
+    </form>
+
+
+    <div>
+
+        @*<div class="form-group">
+                <label for="crdnumber">Card Number:</label>
+                <input type="text" class="form-control" id="crdnumber">
+            </div>
+            <div class="form-group">
+                <label>Exp. Month:</label>
+                <input type="text" class="form-control" id="expmonth">
+            </div>
+            <div class="form-group">
+                <label>Exp. Yer:</label>
+                <input type="text" class="form-control" id="expyear">
+            </div>
+            <div class="form-group">
+                <label>Streat Address:</label>
+                <input type="text" class="form-control" id="add">
+            </div>
+            <div class="form-group">
+                <label>Address2:</label>
+                <input type="text" class="form-control" id="add2">
+            </div>
+            <div class="form-group">
+                <label>City:</label>
+                <input type="text" class="form-control" id="city">
+
+            </div>
+            <div class="form-group">
+                <label>State:</label>
+                <input type="text" class="form-control" id="state">
+            </div>
+            <div class="form-group">
+                <label>Zip:</label>
+                <input type="text" class="form-control" id="zip">
+            </div>
 
         <div class="form-group">
             <label>Credit: (<span id="lblprice" name="lblprice"></span>)</label>
             <input type="text" class="form-control" id="qty">
         </div>
 
-        <div class="form-group">
-            <label>Total: (<div id="lbltotal"></div>)</label>
+            Total: (<label id="lbltotal" name="lbltotal"></label>)
         </div>
 
-        <button type="submit" id="btnSubmit" name="btnSubmit" class="btn btn-default">Submit</button>
+        <button type="submit" id="btnSubmit" name="btnSubmit" class="btn btn-default">Submit</button>*@
 
 
     </div>
 </div>
 
 
+
+
+<script src="https://js.braintreegateway.com/web/dropin/1.10.0/js/dropin.min.js"></script>
+<script>
+    var client_token = "@ViewBag.ClientToken";
+    var form = document.querySelector('#payment-form');
+
+    braintree.dropin.create({
+        authorization: client_token,
+        container: '#bt-dropin',
+        paypal: {
+            flow: 'vault'
+        }
+    }, function (createErr, instance) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            instance.requestPaymentMethod(function (err, payload) {
+                if (err) {
+                    console.log('Error', err);
+                    return;
+                }
+
+                // Add the nonce to the form and submit
+                document.querySelector('#nonce').value = payload.nonce;
+                form.submit();
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+       
+        $('#qty').bind('input', function () {
+            /* This will be fired every time, when textbox's value changes. */
+            var credit = $("#lblprice").text();
+            $("#totalamount").val(this.value * credit);
+            //alert(this.value);
+        });
+
+    });
+
+</script>
