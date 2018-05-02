@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "ViewPlan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewPlan</h2>
+
+
+
+
+<a href="/Admin/AddPlan">Add Plan</a>
+<div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
+<div id="dvplan" name="dvplan"></div>
+
+
+@section scripts{
+
+    <script src="~/Scripts/ViewPlanAdmin.js"></script>
+}
+

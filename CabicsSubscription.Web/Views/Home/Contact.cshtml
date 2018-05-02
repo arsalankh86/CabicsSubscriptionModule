@@ -4,14 +4,50 @@
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<form id="payment-form" method="post" action="/Home/SubmitContact">
+    <section>
+        <label for="amount">
+            <span class="input-label">Amount</span>
+            <div class="input-wrapper amount-wrapper">
+                <input id="amount" name="amount" type="tel" min="1" placeholder="Amount" value="10">
+            </div>
+        </label>
+        <div class="bt-drop-in-wrapper">
+            <div id="bt-dropin"></div>
+        </div>
+    </section>
+    <input id="nonce" name="payment_method_nonce" type="hidden" />
+    <button class="button" type="submit"><span>Test Transaction</span></button>
+</form>
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+
+
+
+<script src="https://js.braintreegateway.com/web/dropin/1.10.0/js/dropin.min.js"></script>
+<script>
+    var client_token = "@ViewBag.ClientToken";
+    var form = document.querySelector('#payment-form');
+
+    braintree.dropin.create({
+        authorization: client_token,
+        container: '#bt-dropin',
+        paypal: {
+            flow: 'vault'
+        }
+    }, function (createErr, instance) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            instance.requestPaymentMethod(function (err, payload) {
+                if (err) {
+                    console.log('Error', err);
+                    return;
+                }
+
+                // Add the nonce to the form and submit
+                document.querySelector('#nonce').value = payload.nonce;
+                form.submit();
+            });
+        });
+    });
+</script>
