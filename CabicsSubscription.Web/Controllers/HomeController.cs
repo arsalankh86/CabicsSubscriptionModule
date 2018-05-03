@@ -121,6 +121,11 @@ namespace CabicsSubscription.Web.Controllers
             {
                 Transaction transaction = result.Target;
                 //return RedirectToAction("Show", new { id = transaction.Id });
+
+            //Insert in subscription Table
+            
+
+
             }
             else if (result.Transaction != null)
             {
