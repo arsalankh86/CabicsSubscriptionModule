@@ -22,6 +22,17 @@ namespace CabicsSubscription.Web.Controllers
 
         public ActionResult PurchaseSubscription()
         {
+            int plancode = 0;
+            string acccountguid = "";
+
+            if (Request.QueryString["id"] != null)
+                plancode = Convert.ToInt32(Request.QueryString[""].ToString());
+            if (Request.QueryString["account"] != null)
+                acccountguid = Request.QueryString["account"].ToString();
+
+
+
+
             var gateway = new BraintreeGateway
             {
                 Environment = Braintree.Environment.SANDBOX,
@@ -122,8 +133,10 @@ namespace CabicsSubscription.Web.Controllers
                 Transaction transaction = result.Target;
                 //return RedirectToAction("Show", new { id = transaction.Id });
 
-            //Insert in subscription Table
-            
+                //Insert in subscription Table
+                int planid = form[""]
+                Subscription subscription = new Subscription();
+                subscription.PlanId = 
 
 
             }

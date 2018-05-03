@@ -63,7 +63,7 @@
         var PlanId = $(obj).attr('data-PlanId');
         var accountguid = $(obj).attr('data-AccountId');
 
-        window.open('/Home/PurchaseSubscription?id=' + PlanId + '/' + accountguid);
+        window.open('/Home/PurchaseSubscription?id=' + PlanId + '&account=' + accountguid);
 
         return false;
 
