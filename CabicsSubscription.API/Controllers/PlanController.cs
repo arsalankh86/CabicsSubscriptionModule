@@ -30,5 +30,26 @@ namespace CabicsSubscription.API.Controllers
             return planService.GetPlanDetail(planId);
         }
 
+
+        [HttpGet]
+        public Plan InsertPlan(InsertPlanRequest planrequest)
+        {
+            Plan plan = new Plan();
+
+            plan.CreatedDateTime = DateTime.Now;
+            plan.Name = planrequest.Name;
+            plan.PlanCode = planrequest.PlanCode;
+            plan.Description = planrequest.Description;
+            plan.Credit = planrequest.Credit;
+            plan.CreditPrice = planrequest.CreditPrice;
+            plan.PlanTypeId = planrequest.PlanTypeId;
+            plan.NoOfAgents = planrequest.NoOfAgents;
+            plan.NoOfDrivers = planrequest.NoOfDrivers;
+            plan.NoOfVehicles = planrequest.NoOfVehicles;
+            plan.PerSMSPrice = planrequest.PerSMSPrice;
+
+            return planService.InsertPlan(plan);
+        }
+
     }
 }

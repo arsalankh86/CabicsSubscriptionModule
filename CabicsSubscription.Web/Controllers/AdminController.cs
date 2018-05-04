@@ -25,6 +25,13 @@ namespace CabicsSubscription.Web.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult SubmitPlan(FormCollection form)
+        {
+            return View();
+        }
+
+
 
 
     }

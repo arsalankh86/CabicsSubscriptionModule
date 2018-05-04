@@ -134,9 +134,9 @@ namespace CabicsSubscription.Web.Controllers
                 //return RedirectToAction("Show", new { id = transaction.Id });
 
                 //Insert in subscription Table
-                int planid = form[""]
-                Subscription subscription = new Subscription();
-                subscription.PlanId = 
+                //int planid = form[""]
+                //Subscription subscription = new Subscription();
+                //subscription.PlanId = 
 
 
             }

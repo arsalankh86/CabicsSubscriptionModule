@@ -189,6 +189,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountRegistrationModelRequest.cs" />
+    <Compile Include="Models\InsertPlanRequest.cs" />
     <Compile Include="Models\ViewPlanResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -206,6 +206,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\AddPlan.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -249,7 +250,6 @@
     <Content Include="Views\Home\ViewSubscription.cshtml" />
     <Content Include="Views\Home\ViewAccount.cshtml" />
     <Content Include="Views\Shared\_PurchaseSubscription.cshtml" />
-    <Content Include="Views\Home\_PurchaseSubscription_.cshtml" />
     <Content Include="Views\Admin\AddPlan.cshtml" />
     <Content Include="Views\Admin\ViewPlan.cshtml" />
     <Content Include="Views\Shared\Plan\_AddPlan.cshtml" />

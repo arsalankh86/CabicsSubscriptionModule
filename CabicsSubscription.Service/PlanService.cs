@@ -21,5 +21,18 @@ namespace CabicsSubscription.Service
             Plan plan = context.plans.FirstOrDefault(x => x.IsActive == true && x.Id == planid);
             return plan;
         }
+
+        public Plan InsertPlan(Plan plan)
+        {
+            try { 
+
+            context.plans.Add(plan);
+            context.SaveChanges();
+            return plan;
+
+                }
+            catch(Exception ex)
+            { return null; }
+        }
     }
 }
