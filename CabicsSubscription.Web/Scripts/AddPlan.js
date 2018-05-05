@@ -29,7 +29,7 @@ var addplan = new function () {
             var selectedplantype = $(plantype).val();
             if (selectedplantype == 2) {
                 $(dvmonthly).css('display', 'block');
-                $(dvpayasgo).css('display', 'none');
+              //  $(dvpayasgo).css('display', 'none');
             }
             else {
                 $(dvpayasgo).css('display', 'block');
@@ -49,15 +49,17 @@ var addplan = new function () {
             if (ValidateControl($("input[name=txtplandes]")) == false)
                 return false;
 
-            if (ValidateControl($("input[name=txtcredit]")) == false)
-                return false;
-            if (ValidateControl($("input[name=txtcreditamount]")) == false)
-                return false;
+            //if ($(plantype).val() == 1) {
+                if (ValidateControl($("input[name=txtcredit]")) == false)
+                    return false;
+                if (ValidateControl($("input[name=txtcreditamount]")) == false)
+                    return false;
 
-            if (isNumberKey($("input[name=txtcreditamount]")) == false)
-                return false;
-            if (isNumberKey($("input[name=txtcredit]")) == false)
-                return false;
+                if (isNumberKey($("input[name=txtcreditamount]")) == false)
+                    return false;
+                if (isNumberKey($("input[name=txtcredit]")) == false)
+                    return false;
+            //}
 
             if ($(plantype).val() == 2) {
 
@@ -86,30 +88,36 @@ var addplan = new function () {
 
             plan = {
 
-                PlanCode = $(txtplancode).val(),
-                Name=$(txtplanname).val(),
-                PlanTypeId= $(plantype).val(),
-                Description=$(txtplandes).val(),
-                CreditPrice=$(txtcreditamount).val(),
-                Credit=$(txtcredit).val(),
-                NoOfAgents=$(txtnoofagent).val(),
-                NoOfDrivers=$(txtnoofdriver).val(),
-                NoOfVehicles=$(txtnoofvehicle).val(),
-                PerSMSPrice=$(txtpricepersms).val()
+                PlanCode : $(txtplancode).val(),
+                Name:$(txtplanname).val(),
+                PlanTypeId: $(plantype).val(),
+                Description:$(txtplandes).val(),
+                CreditPrice:$(txtcreditamount).val(),
+                Credit:$(txtcredit).val(),
+                NoOfAgents:$(txtnoofagent).val(),
+                NoOfDrivers:$(txtnoofdriver).val(),
+                NoOfVehicles:$(txtnoofvehicle).val(),
+                PerSMSPrice:$(txtpricepersms).val()
 
             };
 
+
+
             $.ajax({
-                type: "Post",
+                type: "POST",
                 url: servicePath + "/Plan/InsertPlan",
-                data: JSON.stringify(plan),
                 contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    console.log(data);
-                //},
-                failure: function (errMsg) {
-                    alert(errMsg);
+                data: JSON.stringify(plan),
+                dataType: "json",               
+                complete: function () {
+                },
+
+                success: function (response) {
+                    alert(response);
+                },
+
+                failure: function (response) {
+                    alert(response);
                 }
             });
 

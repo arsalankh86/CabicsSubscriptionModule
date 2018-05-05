@@ -31,12 +31,12 @@ namespace CabicsSubscription.API.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         public Plan InsertPlan(InsertPlanRequest planrequest)
         {
             Plan plan = new Plan();
 
-            plan.CreatedDateTime = DateTime.Now;
+            
             plan.Name = planrequest.Name;
             plan.PlanCode = planrequest.PlanCode;
             plan.Description = planrequest.Description;
@@ -47,6 +47,9 @@ namespace CabicsSubscription.API.Controllers
             plan.NoOfDrivers = planrequest.NoOfDrivers;
             plan.NoOfVehicles = planrequest.NoOfVehicles;
             plan.PerSMSPrice = planrequest.PerSMSPrice;
+            plan.IsActive = true;
+            plan.CreatedDateTime = DateTime.Now;
+
 
             return planService.InsertPlan(plan);
         }

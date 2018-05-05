@@ -12,11 +12,11 @@ namespace CabicsSubscription.API.Models
         public string Name { get; set; }
         public int PlanTypeId { get; set; }
         public string Description { get; set; }
-        public Nullable<double> CreditPrice { get; set; }
+        public double CreditPrice { get; set; }
         public int Credit { get; set; }
-        public Nullable<int> NoOfAgents { get; set; }
-        public Nullable<int> NoOfDrivers { get; set; }
-        public Nullable<int> NoOfVehicles { get; set; }
+        public int NoOfAgents { get; set; }
+        public int NoOfDrivers { get; set; }
+        public int NoOfVehicles { get; set; }
         public double PerSMSPrice { get; set; }
     }
 }
