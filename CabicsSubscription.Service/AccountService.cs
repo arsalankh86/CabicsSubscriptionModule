@@ -38,6 +38,15 @@ namespace CabicsSubscription.Service
 
         }
 
+        public List<Account> GetAllCabOffice()
+        {
+            using (DataContext contect = new DataContext())
+            {
+                List<Account> lstccount = contect.Accounts.Where(x => x.IsActive == true).ToList();
+                return lstccount;
+            }
+        }
+
         private Account GetAccountByEmail(string email)
         {
             using (DataContext context = new DataContext())

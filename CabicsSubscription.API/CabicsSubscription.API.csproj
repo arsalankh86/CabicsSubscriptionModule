@@ -184,11 +184,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlanController.cs" />
+    <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountRegistrationModelRequest.cs" />
+    <Compile Include="Models\DeletePlanRequest.cs" />
+    <Compile Include="Models\InsertSubscriptionRequest.cs" />
     <Compile Include="Models\InsertPlanRequest.cs" />
     <Compile Include="Models\ViewPlanResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

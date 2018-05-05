@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "_AddSubscriptionByAdmin";
+}
+
+<h2>_AddSubscriptionByAdmin</h2>
+
+<div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
+<div class="site-width" id="payment-tabs">
+    <div id="alerts"></div>
+    <h1 id="plan-name-title">
+        <span id="dvbuycredit" name="dvbuycredit">   </span>
+        <div id="dvmonthly" name="dvmonthly"></div>
+    </h1>
+
+        <section>
+            <div class="form-group">
+                <label for="fname">Cab Office:</label>
+                <select id="ddlcaboofice" class="myDropDownLisTId"></select>
+
+            </div>
+            <div class="form-group">
+                <label for="lname">Cheque no:</label>
+                <input type="text" class="form-control" id="chqueno">
+            </div>
+            <div class="form-group">
+                <label>Credit: (£<span id="lblprice" name="lblprice"></span>)</label>
+                <input type="text" class="form-control" id="qty" name="qty">
+            </div>
+
+
+            <div class="form-group">
+                Total: <input type="text" class="form-control" id="totalamount" name="totalamount" disabled="disabled">
+            </div>
+
+            <div class="bt-drop-in-wrapper">
+                <div id="bt-dropin"></div>
+            </div>
+        </section>
+        <button class="button" type="button"><span>Purchase For CabOffice</span></button>
+    
+</div>
+
+
+

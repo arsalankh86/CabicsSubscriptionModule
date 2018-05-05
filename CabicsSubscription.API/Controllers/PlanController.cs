@@ -24,13 +24,6 @@ namespace CabicsSubscription.API.Controllers
         }
 
 
-        [HttpGet]
-        public Plan InsertSubscription(int planId)
-        {
-            return planService.GetPlanDetail(planId);
-        }
-
-
         [HttpPost]
         public Plan InsertPlan(InsertPlanRequest planrequest)
         {
@@ -54,5 +47,15 @@ namespace CabicsSubscription.API.Controllers
             return planService.InsertPlan(plan);
         }
 
+
+        [HttpPost]
+        public bool DeletePlan(DeletePlanRequest deleteplanrequest)
+        {
+            return planService.DeletePlan(deleteplanrequest.PlanId);
+        }
+
     }
+
+
+
 }

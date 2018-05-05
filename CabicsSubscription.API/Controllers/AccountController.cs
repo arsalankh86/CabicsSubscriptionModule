@@ -3,6 +3,7 @@ using CabicsSubscription.API.Models;
 using CabicsSubscription.Service;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -25,6 +26,14 @@ namespace CabicsSubscription.API.Controllers
             return accountService.ReturnToken(accountRegistrationModel);
 
 
+        }
+
+        [HttpGet]
+        public List<Account> GetCabOffice()
+        {
+            AccountService accountService = new AccountService();
+            List<Account> lstAccount = accountService.GetAllCabOffice();
+            return lstAccount;
         }
     }
 }

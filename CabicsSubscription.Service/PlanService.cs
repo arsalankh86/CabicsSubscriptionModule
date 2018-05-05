@@ -34,5 +34,22 @@ namespace CabicsSubscription.Service
             catch(Exception ex)
             { return null; }
         }
+
+        public bool DeletePlan(int planId)
+        {
+            try
+            {
+                Plan plan = context.plans.FirstOrDefault(x => x.Id == planId);
+                plan.IsActive = false;
+                context.SaveChanges();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+
+
+        }
     }
 }

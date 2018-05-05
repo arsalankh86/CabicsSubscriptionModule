@@ -79,7 +79,43 @@
 
         var PlanId = $(obj).attr('data-PlanId');
 
-        window.open('/Admin/PurchaseSubscription?id=' + PlanId );
+        window.open('/Admin/AddSubscriptionByAdmin.cshtml?id=' + PlanId );
+
+        return false;
+
+
+    }
+
+
+    DeletePlan = function (obj) {
+
+        var PlanId = $(obj).attr('data-PlanId');
+
+
+
+        plan = {
+
+            PlanId: PlanId
+        };
+
+        $.ajax({
+            type: "POST",
+            url: servicePath + "/Plan/DeletePlan",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(plan),
+            dataType: "json",
+            complete: function () {
+            },
+
+            success: function (response) {
+                alert(response);
+            },
+
+            failure: function (response) {
+                alert(response);
+            }
+        });
+
 
         return false;
 

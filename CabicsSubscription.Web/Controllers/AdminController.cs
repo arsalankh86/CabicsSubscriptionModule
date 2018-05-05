@@ -31,6 +31,10 @@ namespace CabicsSubscription.Web.Controllers
             return View();
         }
 
+        public ActionResult AddSubscriptionByAdmin()
+        {
+            return View();
+        }
 
 
 
