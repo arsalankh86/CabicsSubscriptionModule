@@ -27,7 +27,7 @@ namespace CabicsSubscription.Web.Controllers
             string acccountguid = "";
 
             if (Request.QueryString["id"] != null)
-                plancode = Convert.ToInt32(Request.QueryString[""].ToString());
+                plancode = Convert.ToInt32(Request.QueryString["id"].ToString());
             if (Request.QueryString["account"] != null)
                 acccountguid = Request.QueryString["account"].ToString();
 
@@ -58,6 +58,8 @@ namespace CabicsSubscription.Web.Controllers
 
         public ActionResult Dashboard()
         {
+            AccountService accountService = new AccountService();
+            Account account = accountService.getCabOfficeByAccountId("sadasd");
             return View();
         }
 
@@ -101,11 +103,11 @@ namespace CabicsSubscription.Web.Controllers
             var planId = 0;
             var accountid="";
 
-            if (Request.QueryString["id"].ToString() != null)
-                planId = Convert.ToInt32(Request.QueryString["id"].ToString());
+            if (form["hdnplanid"] != null)
+                planId = Convert.ToInt32(form["hdnplanid"].ToString());
 
-            if (Request.QueryString["account"].ToString() != null)
-                accountid = Request.QueryString["account"].ToString();
+            if (form["hdnaccount"] != null)
+                accountid = form["hdnaccount"].ToString();
 
             AccountService accountService = new AccountService();
             Account account = accountService.getCabOfficeByAccountId(accountid);
@@ -122,7 +124,7 @@ namespace CabicsSubscription.Web.Controllers
             Decimal amount;
             try
             {
-                amount = Convert.ToDecimal(Request["amount"]);
+                amount = Convert.ToDecimal(form["hdnamount"]);
             }
             catch (FormatException e)
             {
@@ -146,49 +148,8 @@ namespace CabicsSubscription.Web.Controllers
             {
                 Transaction transaction = result.Target;
                 //return RedirectToAction("Show", new { id = transaction.Id });
-
                 SubscriptionService subscriptionService = new SubscriptionService();
-                PlanService planService = new PlanService();
-                Service.Plan plan = planService.GetPlanDetail(planId);
-
-                Service.Subscription subscription = new Service.Subscription();
-                subscription.PlanId = plan.Id;
-                subscription.PlanName = plan.Name;
-                subscription.StartDate = DateTime.Now;
-                subscription.TotalPrice = Convert.ToDouble(form["totalamount"]);
-                subscription.AccountId = account.Id;
-                subscription.SubscriptionTypeId = plan.PlanTypeId;
-                if (plan.PlanTypeId == (int)Constant.PlayType.Monthly)
-                {
-                    subscription.EndDate = DateTime.Now.AddMonths(1);
-                    subscription.CreatedDateTime = DateTime.Now;
-                    subscription.IsActive = true;
-                    subscription.NoOfAgents = plan.NoOfAgents;
-                    subscription.NoOfDrivers = plan.NoOfDrivers;
-                    subscription.NoOfVehicles = plan.NoOfVehicles;
-                    subscription.PerSMSPrice = plan.PerSMSPrice;
-                    subscription.RemainingNoOfAgents = plan.NoOfAgents;
-                    subscription.RemainingNoOfDrivers = plan.NoOfDrivers;
-                    subscription.RemainingNoOfVehicles = plan.NoOfVehicles;
-                }
-                if (plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
-                {
-                    subscription.TotalCredit = Convert.ToInt32(form["qty"]);
-                    subscription.RemainingCredit = Convert.ToInt32(form["qty"]); ;
-                }
-                subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Pending;
-
-                int subscriptionId = subscriptionService.InsertSubscription(subscription);
-
-                accountService.UpdateActiveSubsctionForAccount(subscriptionId, account.Id);
-
-
-
-
-
-
-
-
+                subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, Convert.ToInt32(form["qty"].ToString()), "");
             }
             else if (result.Transaction != null)
             {

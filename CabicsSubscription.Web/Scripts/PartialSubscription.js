@@ -18,6 +18,8 @@
     var btnSubmit = "#btnSubmit";
     var dvmonthly = "#dvmonthly";
     var totalamount = "#totalamount";
+    var hdnplanid = "#hdnplanid";
+    var hdnaccount = "#hdnaccount";
  
     this.InitalizeEvents = function () {
         $(divLoader).css("display", "none");
@@ -28,6 +30,7 @@
             /* This will be fired every time, when textbox's value changes. */
             var credit = $(lblprice).text();
             $("#totalamount").val(this.value * credit);
+            $("#hdnamount").val(this.value * credit);
             //alert(this.value);
         });
 
@@ -66,9 +69,13 @@
 
     this.SetPlanValue = function () {
        
-        var id = GetParameterValues('id');
-        planid = id.split("/")[0];
-        account = id.split("/")[1];
+       var planid = GetParameterValues('id');
+       var account = GetParameterValues('account');
+
+       $(hdnaccount).val(account);
+       $(hdnplanid).val(planid);
+
+
 
         $.ajax({
             type: "Get",

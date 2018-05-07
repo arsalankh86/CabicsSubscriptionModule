@@ -11,7 +11,7 @@ $(document).ready(function () {
         success: function (data) {
 
 
-            window.location.href = webUrl + "/Home/Index?data="+data;
+            window.location.href = webUrl + "/Home/ViewPlan?data="+data;
 
 
         },

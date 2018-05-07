@@ -6,7 +6,10 @@
         <div id="dvmonthly" name="dvmonthly"></div>
     </h1>
     <form id="payment-form" method="post" action="/Home/SubmitContact">
-        
+        <input type="hidden" name="hdnplanid" id="hdnplanid" />
+        <input type="hidden" name="hdnaccount" id="hdnaccount" />
+        <input type="hidden" name="hdnamount" id="hdnamount" />
+
         <section>
             <div class="form-group">
                 <label for="fname">First Name:</label>
@@ -20,7 +23,7 @@
                 <label>Credit: (£<span id="lblprice" name="lblprice"></span>)</label>
                 <input type="text" class="form-control" id="qty" name="qty">
             </div>
-            
+
 
             <div class="form-group">
                 Total: <input type="text" class="form-control" id="totalamount" name="totalamount" disabled="disabled">
