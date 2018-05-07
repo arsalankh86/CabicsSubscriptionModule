@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using CabicsSubscription.Service.Services;
 
 namespace CabicsSubscription.API.Controllers
 {
@@ -23,7 +24,7 @@ namespace CabicsSubscription.API.Controllers
         public Subscription InsertSubscriptionbyAdmin(InsertSubscriptionByAdminRequest insertSubscriptionByAdminRequest)
         {
             SubscriptionService subscriptionService = new SubscriptionService();
-            Subscription subscription = subscriptionService.PurchaseSubscription(insertSubscriptionByAdminRequest.PlanId, insertSubscriptionByAdminRequest.totalamount, insertSubscriptionByAdminRequest.cabofficeid, insertSubscriptionByAdminRequest.qty);
+            Subscription subscription = subscriptionService.PurchaseSubscription(insertSubscriptionByAdminRequest.PlanId, insertSubscriptionByAdminRequest.totalamount, insertSubscriptionByAdminRequest.cabofficeid, insertSubscriptionByAdminRequest.qty,"");
             return subscription;            
         }
     }
