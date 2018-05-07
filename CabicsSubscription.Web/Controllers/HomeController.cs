@@ -1,4 +1,5 @@
 ﻿using Braintree;
+using CabicsSubscription.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,7 +98,19 @@ namespace CabicsSubscription.Web.Controllers
         [HttpPost]
         public ActionResult SubmitContact(FormCollection form)
         {
-            
+            var planId = 0;
+            var accountid="";
+
+            if (Request.QueryString["id"].ToString() != null)
+                planId = Convert.ToInt32(Request.QueryString["id"].ToString());
+
+            if (Request.QueryString["account"].ToString() != null)
+                accountid = Request.QueryString["account"].ToString();
+
+            AccountService accountService = new AccountService();
+            Account account = accountService.getCabOfficeByAccountId(accountid);
+
+
             var gateway = new BraintreeGateway
             {
                 Environment = Braintree.Environment.SANDBOX,
@@ -134,10 +147,46 @@ namespace CabicsSubscription.Web.Controllers
                 Transaction transaction = result.Target;
                 //return RedirectToAction("Show", new { id = transaction.Id });
 
-                //Insert in subscription Table
-                //int planid = form[""]
-                //Subscription subscription = new Subscription();
-                //subscription.PlanId = 
+                SubscriptionService subscriptionService = new SubscriptionService();
+                PlanService planService = new PlanService();
+                Service.Plan plan = planService.GetPlanDetail(planId);
+
+                Service.Subscription subscription = new Service.Subscription();
+                subscription.PlanId = plan.Id;
+                subscription.PlanName = plan.Name;
+                subscription.StartDate = DateTime.Now;
+                subscription.TotalPrice = Convert.ToDouble(form["totalamount"]);
+                subscription.AccountId = account.Id;
+                subscription.SubscriptionTypeId = plan.PlanTypeId;
+                if (plan.PlanTypeId == (int)Constant.PlayType.Monthly)
+                {
+                    subscription.EndDate = DateTime.Now.AddMonths(1);
+                    subscription.CreatedDateTime = DateTime.Now;
+                    subscription.IsActive = true;
+                    subscription.NoOfAgents = plan.NoOfAgents;
+                    subscription.NoOfDrivers = plan.NoOfDrivers;
+                    subscription.NoOfVehicles = plan.NoOfVehicles;
+                    subscription.PerSMSPrice = plan.PerSMSPrice;
+                    subscription.RemainingNoOfAgents = plan.NoOfAgents;
+                    subscription.RemainingNoOfDrivers = plan.NoOfDrivers;
+                    subscription.RemainingNoOfVehicles = plan.NoOfVehicles;
+                }
+                if (plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
+                {
+                    subscription.TotalCredit = Convert.ToInt32(form["qty"]);
+                    subscription.RemainingCredit = Convert.ToInt32(form["qty"]); ;
+                }
+                subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Pending;
+
+                int subscriptionId = subscriptionService.InsertSubscription(subscription);
+
+                accountService.UpdateActiveSubsctionForAccount(subscriptionId, account.Id);
+
+
+
+
+
+
 
 
             }

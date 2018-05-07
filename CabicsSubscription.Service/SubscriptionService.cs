@@ -19,7 +19,7 @@ namespace CabicsSubscription.Service
             }
             catch(Exception ex)
             {
-                return null;
+                return 0;
             }
         }
 

@@ -75,6 +75,15 @@ namespace CabicsSubscription.Service
                 return false;
             }
         }
+
+        public Account getCabOfficeByAccountId(string accountid)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Account account = context.Accounts.FirstOrDefault(x => x.Token == accountid  && x.IsActive == true);
+                return account;
+            }
+        }
     }
 
 }
