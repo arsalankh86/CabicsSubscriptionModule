@@ -50,10 +50,10 @@ var addplan = new function () {
                 return false;
 
             //if ($(plantype).val() == 1) {
-                if (ValidateControl($("input[name=txtcredit]")) == false)
-                    return false;
-                if (ValidateControl($("input[name=txtcreditamount]")) == false)
-                    return false;
+                //if (ValidateControl($("input[name=txtcredit]")) == false)
+                //    return false;
+                //if (ValidateControl($("input[name=txtcreditamount]")) == false)
+                //    return false;
 
                 if (isNumberKey($("input[name=txtcreditamount]")) == false)
                     return false;
@@ -93,7 +93,7 @@ var addplan = new function () {
                 PlanTypeId: $(plantype).val(),
                 Description:$(txtplandes).val(),
                 CreditPrice:$(txtcreditamount).val(),
-                Credit:$(txtcredit).val(),
+                Credit:0,
                 NoOfAgents:$(txtnoofagent).val(),
                 NoOfDrivers:$(txtnoofdriver).val(),
                 NoOfVehicles:$(txtnoofvehicle).val(),

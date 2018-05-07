@@ -191,6 +191,7 @@
     </Compile>
     <Compile Include="Models\AccountRegistrationModelRequest.cs" />
     <Compile Include="Models\DeletePlanRequest.cs" />
+    <Compile Include="Models\InsertSubscriptionByAdminRequest.cs" />
     <Compile Include="Models\InsertSubscriptionRequest.cs" />
     <Compile Include="Models\InsertPlanRequest.cs" />
     <Compile Include="Models\ViewPlanResponseModel.cs" />

@@ -97,6 +97,7 @@ namespace CabicsSubscription.Web.Controllers
         [HttpPost]
         public ActionResult SubmitContact(FormCollection form)
         {
+            
             var gateway = new BraintreeGateway
             {
                 Environment = Braintree.Environment.SANDBOX,

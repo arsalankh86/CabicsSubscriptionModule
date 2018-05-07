@@ -10,11 +10,18 @@ namespace CabicsSubscription.Service
     {
         public int InsertSubscription(Subscription subscription)
         {
-
-
-            return 0;
+            try
+            {
+                DataContext context = new DataContext();
+                context.Subscription.Add(subscription);
+                context.SaveChanges();
+                return subscription.Id;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
-
 
     }
 }

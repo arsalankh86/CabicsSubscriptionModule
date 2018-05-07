@@ -3,8 +3,27 @@ var addsubscriptionbyadmin = new function () {
 
 
     var ddlcaboofice = "#ddlcaboofice";
+    var dvpayasyougo = "#dvpayasyougo";
+    var chqueno = "#chqueno";
+    var totalamount = "#totalamount";
+    var lblprice = "#lblprice";
+    var qty = "#qty";
+    var btnsubmut = "#btnsubmut";
+    var dvmonthly = "#dvmonthly";
+    var plantype = "#plantype";
+
+    $(qty).bind('input', function () {
+        /* This will be fired every time, when textbox's value changes. */
+        var credit = $(lblprice).text();
+        $("#totalamount").val(this.value * credit);
+        //alert(this.value);
+    });
+
+
+    var planid = GetParameterValues('id');
     //var myDropDownList = $('.myDropDownLisTId');
 
+    // Load all cab office
     $.ajax({
         type: "GET",
         url: servicePath + "/Account/GetCabOffice",
@@ -26,6 +45,48 @@ var addsubscriptionbyadmin = new function () {
     });
 
 
+    // Load Plan Detail
+
+    $.ajax({
+        type: "GET",
+        url: servicePath + "/Plan/GetPlanDetail?planId=" + planid,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            $(plantype).val(response.PlanTypeId);
+            if (response.PlanTypeId == 1) {
+                $(dvpayasyougo).css('display', 'block');
+                $(lblprice).text(response.CreditPrice);
+                var html = 'Buy Credit (' + response.Credit + ' Credit = £' + response.CreditPrice + ')';
+                var price = response.CreditPrice;
+            }
+            else if (response.PlanTypeId == 2) {
+
+                $(totalamount).val(response.CreditPrice);
+             
+
+                if (response.PlanTypeId == 2) {
+                    var monthlyplandetail = 'No of Agents:' + response.NoOfAgents;
+                    monthlyplandetail += '<br /> No of Driver:' + response.NoOfDrivers;
+                    monthlyplandetail += '<br/> No of Vehicles:' + response.NoOfVehicles;
+                    monthlyplandetail += '<br/> Price Per SMS:' + response.PerSMSPrice;
+
+                    $(dvmonthly).append(monthlyplandetail);
+                    $(totalamount).val(response.CreditPrice)
+                    $(qty).css('display', 'none');
+
+                }
+
+                $(dvbuycredit).text(html);
+                $(lblprice).text(price);
+            }
+
+        },
+        failure: function () {
+            alert("Failed!");
+        }
+    });
+
     function GetParameterValues(param) {
         var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
         for (var i = 0; i < url.length; i++) {
@@ -38,75 +99,37 @@ var addsubscriptionbyadmin = new function () {
 
     $(btnsubmut).click(function () {
 
-        var planid= GetParameterValues(id);
-
-
-        if (ValidateControl($("input[name=txtplancode]")) == false)
+        if (ValidateControl($(chqueno)) == false)
             return false;
-        if (ValidateControl($("input[name=txtplanname]")) == false)
-            return false;
-        if (ValidateControl($("input[name=txtplandes]")) == false)
-            return false;
-
-        //if ($(plantype).val() == 1) {
-        if (ValidateControl($("input[name=txtcredit]")) == false)
-            return false;
-        if (ValidateControl($("input[name=txtcreditamount]")) == false)
-            return false;
-
-        if (isNumberKey($("input[name=txtcreditamount]")) == false)
-            return false;
-        if (isNumberKey($("input[name=txtcredit]")) == false)
-            return false;
+        //if ($(plantype).val() == 2) {
+        //    if (ValidateControl($(qty)) == false)
+        //        return false;
         //}
+        if (ValidateControl($(totalamount)) == false)
+            return false;
 
-        if ($(plantype).val() == 2) {
+        if (isNumberKey($(totalamount)) == false)
+            return false;
+        if (isNumberKey($(qty)) == false)
+            return false;
 
-            if (ValidateControl($("input[name=txtnoofdriver]")) == false)
-                return false;
-            if (ValidateControl($("input[name=txtnoofagent]")) == false)
-                return false;
-            if (ValidateControl($("input[name=txtnoofvehicle]")) == false)
-                return false;
-            if (ValidateControl($("input[name=txtpricepersms]")) == false)
-                return false;
+        
 
-            if (isNumberKey($("input[name=txtnoofagent]")) == false)
-                return false;
-            if (isNumberKey($("input[name=txtnoofvehicle]")) == false)
-                return false;
-            if (isNumberKey($("input[name=txtnoofdriver]")) == false)
-                return false;
-            if (isNumberKey($("input[name=txtpricepersms]")) == false)
-                return false;
+        subscriptionbyadmin = {
 
+            planId: planid,
+            qty: $(qty).val(),
+            chequeNo: $(chqueno).val(),
+            totalamount: $(totalamount).val(),
+            cabofficeid: $(ddlcaboofice).val()
         }
-
-
-
-
-        subscription = {
-
-            PlanCode: $(txtplancode).val(),
-            Name: $(txtplanname).val(),
-            PlanTypeId: $(plantype).val(),
-            Description: $(txtplandes).val(),
-            CreditPrice: $(txtcreditamount).val(),
-            Credit: $(txtcredit).val(),
-            NoOfAgents: $(txtnoofagent).val(),
-            NoOfDrivers: $(txtnoofdriver).val(),
-            NoOfVehicles: $(txtnoofvehicle).val(),
-            PerSMSPrice: $(txtpricepersms).val()
-
-        };
-
 
 
         $.ajax({
             type: "POST",
-            url: servicePath + "/Plan/InsertPlan",
+            url: servicePath + "/Subscription/InsertSubscriptionbyAdmin",
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(plan),
+            data: JSON.stringify(subscriptionbyadmin),
             dataType: "json",
             complete: function () {
             },
@@ -119,7 +142,6 @@ var addsubscriptionbyadmin = new function () {
                 alert(response);
             }
         });
-
 
     });
 

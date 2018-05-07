@@ -24,6 +24,13 @@
 
         PartialSubscription.SetPlanValue();
 
+        $(qty).bind('input', function () {
+            /* This will be fired every time, when textbox's value changes. */
+            var credit = $(lblprice).text();
+            $("#totalamount").val(this.value * credit);
+            //alert(this.value);
+        });
+
         $(btnSubmit).on("click", function () {
 
            

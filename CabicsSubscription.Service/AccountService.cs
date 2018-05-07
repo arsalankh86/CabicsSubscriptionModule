@@ -56,6 +56,25 @@ namespace CabicsSubscription.Service
             }
 
         }
+
+        public bool UpdateActiveSubsctionForAccount(int subscriptionId, int cabofficeid)
+        {
+            try
+            {
+                using (DataContext context = new DataContext())
+                {
+                    Account account = context.Accounts.FirstOrDefault(x => x.Id == cabofficeid && x.IsActive == true);
+                    account.CurrentSubscriptionId = subscriptionId;
+                    context.SaveChanges();
+                }
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
     }
 
 }

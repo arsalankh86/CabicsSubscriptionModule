@@ -58,6 +58,7 @@
     <Compile Include="Account.cs" />
     <Compile Include="AccountService.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Constant.cs" />
     <Compile Include="CreditDeductionLog.cs" />
     <Compile Include="CreditDeductionType.cs" />
     <Compile Include="DataContext.cs" />

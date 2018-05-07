@@ -79,7 +79,7 @@
 
         var PlanId = $(obj).attr('data-PlanId');
 
-        window.open('/Admin/AddSubscriptionByAdmin.cshtml?id=' + PlanId );
+        window.open('/Admin/AddSubscriptionByAdmin?id=' + PlanId );
 
         return false;
 
