@@ -150,7 +150,12 @@ namespace CabicsSubscription.Web.Controllers
                 Transaction transaction = result.Target;
                 //return RedirectToAction("Show", new { id = transaction.Id });
                 SubscriptionService subscriptionService = new SubscriptionService();
-                subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, Convert.ToInt32(form["qty"].ToString()), "");
+
+                int qty = 1;
+                if (form["qty"] != null)
+                    qty = Convert.ToInt32(form["qty"]);
+
+                subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "");
             }
             else if (result.Transaction != null)
             {

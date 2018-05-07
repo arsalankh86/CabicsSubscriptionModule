@@ -20,6 +20,7 @@
     var totalamount = "#totalamount";
     var hdnplanid = "#hdnplanid";
     var hdnaccount = "#hdnaccount";
+    var hdnamount = "#hdnamount";
  
     this.InitalizeEvents = function () {
         $(divLoader).css("display", "none");
@@ -30,7 +31,7 @@
             /* This will be fired every time, when textbox's value changes. */
             var credit = $(lblprice).text();
             $("#totalamount").val(this.value * credit);
-            $("#hdnamount").val(this.value * credit);
+            $(hdnamount).val(this.value * credit);
             //alert(this.value);
         });
 
@@ -97,6 +98,7 @@
                                        
                     $(dvmonthly).append(monthlyplandetail);
                     $(totalamount).val(data.CreditPrice)
+                    $(hdnamount).val(data.CreditPrice)
                     $(qty).css('display', 'none');
 
                 }
