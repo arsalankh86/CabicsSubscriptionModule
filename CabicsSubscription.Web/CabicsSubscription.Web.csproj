@@ -215,8 +215,10 @@
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Dashboard.js" />
+    <Content Include="Scripts\AdminIndex.js" />
+    <Content Include="Scripts\Index.js" />
     <Content Include="Scripts\Helper.js" />
-    <Content Include="Scripts\PartialSubscription.js" />
+    <Content Include="Scripts\PurchaseSubscription.js" />
     <Content Include="Scripts\TestSearch.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -243,9 +245,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\DashBoard.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\DashBoard.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\ViewPlan.cshtml" />
     <Content Include="Views\Home\PurchaseSubscription.cshtml" />
     <Content Include="Views\Home\ViewSubscription.cshtml" />
@@ -256,9 +258,12 @@
     <Content Include="Views\Shared\Plan\_AddPlan.cshtml" />
     <Content Include="Views\Admin\AddSubscriptionByAdmin.cshtml" />
     <Content Include="Views\Shared\Plan\_AddSubscriptionByAdmin.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\Admin\" />
+    <Folder Include="Scripts\CabOffice\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

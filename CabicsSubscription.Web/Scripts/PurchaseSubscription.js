@@ -1,4 +1,4 @@
-﻿var PartialSubscription = new function () {
+﻿var PurchaseSubscription = new function () {
 
     var dvbuycredit = "#dvbuycredit";
     var fname = "#fname";
@@ -25,7 +25,7 @@
     this.InitalizeEvents = function () {
         $(divLoader).css("display", "none");
 
-        PartialSubscription.SetPlanValue();
+        PurchaseSubscription.SetPlanValue();
 
         $(qty).bind('input', function () {
             /* This will be fired every time, when textbox's value changes. */

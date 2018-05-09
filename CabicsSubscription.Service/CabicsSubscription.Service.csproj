@@ -56,6 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="Migrations\201805081412366_mig.cs" />
+    <Compile Include="Migrations\201805081412366_mig.Designer.cs">
+      <DependentUpon>201805081412366_mig.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Constant.cs" />
@@ -97,6 +101,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804242311456_subscription.resx">
       <DependentUpon>201804242311456_subscription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805081412366_mig.resx">
+      <DependentUpon>201805081412366_mig.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

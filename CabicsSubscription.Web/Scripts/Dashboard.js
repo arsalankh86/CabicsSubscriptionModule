@@ -1,22 +1,25 @@
-﻿
-$(document).ready(function () {
-    var account = { "Email": "abcds@sadsa.com", "Name": "dfdfdsfff", "ClientId": "1" };
+﻿var dashboard = new function()
+{
 
-    $.ajax({
-        type: "POST",
-        url: servicePath +"/Account/GetAccountToken",
-        data: JSON.stringify(account),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
+    var planlink = "#dvlink";
 
+    var data = GetParameterValues('data');
 
-            window.location.href = webUrl + "/Home/ViewPlan?data="+data;
-
-
-        },
-        failure: function (errMsg) {
-            alert(errMsg);
+    function GetParameterValues(param) {
+        var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < url.length; i++) {
+            var urlparam = url[i].split('=');
+            if (urlparam[0] == param) {
+                return urlparam[1];
+            }
         }
-    });
-});
+    }  
+
+
+    var html = "<h3><a href=ViewPlan?data=" + data + ">View Plan</a></h3> <br/>";
+    $(planlink).append(html);
+    
+    
+   
+
+}

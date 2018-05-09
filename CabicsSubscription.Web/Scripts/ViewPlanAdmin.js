@@ -117,6 +117,8 @@
         });
 
 
+        location.reload();
+
         return false;
 
 
