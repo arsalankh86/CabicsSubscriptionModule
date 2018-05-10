@@ -8,7 +8,7 @@ namespace CabicsSubscription.API.Models
     public class InsertPlanRequest
     {
 
-        public int PlanCode { get; set; }
+        public string PlanCode { get; set; }
         public string Name { get; set; }
         public int PlanTypeId { get; set; }
         public string Description { get; set; }

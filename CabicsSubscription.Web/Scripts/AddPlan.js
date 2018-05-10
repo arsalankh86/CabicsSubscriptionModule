@@ -113,7 +113,8 @@ var addplan = new function () {
                 },
 
                 success: function (response) {
-                    alert(response);
+                    //alert(response);
+                    window.location.href = webUrl + "/Admin/Viewplan";
                 },
 
                 failure: function (response) {

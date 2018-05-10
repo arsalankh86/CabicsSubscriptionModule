@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace CabicsSubscription.Service
 {
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
-    class DataContext : DbContext
+    public class DataContext : DbContext
     {
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }

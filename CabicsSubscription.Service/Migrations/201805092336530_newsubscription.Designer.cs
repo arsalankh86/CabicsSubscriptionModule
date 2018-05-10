@@ -7,13 +7,13 @@ namespace CabicsSubscription.Service.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class subscription : IMigrationMetadata
+    public sealed partial class newsubscription : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(subscription));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(newsubscription));
         
         string IMigrationMetadata.Id
         {
-            get { return "201804242311456_subscription"; }
+            get { return "201805092336530_newsubscription"; }
         }
         
         string IMigrationMetadata.Source

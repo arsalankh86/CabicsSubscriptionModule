@@ -56,9 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
-    <Compile Include="Migrations\201805081412366_mig.cs" />
-    <Compile Include="Migrations\201805081412366_mig.Designer.cs">
-      <DependentUpon>201805081412366_mig.cs</DependentUpon>
+    <Compile Include="Migrations\201805092336530_newsubscription.cs" />
+    <Compile Include="Migrations\201805092336530_newsubscription.Designer.cs">
+      <DependentUpon>201805092336530_newsubscription.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Client.cs" />
@@ -66,14 +66,6 @@
     <Compile Include="CreditDeductionLog.cs" />
     <Compile Include="CreditDeductionType.cs" />
     <Compile Include="DataContext.cs" />
-    <Compile Include="Migrations\201804232337446_subcription.cs" />
-    <Compile Include="Migrations\201804232337446_subcription.Designer.cs">
-      <DependentUpon>201804232337446_subcription.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804242311456_subscription.cs" />
-    <Compile Include="Migrations\201804242311456_subscription.Designer.cs">
-      <DependentUpon>201804242311456_subscription.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AccountRegistrationModel.cs" />
     <Compile Include="Plan.cs" />
@@ -96,14 +88,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804232337446_subcription.resx">
-      <DependentUpon>201804232337446_subcription.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804242311456_subscription.resx">
-      <DependentUpon>201804242311456_subscription.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805081412366_mig.resx">
-      <DependentUpon>201805081412366_mig.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805092336530_newsubscription.resx">
+      <DependentUpon>201805092336530_newsubscription.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

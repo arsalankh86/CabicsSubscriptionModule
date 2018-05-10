@@ -3,7 +3,7 @@ namespace CabicsSubscription.Service.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class subcription : DbMigration
+    public partial class newsubscription : DbMigration
     {
         public override void Up()
         {
@@ -20,6 +20,7 @@ namespace CabicsSubscription.Service.Migrations
                         CurrentSubscriptionId = c.Int(),
                         CreatedDateTime = c.DateTime(nullable: false, precision: 0),
                         IsActive = c.Boolean(nullable: false),
+                        Token = c.String(unicode: false),
                         ClientId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -60,6 +61,7 @@ namespace CabicsSubscription.Service.Migrations
                         RemainingNoOfDrivers = c.Int(),
                         RemainingNoOfVehicles = c.Int(),
                         PerSMSPrice = c.Double(),
+                        ChequeNo = c.String(unicode: false),
                         CreatedDateTime = c.DateTime(nullable: false, precision: 0),
                         IsActive = c.Boolean(nullable: false),
                         AccountId = c.Int(nullable: false),
@@ -76,10 +78,11 @@ namespace CabicsSubscription.Service.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        PlanCode = c.Int(nullable: false),
+                        PlanCode = c.String(unicode: false),
                         Name = c.String(unicode: false),
                         PlanTypeId = c.Int(nullable: false),
                         Description = c.String(unicode: false),
+                        PlanExpiryDate = c.DateTime(nullable: false, precision: 0),
                         IsAutoRenewel = c.Boolean(),
                         CreditPrice = c.Double(),
                         Credit = c.Int(nullable: false),
