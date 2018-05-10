@@ -11,6 +11,7 @@ var addplan = new function () {
     var txtnoofvehicle = "#txtnoofvehicle";
     var txtnoofdriver = "#txtnoofdriver";
     var txtpricepersms = "#txtpricepersms";
+    var planexpirydate = "#planexpirydate";
 
 
     var dvpayasgo = "#dvpayasgo";
@@ -22,7 +23,7 @@ var addplan = new function () {
 
     this.InitalizeEvents = function () {
         
-
+        $("#planexpirydate").datepicker();
 
         $(plantype).on("change", function () {
 
@@ -97,7 +98,8 @@ var addplan = new function () {
                 NoOfAgents:$(txtnoofagent).val(),
                 NoOfDrivers:$(txtnoofdriver).val(),
                 NoOfVehicles:$(txtnoofvehicle).val(),
-                PerSMSPrice:$(txtpricepersms).val()
+                PerSMSPrice: $(txtpricepersms).val(),
+                PlanExpiryDate: $(planexpirydate).val() 
 
             };
 

@@ -16,6 +16,13 @@ namespace CabicsSubscription.Service.Services
 
         }
 
+        public List<Plan> GetAllPlanForCabOffice()
+        {
+            List<Plan> lstplan = context.plans.Where(x => x.IsActive == true && x.PlanExpiryDate >= DateTime.Now).ToList();
+            return lstplan;
+
+        }
+
         public Plan GetPlanDetail(int planid)
         {
             Plan plan = context.plans.FirstOrDefault(x => x.IsActive == true && x.Id == planid);

@@ -18,6 +18,13 @@ namespace CabicsSubscription.API.Controllers
            return planService.GetAllPlan();
         }
 
+
+        public List<Plan> GetAllPlanForCabOffice()
+        {
+            return planService.GetAllPlanForCabOffice();
+        }
+
+
         [HttpGet]
         public Plan GetPlanDetail(int planId)
         {
@@ -43,6 +50,7 @@ namespace CabicsSubscription.API.Controllers
             plan.PerSMSPrice = planrequest.PerSMSPrice;
             plan.IsActive = true;
             plan.CreatedDateTime = DateTime.Now;
+            plan.PlanExpiryDate = Convert.ToDateTime(planrequest.PlanExpiryDate);
 
 
             return planService.InsertPlan(plan);

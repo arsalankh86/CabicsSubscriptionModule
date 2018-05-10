@@ -5,7 +5,7 @@ namespace CabicsSubscription.Service.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    public sealed class Configuration : DbMigrationsConfiguration<CabicsSubscription.Service.DataContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<CabicsSubscription.Service.DataContext>
     {
         public Configuration()
         {
@@ -19,6 +19,7 @@ namespace CabicsSubscription.Service.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
 
+            /// Defualt Client Insertion
             Client client = new Client();
             client.Id = 1;
             client.Name = "Cabics";

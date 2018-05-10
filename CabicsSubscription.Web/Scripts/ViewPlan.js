@@ -21,7 +21,7 @@
 
         $.ajax({
             type: "Get",
-            url: servicePath + "/Plan/GetAllPlan",
+            url: servicePath + "/Plan/GetAllPlanForCabOffice",
             //data: JSON.stringify(account),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

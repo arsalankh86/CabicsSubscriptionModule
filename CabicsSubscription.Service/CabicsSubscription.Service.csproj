@@ -69,6 +69,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AccountRegistrationModel.cs" />
     <Compile Include="Plan.cs" />
+    <Compile Include="Services\MigrationService.cs" />
     <Compile Include="Services\PlanService.cs" />
     <Compile Include="PlanType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

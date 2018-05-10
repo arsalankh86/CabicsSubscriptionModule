@@ -1,4 +1,5 @@
 ﻿using CabicsSubscription.Service;
+using CabicsSubscription.Service.Services;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -24,16 +25,7 @@ namespace CabicsSubscription.API
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //// For Migration
-         
-            //CabicsSubscription.Service.Migrations.newsubscription newsubscriptionobj = new Service.Migrations.newsubscription();
-            //newsubscriptionobj.Up();
-
-            var configuration = new CabicsSubscription.Service.Migrations.Configuration();
-            var migrator = new DbMigrator(configuration);
-            migrator.Update();
-
-
-
+            MigrationService.RunMigration();
 
         }
     }
