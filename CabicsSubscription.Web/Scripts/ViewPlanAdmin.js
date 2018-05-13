@@ -69,6 +69,8 @@
         var accountguid = $(obj).attr('data-AccountId');
 
         window.open('/Home/PurchaseSubscription?id=' + PlanId + '/' + accountguid);
+		
+		
 
         return false;
 
@@ -79,7 +81,8 @@
 
         var PlanId = $(obj).attr('data-PlanId');
 
-        window.open('/Admin/AddSubscriptionByAdmin?id=' + PlanId );
+        	
+		window.location.href = webUrl + "/Admin/AddSubscriptionByAdmin?id=" + PlanId;
 
         return false;
 
@@ -125,4 +128,15 @@
     }
 
 
+    EditPlan = function (obj) {
+
+        var PlanId = $(obj).attr('data-PlanId');
+
+
+        window.location.href = webUrl + "/Admin/AddSubscriptionByAdmin?id=" + PlanId;
+
+        return false;
+
+
+    }
 });

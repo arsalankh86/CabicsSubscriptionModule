@@ -260,6 +260,8 @@
     <Content Include="Views\Admin\AddSubscriptionByAdmin.cshtml" />
     <Content Include="Views\Shared\Plan\_AddSubscriptionByAdmin.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Home\Thankyou.cshtml" />
+    <Content Include="Views\Admin\EditPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

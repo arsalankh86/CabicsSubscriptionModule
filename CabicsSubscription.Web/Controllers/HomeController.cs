@@ -71,6 +71,13 @@ namespace CabicsSubscription.Web.Controllers
             return View();
         }
 
+        public ActionResult Thankyou()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
         public ActionResult Contact()
         {
 
@@ -129,7 +136,7 @@ namespace CabicsSubscription.Web.Controllers
             }
             catch (FormatException e)
             {
-                TempData["Flash"] = "Error: 81503: Amount is an invalid format.";
+               // TempData["Flash"] = "Error: 81503: Amount is an invalid format.";
                 return RedirectToAction("New");
             }
 
@@ -151,11 +158,11 @@ namespace CabicsSubscription.Web.Controllers
                 //return RedirectToAction("Show", new { id = transaction.Id });
                 SubscriptionService subscriptionService = new SubscriptionService();
 
-                int qty = 1;
-                if (form["qty"] != null)
-                    qty = Convert.ToInt32(form["qty"]);
+                //int qty = 1;
+                //if (form["qty"] != null)
+                //    qty = Convert.ToInt32(form["qty"]);
 
-                subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "");
+                //subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "");
             }
             else if (result.Transaction != null)
             {
@@ -168,11 +175,11 @@ namespace CabicsSubscription.Web.Controllers
                 {
                     errorMessages += "Error: " + (int)error.Code + " - " + error.Message + "\n";
                 }
-                TempData["Flash"] = errorMessages;
+               // TempData["Flash"] = errorMessages;
                 return RedirectToAction("New");
             }
-
-            return View();
+            return RedirectToAction("Thankyou");
+            //return View();
 
 
         }

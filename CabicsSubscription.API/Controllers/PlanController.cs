@@ -37,7 +37,7 @@ namespace CabicsSubscription.API.Controllers
         {
             Plan plan = new Plan();
 
-            
+
             plan.Name = planrequest.Name;
             plan.PlanCode = planrequest.PlanCode;
             plan.Description = planrequest.Description;
@@ -50,10 +50,13 @@ namespace CabicsSubscription.API.Controllers
             plan.PerSMSPrice = planrequest.PerSMSPrice;
             plan.IsActive = true;
             plan.CreatedDateTime = DateTime.Now;
-            plan.PlanExpiryDate = Convert.ToDateTime(planrequest.PlanExpiryDate);
+            // plan.PlanExpiryDate = DateTime.Now.AddMonths(6); 
+            plan.PlanExpiryDate = Convert.ToDateTime(planrequest.PlanExpiryDate.ToString());
 
 
             return planService.InsertPlan(plan);
+
+            //return null;
         }
 
 

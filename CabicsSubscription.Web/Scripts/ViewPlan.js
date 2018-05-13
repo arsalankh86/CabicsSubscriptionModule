@@ -63,7 +63,8 @@
         var PlanId = $(obj).attr('data-PlanId');
         var accountguid = $(obj).attr('data-AccountId');
 
-        window.open('/Home/PurchaseSubscription?id=' + PlanId + '&account=' + accountguid);
+		window.location.href = webUrl + "/Home/PurchaseSubscription?id=" + PlanId + '&account=' + accountguid;
+        //window.open('/Home/PurchaseSubscription?id=' + PlanId + '&account=' + accountguid);
 
         return false;
 

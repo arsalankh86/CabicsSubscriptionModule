@@ -12,6 +12,40 @@ var addsubscriptionbyadmin = new function () {
     var dvmonthly = "#dvmonthly";
     var plantype = "#plantype";
 
+
+    this.InitalizeEvents = function () {
+
+        var caboffice = new Array();;
+        // Load all cab office
+        $.ajax({
+            type: "GET",
+            url: servicePath + "/Account/GetCabOffice",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                $(response).each(function (index) {
+                    var OptionValue = response[index].Id;
+                    var OptionText = response[index].FullName;
+                    var option = $("<option>" + OptionText + "</option>");
+                    option.attr("value", OptionValue);
+
+                    $(ddlcaboofice).append(option);
+
+                    caboffice.push(response[index].FullName);
+
+                  
+                });
+                $("#caboffice").autocomplete({
+                    source: caboffice
+                });
+            },
+            failure: function () {
+                alert("Failed!");
+            }
+        });
+    };
+
+
     $(qty).bind('input', function () {
         /* This will be fired every time, when textbox's value changes. */
         var credit = $(lblprice).text();
