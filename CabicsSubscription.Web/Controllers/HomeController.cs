@@ -158,11 +158,20 @@ namespace CabicsSubscription.Web.Controllers
                 //return RedirectToAction("Show", new { id = transaction.Id });
                 SubscriptionService subscriptionService = new SubscriptionService();
 
-                //int qty = 1;
-                //if (form["qty"] != null)
-                //    qty = Convert.ToInt32(form["qty"]);
+                int qty = 1;
+                if (form["qty"] != null)
+                    qty = convert.toint32(form["qty"]);
 
-                //subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "");
+                int smscreditqty = 0;
+                if (form["smscreditqty"] != null)
+                    smscreditqty = convert.toint32(form["smscreditqty"]);
+
+                double hdnsmscreditamount = 0;
+                if (form["hdnsmscreditamount"] != null)
+                    hdnsmscreditamount = convert.toint32(form["hdnsmscreditamount"]);
+
+
+                subscriptionservice.purchasesubscription(planid, convert.todouble(form["hdnamount"]), account.id, qty, "", smscreditqty, hdnsmscreditamount);
             }
             else if (result.Transaction != null)
             {

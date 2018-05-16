@@ -27,5 +27,14 @@ namespace CabicsSubscription.API.Controllers
             Subscription subscription = subscriptionService.PurchaseSubscription(insertSubscriptionByAdminRequest.PlanId, insertSubscriptionByAdminRequest.totalamount, insertSubscriptionByAdminRequest.cabofficeid, insertSubscriptionByAdminRequest.qty,"");
             return subscription;            
         }
+
+        public List<CreditDeductionType> GetAllCreditDeductionDetail()
+        {
+            SubscriptionService subscriptionService = new SubscriptionService();
+            return subscriptionService.GetCreditDeductionDetail();
+
+            
+        }
+
     }
 }

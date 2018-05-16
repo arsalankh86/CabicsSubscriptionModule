@@ -1,14 +1,21 @@
 ﻿<div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
 <div class="site-width" id="payment-tabs">
     <div id="alerts"></div>
+
+    <div id="dvcrruentsubscription">
+    </div>
     <h1 id="plan-name-title">
         <span id="dvbuycredit" name="dvbuycredit">   </span>
         <div id="dvmonthly" name="dvmonthly"></div>
     </h1>
+
+    <div id="dvcreditdeductiondetail">
+    </div>
+
     <form id="payment-form" method="post" action="/Home/SubmitContact">
         <input type="hidden" name="hdnplanid" id="hdnplanid" />
         <input type="hidden" name="hdnaccount" id="hdnaccount" />
-        <input type="hidden" name="hdnamount" id="hdnamount" />
+        
 
         <section>
             <div class="form-group">
@@ -19,9 +26,17 @@
                 <label for="lname">Last Name:</label>
                 <input type="text" class="form-control" id="lname">
             </div>
+           
+            <div class="form-group">
+                <label>Per SMS Credit Price: (£<span id="lblsmscreditprice" name="lblsmscreditprice"></span>)</label>
+                <input type="text" class="form-control" id="smscreditqty" name="smscreditqty">
+                <input type="hidden" name="hdnsmscreditamount" id="hdnsmscreditamount" />
+            </div>
+
             <div class="form-group">
                 <label>Credit: (£<span id="lblprice" name="lblprice"></span>)</label>
                 <input type="text" class="form-control" id="qty" name="qty">
+                <input type="hidden" name="hdnamount" id="hdnamount" />
             </div>
 
 
@@ -34,7 +49,7 @@
             </div>
         </section>
         <input id="nonce" name="payment_method_nonce" type="hidden" />
-        <button class="button" type="submit"><span>Test Transaction</span></button>
+        <button class="button" type="submit" onclick="ValidateSubscription(this)"><span>Test Transaction</span></button>
     </form>
 
 

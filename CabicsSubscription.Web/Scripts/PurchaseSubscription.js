@@ -21,24 +21,47 @@
     var hdnplanid = "#hdnplanid";
     var hdnaccount = "#hdnaccount";
     var hdnamount = "#hdnamount";
+    var lblsmscreditprice = "#lblsmscreditprice";
+    var smscreditqty = "#smscreditqty";
+    var dvcreditdeductiondetail = "#dvcreditdeductiondetail";
  
     this.InitalizeEvents = function () {
         $(divLoader).css("display", "none");
 
         PurchaseSubscription.SetPlanValue();
 
+        PurchaseSubscription.SetCreditDeduction();
+
         $(qty).bind('input', function () {
             /* This will be fired every time, when textbox's value changes. */
-            var credit = $(lblprice).text();
-            $("#totalamount").val(this.value * credit);
+            var totalprice = $(hdnamount).val();
+
+            $(totalamount).val(this.value * credit);
             $(hdnamount).val(this.value * credit);
             //alert(this.value);
         });
 
+
+
+        $(smscreditqty).bind('input', function () {
+            /* This will be fired every time, when textbox's value changes. */
+            var totalprice = $(hdnamount).val();
+            var lblsmscreditprice = $(hdnsmscreditamount).text();
+            var smscreditqty = this.value;
+            var totalsmscreditprice = lblsmscreditprice * smscreditqty;
+            var amount = totalprice + totalsmscreditprice;
+
+            $(totalamount).val(amount);
+            $(hdnamount).val(amount);
+
+        });
+
+
+
+
         $(btnSubmit).on("click", function () {
 
-           
-
+         
             if (PartialSubscription.SetBordersRedForEmptyFields()) {
                 $.ajax({
                     type: "POST",
@@ -68,6 +91,24 @@
         }
     } 
 
+    this.ValidateSubscription = function () {
+
+        if (ValidateControl($("input[name=fname]")) == false)
+            return false;
+        if (ValidateControl($("input[name=lname]")) == false)
+            return false;
+        if (ValidateControl($("input[name=hdnamount]")) == false)
+            return false;
+        
+        if (isNumberKey($("input[name=hdnsmscreditamount]")) == false)
+            return false;
+        if (isNumberKey($("input[name=smscreditqty]")) == false)
+            return false;
+
+    }
+
+
+
     this.SetPlanValue = function () {
        
        var planid = GetParameterValues('id');
@@ -94,11 +135,12 @@
                     var monthlyplandetail = 'No of Agents:' + data.NoOfAgents;
                     monthlyplandetail += '<br /> No of Driver:' + data.NoOfDrivers;
                     monthlyplandetail += '<br/> No of Vehicles:' + data.NoOfVehicles;
-                    monthlyplandetail += '<br/> Price Per SMS:' + data.PerSMSPrice;
+                    monthlyplandetail += '<br/> SMS Credit Price :' + data.PerSMSPrice;
                                        
                     $(dvmonthly).append(monthlyplandetail);
-                    $(totalamount).val(data.CreditPrice)
-                    $(hdnamount).val(data.CreditPrice)
+                    $(hdnamount).val(data.CreditPrice);
+                    $(hdnsmscreditamount).text(data.PerSMSPrice);
+                    $(lblsmscreditrice).text(data.PerSMSPrice);                   
                     $(qty).css('display', 'none');
 
                 }
@@ -113,6 +155,56 @@
         });
     }
 
+
+    this.SetCreditDeduction = function () {
+
+        $.ajax({
+            type: "Get",
+            url: servicePath + "/Subscription/GetAllCreditDeductionDetail",
+            //data: JSON.stringify(account),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+
+                var html = '<h3> Credit Deduction Detail is: </h3>';
+                $.each(data, function (i) {
+                    html += '<br />' + data[i].Name + ' ' + data[i].Credit;
+                    html += '<br />';
+                });
+              
+
+                $(dvcreditdeductiondetail).append(html);
+
+            },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
+
+    this.ShowCurrentSubscription = function () {
+
+        $.ajax({
+            type: "Get",
+            url: servicePath + "/Subscription/ShowCurrentSubscription",
+            //data: JSON.stringify(account),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+
+                var html = '<h3> Your current subscription is active with remaining credit '+data.RemainingCredit+'  </h3>';
+               
+
+                $(dvcreditdeductiondetail).append(html);
+
+            },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
 
 
 
