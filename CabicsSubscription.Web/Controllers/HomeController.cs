@@ -160,18 +160,17 @@ namespace CabicsSubscription.Web.Controllers
 
                 int qty = 1;
                 if (form["qty"] != null)
-                    qty = convert.toint32(form["qty"]);
+                    qty = Convert.ToInt32(form["qty"]);
 
                 int smscreditqty = 0;
-                if (form["smscreditqty"] != null)
-                    smscreditqty = convert.toint32(form["smscreditqty"]);
+                if (form["smscreditqty"] != "")
+                    smscreditqty = Convert.ToInt32(form["smscreditqty"]);
 
                 double hdnsmscreditamount = 0;
-                if (form["hdnsmscreditamount"] != null)
-                    hdnsmscreditamount = convert.toint32(form["hdnsmscreditamount"]);
+                if (form["hdnsmscreditamount"] != "")
+                    hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
 
-
-                subscriptionservice.purchasesubscription(planid, convert.todouble(form["hdnamount"]), account.id, qty, "", smscreditqty, hdnsmscreditamount);
+                subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "", smscreditqty, hdnsmscreditamount, transaction.Id);
             }
             else if (result.Transaction != null)
             {

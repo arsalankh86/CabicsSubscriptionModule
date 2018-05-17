@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace CabicsSubscription.Service
+namespace CabicsSubscription.API.Models
 {
-    public class Subscription
+    public class UserSubscriptionResponse
     {
-        [Key]
+
         public int Id { get; set; }
         public string PlanName { get; set; }
         public int SubscriptionTypeId { get; set; }
@@ -36,6 +34,8 @@ namespace CabicsSubscription.Service
 
         public int AccountId { get; set; }
         public int PlanId { get; set; }
-        
+
+        public bool IsActiveSubscription { get; set; }
+
     }
 }

@@ -44,7 +44,7 @@ namespace CabicsSubscription.Service.Services
                 subscription.NoOfAgents = plan.NoOfAgents;
                 subscription.NoOfDrivers = plan.NoOfDrivers;
                 subscription.NoOfVehicles = plan.NoOfVehicles;
-                subscription.PerSMSPrice = plan.PerSMSPrice;
+                subscription.PerCreditSMSPrice = plan.PerCreditSMSPrice;
                 subscription.RemainingNoOfAgents = plan.NoOfAgents;
                 subscription.RemainingNoOfDrivers = plan.NoOfDrivers;
                 subscription.RemainingNoOfVehicles = plan.NoOfVehicles;
@@ -66,8 +66,20 @@ namespace CabicsSubscription.Service.Services
 
         }
 
+        public Subscription ShowCurrentSubscription(string userguid)
+        {
+            DataContext context = new DataContext();
+            var account = context.Accounts.FirstOrDefault(x => x.Token == userguid && x.IsActive == true);
 
-        public Subscription PurchaseSubscription(int planId, double totalAmonut, int cabOfficeId, int qty, string chequeNo, int smscreditqty, double smscreditamount)
+            Subscription subscription = new Subscription();
+            if (account != null)
+                subscription = context.Subscription.FirstOrDefault(x => x.AccountId == account.Id && x.IsActive == true);
+
+            return subscription;
+
+        }
+
+        public Subscription PurchaseSubscription(int planId, double totalAmonut, int cabOfficeId, int qty, string chequeNo, int smscreditqty, double smscreditamount, string transactionId)
         {
             PlanService planService = new PlanService();
             Plan plan = planService.GetPlanDetail(planId);
@@ -79,6 +91,7 @@ namespace CabicsSubscription.Service.Services
             subscription.TotalPrice = totalAmonut;
             subscription.AccountId = cabOfficeId;
             subscription.SubscriptionTypeId = plan.PlanTypeId;
+            subscription.btTransactionId = transactionId;
             if (plan.PlanTypeId == (int)Constant.PlayType.Monthly)
             {
                 subscription.EndDate = DateTime.Now.AddMonths(1);
@@ -87,10 +100,12 @@ namespace CabicsSubscription.Service.Services
                 subscription.NoOfAgents = plan.NoOfAgents;
                 subscription.NoOfDrivers = plan.NoOfDrivers;
                 subscription.NoOfVehicles = plan.NoOfVehicles;
-                subscription.PerSMSPrice = plan.SMSCreditPrice;
+                subscription.PerCreditSMSPrice = plan.PerCreditSMSPrice;
                 subscription.RemainingNoOfAgents = plan.NoOfAgents;
                 subscription.RemainingNoOfDrivers = plan.NoOfDrivers;
                 subscription.RemainingNoOfVehicles = plan.NoOfVehicles;
+                subscription.SMSPrice = smscreditamount;
+                subscription.NoOfSmsCreditPurchase = smscreditqty;
             }
             if (plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
             {
@@ -98,6 +113,7 @@ namespace CabicsSubscription.Service.Services
                 subscription.RemainingCredit = qty;
             }
             subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Active;
+            subscription.IsActive = true;
 
             int subscriptionId = InsertSubscription(subscription);
 

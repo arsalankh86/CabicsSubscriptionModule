@@ -9,7 +9,7 @@ namespace CabicsSubscription.Service.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(CabicsSubscription.Service.DataContext context)
@@ -24,12 +24,13 @@ namespace CabicsSubscription.Service.Migrations
             client.Id = 1;
             client.Name = "Cabics";
             client.Description = "Cabics";
-            client.encryptedstring = Guid.NewGuid().ToString();
+            //client.encryptedstring = Guid.NewGuid().ToString();
             context.Clients.AddOrUpdate(client);
             context.SaveChanges();
 
             /// Defualt Client Insertion
             CreditDeductionType dailyCreditDeductionType = new CreditDeductionType();
+            dailyCreditDeductionType.Id = 1;
             dailyCreditDeductionType.Name = "Daily charges";
             dailyCreditDeductionType.Credit = 50;
             dailyCreditDeductionType.IsActive = true;
@@ -39,6 +40,7 @@ namespace CabicsSubscription.Service.Migrations
 
             /// Per Job Client Insertion
             CreditDeductionType jobCreditDeductionType = new CreditDeductionType();
+            jobCreditDeductionType.Id = 2;
             jobCreditDeductionType.Name = "Per Job charges";
             jobCreditDeductionType.Credit = 3;
             jobCreditDeductionType.IsActive = true;
@@ -48,18 +50,13 @@ namespace CabicsSubscription.Service.Migrations
 
             /// Per SMS Client Insertion
             CreditDeductionType smsCreditDeductionType = new CreditDeductionType();
+            smsCreditDeductionType.Id = 3;
             smsCreditDeductionType.Name = "Daily charges";
             smsCreditDeductionType.Credit = 6;
             smsCreditDeductionType.IsActive = true;
             smsCreditDeductionType.CreatedDate = DateTime.Now;
             context.CreditDeductionTypes.AddOrUpdate(smsCreditDeductionType);
             context.SaveChanges();
-
-
-
-            context.Clients.AddOrUpdate(client);
-            context.SaveChanges();
-
 
         }
     }

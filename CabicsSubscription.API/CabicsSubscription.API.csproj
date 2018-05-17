@@ -195,6 +195,7 @@
     <Compile Include="Models\InsertSubscriptionByAdminRequest.cs" />
     <Compile Include="Models\InsertSubscriptionRequest.cs" />
     <Compile Include="Models\InsertPlanRequest.cs" />
+    <Compile Include="Models\UserSubscriptionResponse.cs" />
     <Compile Include="Models\ViewPlanResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

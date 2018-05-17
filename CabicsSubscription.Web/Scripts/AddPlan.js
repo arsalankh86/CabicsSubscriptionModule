@@ -28,7 +28,7 @@ var addplan = new function () {
         $(plantype).on("change", function () {
 
             var selectedplantype = $(plantype).val();
-            if (selectedplantype == 2) {
+            if (selectedplantype === 2) {
                 $(dvmonthly).css('display', 'block');
               //  $(dvpayasgo).css('display', 'none');
             }
@@ -94,7 +94,7 @@ var addplan = new function () {
                 PlanTypeId: $(plantype).val(),
                 Description:$(txtplandes).val(),
                 CreditPrice:$(txtcreditamount).val(),
-                Credit:0,
+                Credit:1,
                 NoOfAgents:$(txtnoofagent).val(),
                 NoOfDrivers:$(txtnoofdriver).val(),
                 NoOfVehicles:$(txtnoofvehicle).val(),
@@ -115,8 +115,12 @@ var addplan = new function () {
                 },
 
                 success: function (response) {
-                    //alert(response);
-                    window.location.href = webUrl + "/Admin/Viewplan";
+                    if (response == -1001) { alert("Plan code alredy exist"); return false; }
+                    if (response == -1002) { alert("Pay as you go plan already exist"); return false; }
+                    else {
+                        window.location.href = webUrl + "/Admin/Viewplan";
+                    }
+
                 },
 
                 failure: function (response) {

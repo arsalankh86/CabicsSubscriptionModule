@@ -25,7 +25,5 @@ namespace CabicsSubscription.Service
         public int ClientId { get; set; }
         public Client client { get; set; }
 
-
-        public ICollection<Subscription> subscription { get; set; }
     }
 }

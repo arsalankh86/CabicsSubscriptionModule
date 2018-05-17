@@ -24,6 +24,7 @@
     var lblsmscreditprice = "#lblsmscreditprice";
     var smscreditqty = "#smscreditqty";
     var dvcreditdeductiondetail = "#dvcreditdeductiondetail";
+    var dvsmscreditqty = "#dvsmscreditqty";
  
     this.InitalizeEvents = function () {
         $(divLoader).css("display", "none");
@@ -35,6 +36,7 @@
         $(qty).bind('input', function () {
             /* This will be fired every time, when textbox's value changes. */
             var totalprice = $(hdnamount).val();
+            var credit = $(lblprice).text();
 
             $(totalamount).val(this.value * credit);
             $(hdnamount).val(this.value * credit);
@@ -134,15 +136,18 @@
                 if (data.PlanTypeId == 2) {
                     var monthlyplandetail = 'No of Agents:' + data.NoOfAgents;
                     monthlyplandetail += '<br /> No of Driver:' + data.NoOfDrivers;
-                    monthlyplandetail += '<br/> No of Vehicles:' + data.NoOfVehicles;
-                    monthlyplandetail += '<br/> SMS Credit Price :' + data.PerSMSPrice;
-                                       
+                    monthlyplandetail += ' No of Vehicles:' + data.NoOfVehicles;
+                    monthlyplandetail += ' SMS Credit Price :' + data.PerCreditSMSPrice;
+
                     $(dvmonthly).append(monthlyplandetail);
                     $(hdnamount).val(data.CreditPrice);
-                    $(hdnsmscreditamount).text(data.PerSMSPrice);
-                    $(lblsmscreditrice).text(data.PerSMSPrice);                   
+                    $(hdnsmscreditamount).text(data.PerCreditSMSPrice);
+                    $(lblsmscreditrice).text(data.PerCreditSMSPrice);
                     $(qty).css('display', 'none');
 
+                }
+                else {
+                    $(dvsmscreditqty).css('display', 'none');
                 }
 
                 $(dvbuycredit).text(html);

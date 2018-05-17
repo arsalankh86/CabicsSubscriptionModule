@@ -221,6 +221,7 @@
     <Content Include="Scripts\Index.js" />
     <Content Include="Scripts\Helper.js" />
     <Content Include="Scripts\PurchaseSubscription.js" />
+    <Content Include="Scripts\Shared.js" />
     <Content Include="Scripts\TestSearch.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -232,8 +233,11 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ViewAllCabOffice.js" />
+    <Content Include="Scripts\ViewAllUserSubscription.js" />
     <Content Include="Scripts\ViewPlanAdmin.js" />
     <Content Include="Scripts\ViewPlan.js" />
+    <Content Include="Scripts\ViewUserSubscription.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -264,6 +268,8 @@
     <Content Include="Views\Home\Thankyou.cshtml" />
     <Content Include="Views\Admin\EditPlan.cshtml" />
     <Content Include="Views\Shared\Plan\_EditAddPlan.cshtml" />
+    <Content Include="Views\Admin\ViewAllCabOffice.cshtml" />
+    <Content Include="Views\Admin\ViewUserSubscription.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

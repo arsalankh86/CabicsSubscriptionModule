@@ -22,11 +22,11 @@ namespace CabicsSubscription.Service
         public Nullable<int> NoOfAgents { get; set; }
         public Nullable<int> NoOfDrivers { get; set; }
         public Nullable<int> NoOfVehicles { get; set; }
-        public Nullable<double> PerSMSPrice { get; set; }
+        public Nullable<double> PerCreditSMSPrice { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public bool IsActive { get; set; }
        
 
-        public ICollection<Subscription> subscription { get; set; }
+        
     }
 }

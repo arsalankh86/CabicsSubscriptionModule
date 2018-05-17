@@ -36,5 +36,24 @@ namespace CabicsSubscription.API.Controllers
             
         }
 
+        public List<Subscription> GetUserAllSubscriptionDetail(string userguid)
+        {
+            SubscriptionService subscriptionService = new SubscriptionService();
+
+            return null;
+        }
+
+        [HttpGet]
+        public Subscription ShowCurrentSubscription(string userguid)
+        {
+            if (userguid != "undefined")
+            {
+                SubscriptionService subscriptionService = new SubscriptionService();
+                return subscriptionService.ShowCurrentSubscription(userguid);
+            }
+            return null;
+        }
+
+
     }
 }
