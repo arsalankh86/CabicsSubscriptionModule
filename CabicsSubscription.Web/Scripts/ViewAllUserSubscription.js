@@ -49,7 +49,7 @@
 
                 html += '</table>';
 
-                $("#dvplan").append(html);
+                $("#dvusrsubs").append(html);
                 $("#divLoader").css("display", "none");
 
                // window.location.href = webUrl + "/Home/Index?data=" + data;

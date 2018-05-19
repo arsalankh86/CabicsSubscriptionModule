@@ -23,6 +23,21 @@ namespace CabicsSubscription.Service.Services
             }
         }
 
+        public int InsertRefundTranactionLog(RefundTranactionLog refundTranactionLog)
+        {
+            try
+            {
+                DataContext context = new DataContext();
+                context.RefundTranactionLogs.Add(refundTranactionLog);
+                context.SaveChanges();
+                return refundTranactionLog.Id;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
 
         public Subscription PurchaseSubscription(int planId, double totalAmonut, int cabOfficeId, int qty, string chequeNo)
         {
@@ -66,6 +81,12 @@ namespace CabicsSubscription.Service.Services
 
         }
 
+        public List<Subscription> GetUserAllSubscriptionDetail(int cabOfficeId)
+        {
+            DataContext context = new DataContext();
+            return context.Subscription.Where(x => x.IsActive == true && x.AccountId == cabOfficeId).ToList();
+        }
+
         public Subscription ShowCurrentSubscription(string userguid)
         {
             DataContext context = new DataContext();
@@ -79,46 +100,63 @@ namespace CabicsSubscription.Service.Services
 
         }
 
-        public Subscription PurchaseSubscription(int planId, double totalAmonut, int cabOfficeId, int qty, string chequeNo, int smscreditqty, double smscreditamount, string transactionId)
+        public Subscription PurchaseSubscription(int planId, double totalAmonut, int cabOfficeId, int qty, string chequeNo, 
+            int smscreditqty, double smscreditamount, string transactionId)
         {
-            PlanService planService = new PlanService();
-            Plan plan = planService.GetPlanDetail(planId);
 
-            Subscription subscription = new Subscription();
-            subscription.PlanId = plan.Id;
-            subscription.PlanName = plan.Name;
-            subscription.StartDate = DateTime.Now;
-            subscription.TotalPrice = totalAmonut;
-            subscription.AccountId = cabOfficeId;
-            subscription.SubscriptionTypeId = plan.PlanTypeId;
-            subscription.btTransactionId = transactionId;
-            if (plan.PlanTypeId == (int)Constant.PlayType.Monthly)
+            /// If plan is pay as you go and this user alreasy have subscription
+            /// 
+
+            DataContext context = new DataContext();
+            Subscription subscription = context.Subscription.FirstOrDefault(x => x.IsActive == true && x.AccountId == cabOfficeId && x.SubscriptionTypeId == (int)Constant.SubscriptionType.PayAsYouGo);
+
+            if (subscription == null)
             {
-                subscription.EndDate = DateTime.Now.AddMonths(1);
-                subscription.CreatedDateTime = DateTime.Now;
+                PlanService planService = new PlanService();
+                Plan plan = planService.GetPlanDetail(planId);
+
+                subscription.PlanId = plan.Id;
+                subscription.PlanName = plan.Name;
+                subscription.StartDate = DateTime.Now;
+                subscription.TotalPrice = totalAmonut;
+                subscription.AccountId = cabOfficeId;
+                subscription.SubscriptionTypeId = plan.PlanTypeId;
+                subscription.btTransactionId = transactionId;
+                if (plan.PlanTypeId == (int)Constant.PlayType.Monthly)
+                {
+                    subscription.EndDate = DateTime.Now.AddMonths(1);
+                    subscription.CreatedDateTime = DateTime.Now;
+                    subscription.IsActive = true;
+                    subscription.NoOfAgents = plan.NoOfAgents;
+                    subscription.NoOfDrivers = plan.NoOfDrivers;
+                    subscription.NoOfVehicles = plan.NoOfVehicles;
+                    subscription.PerCreditSMSPrice = plan.PerCreditSMSPrice;
+                    subscription.RemainingNoOfAgents = plan.NoOfAgents;
+                    subscription.RemainingNoOfDrivers = plan.NoOfDrivers;
+                    subscription.RemainingNoOfVehicles = plan.NoOfVehicles;
+                    subscription.SMSPrice = smscreditamount;
+                    subscription.NoOfSmsCreditPurchase = smscreditqty;
+                }
+                if (plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
+                {
+                 
+                }
+                subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Active;
                 subscription.IsActive = true;
-                subscription.NoOfAgents = plan.NoOfAgents;
-                subscription.NoOfDrivers = plan.NoOfDrivers;
-                subscription.NoOfVehicles = plan.NoOfVehicles;
-                subscription.PerCreditSMSPrice = plan.PerCreditSMSPrice;
-                subscription.RemainingNoOfAgents = plan.NoOfAgents;
-                subscription.RemainingNoOfDrivers = plan.NoOfDrivers;
-                subscription.RemainingNoOfVehicles = plan.NoOfVehicles;
-                subscription.SMSPrice = smscreditamount;
-                subscription.NoOfSmsCreditPurchase = smscreditqty;
+
+                int subscriptionId = InsertSubscription(subscription);
+
+                AccountService accountService = new AccountService();
+                accountService.UpdateActiveSubsctionForAccount(subscriptionId, cabOfficeId);
             }
-            if (plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
+            else
             {
-                subscription.TotalCredit = qty;
-                subscription.RemainingCredit = qty;
+                subscription.TotalCredit = subscription.TotalCredit + qty;
+                subscription.RemainingCredit = subscription.RemainingCredit + qty;
+                subscription.TotalPrice = subscription.TotalPrice + totalAmonut;
+                context.SaveChanges();
             }
-            subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Active;
-            subscription.IsActive = true;
 
-            int subscriptionId = InsertSubscription(subscription);
-
-            AccountService accountService = new AccountService();
-            accountService.UpdateActiveSubsctionForAccount(subscriptionId, cabOfficeId);
 
             return subscription;
 

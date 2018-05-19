@@ -20,16 +20,16 @@ var ViewAllCabOffice = new function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
-                console.log(data);
-                var html = '<table border="1"><tr><td>Account Code</td><td>Full Name</td><td>Email</td><td>Token</td></tr>'
+                console.log(response);
+                var html = '<table border="1"><tr><td>Full Name</td><td>Email</td><td>Token</td><td>Action</td></tr>'
 
                 $.each(response, function (index, value) {
 
                     console.log(value);
-                    html += '<tr><td>' + value.AccountCode + '</td><td>' + value.FullName + '</td><td>' + value.Email + '</td><td>' + value.Token + '</td><td>'
+                    html += '<tr><td>' + value.FullName + '</td><td>' + value.Email + '</td><td>' + value.Token + '</td><td>'
                     +
                         '<a data-AccountId ="' + value.Id +
-                        '" data-AccountToken="' + account +
+                        '" data-AccountToken="' + value.Token +
                         '" onclick="ViewAllSubscription(this)">View All Sunscriptiond(S)</a>'
                     +
                     '</td ></tr > ';
@@ -40,7 +40,7 @@ var ViewAllCabOffice = new function () {
 
                 html += '</table>';
 
-                $("#dvplan").append(html);
+                $("#dvcaboffice").append(html);
                 $("#divLoader").css("display", "none");
 
             

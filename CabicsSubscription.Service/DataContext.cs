@@ -20,6 +20,8 @@ namespace CabicsSubscription.Service
         public virtual DbSet<SubscriptionStatus> SubscriptionStatus { get; set; }
         public virtual DbSet<Subscription> Subscription { get; set; }
         public virtual DbSet<SubscriptionType> SubscriptionType { get; set; }
+        public virtual DbSet<RefundTranactionLog> RefundTranactionLogs { get; set; }
+        public virtual DbSet<TranactionLog> TranactionLogs { get; set; }
 
         public DataContext() : base("CabicsSubscriptionDB")
         {

@@ -206,6 +206,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="Scripts\EditPlan.js" />
     <Content Include="Scripts\AddSubscriptionByAdmin.js" />
     <Content Include="Scripts\AddPlan.js" />
@@ -220,6 +221,7 @@
     <Content Include="Scripts\AdminIndex.js" />
     <Content Include="Scripts\Index.js" />
     <Content Include="Scripts\Helper.js" />
+    <Content Include="Scripts\RefundRequest.js" />
     <Content Include="Scripts\PurchaseSubscription.js" />
     <Content Include="Scripts\Shared.js" />
     <Content Include="Scripts\TestSearch.js" />
@@ -270,6 +272,8 @@
     <Content Include="Views\Shared\Plan\_EditAddPlan.cshtml" />
     <Content Include="Views\Admin\ViewAllCabOffice.cshtml" />
     <Content Include="Views\Admin\ViewUserSubscription.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Admin\RefundRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

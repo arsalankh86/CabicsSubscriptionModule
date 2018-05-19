@@ -40,8 +40,8 @@
                 if (data.IsActive == 1) {
 
                     html = '<h3> Your current subscription is Active. </h3>';
-                    html += '<br /> <h2> Total Credit ' + data.TotalCredit + '  </h2>';
-                    html += '<br /> <h2> Remaining Credit ' + data.RemainingCredit + '  </h2>';
+                    html += '<br />  Total Credit ' + data.TotalCredit + '';
+                    html += '<br />  Remaining Credit ' + data.RemainingCredit + '';
 
                     localStorage.setItem("Subscription", 1);
                 }

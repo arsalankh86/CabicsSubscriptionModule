@@ -58,27 +58,6 @@
 
         });
 
-
-
-
-        $(btnSubmit).on("click", function () {
-
-         
-            if (PartialSubscription.SetBordersRedForEmptyFields()) {
-                $.ajax({
-                    type: "POST",
-                    url: Configuration.GetHotelApiServerUrl() + "api/hotel/GetHotelData",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(paramHotel),
-                    dataType: "json",
-                    success: Search.OnLoadSuccess,
-                    failure: function (response) {
-                        alert(response.d);
-                    }
-                });
-            }
-        });
-
         };
 
     

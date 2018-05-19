@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
 
-    var account = GetParameterValues('id');
+    var id = GetParameterValues('id');
 
     function GetParameterValues(param) {
         var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -13,13 +13,13 @@
         }
     }  
 
-    GetUserAllSubscriptionDetail(account);
+    GetUserAllSubscriptionDetail(id);
 
-    function GetUserAllSubscriptionDetail(account) {
+    function GetUserAllSubscriptionDetail(id) {
 
         $.ajax({
             type: "Get",
-            url: servicePath + "/Subscription/GetUserAllSubscriptionDetail",
+            url: servicePath + "/Subscription/GetUserAllSubscriptionDetail?cabOfficeId="+id,
             //data: JSON.stringify(account),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -27,9 +27,9 @@
                 console.log(data);
 
                
-                var html = '<table border="1"><tr><td>Plan Name</td><td>Subscription Type</td><td>Subscription Price</td><td>No Of Sms Purchase</td><td>SMS Price</td><td>TotalPrice</td>';
+                var html = '<table border="1"><tr><td>Plan Name</td><td>Subscription Type</td><td>No Of Sms Purchase</td><td>SMS Price</td><td>TotalPrice</td>';
                     html += '<td>TotalCredit</td><td>RemainingCredit</td><td>StartDate</td><td>EndDate</td><td>NoOfAgents</td><td>NoOfDrivers</td>';
-                    html += '<td>NoOfVehicles</td><td>RemainingNoOfAgents</td><td>RemainingNoOfDrivers</td><td>RemainingNoOfVehicles</td><td>PerSMSPrice</td><td>ChequeNo</td><td>Created Date</td><td>Ref</td></tr>';
+                    html += '<td>NoOfVehicles</td><td>RemainingNoOfAgents</td><td>RemainingNoOfDrivers</td><td>RemainingNoOfVehicles</td><td>PerSMSPrice</td><td>ChequeNo</td><td>Created Date</td><td>Refund</td></tr>';
 
 
                     $.each(data, function (index, value) {
@@ -41,14 +41,10 @@
                         else if (value.SubscriptionTypeId == 2)
                             subscriptionname = "Monthly";
 
-                        html += '<tr><td>' + value.PlanName + '</td><td>' + subscriptionname + '</td><td>' + value.SubscriptionPrice + '</td><td>' + value.NoOfSmsPurchase + '</td><td>' + value.SMSPrice + '</td><td>';
-                        html += '<tr><td>' + value.TotalPrice + '</td><td>' + value.TotalCredit + '</td><td>' + value.RemainingCredit + '</td><td>' + value.StartDate + '</td><td>' + value.EndDate + '</td><td>';
-                        html += '<tr><td>' + value.NoOfAgents + '</td><td>' + value.NoOfDrivers + '</td><td>' + value.NoOfVehicles + '</td><td>' + value.RemainingNoOfAgents + '</td><td>' + value.RemainingNoOfDrivers + '</td><td>';
-                        html += '<tr><td>' + value.RemainingNoOfVehicles + '</td><td>' + value.PerSMSPrice + '</td><td>' + value.ChequeNo + '</td><td>' + value.CreatedDateTime  +
-                            '<a data-TransactionId ="' + value.BtTransactionId +
-                            '" onclick="RefudSubscription(this)">Refund Subscription(S)</a>'
-                        +
-                            '</td ></tr > ';
+                        html += '<tr><td>' + value.PlanName + '</td><td>' + subscriptionname + '</td><td>' + value.NoOfSmsPurchase + '</td><td>' + value.SMSPrice + '</td><td>';
+                        html += '<td>' + value.TotalPrice + '</td><td>' + value.TotalCredit + '</td><td>' + value.RemainingCredit + '</td><td>' + value.StartDate + '</td><td>' + value.EndDate + '</td><td>';
+                        html += '<td>' + value.NoOfAgents + '</td><td>' + value.NoOfDrivers + '</td><td>' + value.NoOfVehicles + '</td><td>' + value.RemainingNoOfAgents + '</td><td>' + value.RemainingNoOfDrivers + '</td><td>';
+                        html += '<td>' + value.RemainingNoOfVehicles + '</td><td>' + value.PerSMSPrice + '</td><td>' + value.ChequeNo + '</td><td>' + value.CreatedDateTime + '</td><td><a data-TransactionId ="' + value.btTransactionId + '" onclick="RefudSubscription(this)">Refund Subscription(S)</a></td ></tr > ';
 
                     });
 
@@ -56,7 +52,7 @@
                     console.log(html);
                 html += '</table>';
 
-                $("#dvplan").append(html);
+                $("#dvusrsubs").append(html);
                 $("#divLoader").css("display", "none");
 
                // window.location.href = webUrl + "/Home/Index?data=" + data;
@@ -72,10 +68,20 @@
 
     RefudSubscription = function (obj) {
 
-        var TransactionId = $(obj).attr('data-TransactionId');
+        var transactionId = $(obj).attr('data-TransactionId');
+
+        window.location.href = webUrl + "/Admin/RefundRequest?tid=" + transactionId;
+
+        return false;
+
+    }
+
+    RefudSubscription_ = function (obj) {
+
+        var transactionId = $(obj).attr('data-TransactionId');
 
         refundRequest = {
-            PlanId: TransactionId,
+            TransactionId: transactionId,
             Amount: 0
         };
 

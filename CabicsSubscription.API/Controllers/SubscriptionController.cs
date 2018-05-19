@@ -7,6 +7,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using CabicsSubscription.Service.Services;
+using Braintree;
+using System.Configuration;
 
 namespace CabicsSubscription.API.Controllers
 {
@@ -14,19 +16,20 @@ namespace CabicsSubscription.API.Controllers
     {
 
         [HttpPost]
-        public Subscription InsertSubscription(InsertSubscriptionRequest insertSubscriptionRequest)
+        public Service.Subscription InsertSubscription(InsertSubscriptionRequest insertSubscriptionRequest)
         {
             return null;
          
         }
 
         [HttpPost]
-        public Subscription InsertSubscriptionbyAdmin(InsertSubscriptionByAdminRequest insertSubscriptionByAdminRequest)
+        public Service.Subscription InsertSubscriptionbyAdmin(InsertSubscriptionByAdminRequest insertSubscriptionByAdminRequest)
         {
             SubscriptionService subscriptionService = new SubscriptionService();
-            Subscription subscription = subscriptionService.PurchaseSubscription(insertSubscriptionByAdminRequest.PlanId, insertSubscriptionByAdminRequest.totalamount, insertSubscriptionByAdminRequest.cabofficeid, insertSubscriptionByAdminRequest.qty,"");
+            Service.Subscription subscription = subscriptionService.PurchaseSubscription(insertSubscriptionByAdminRequest.PlanId, insertSubscriptionByAdminRequest.totalamount, insertSubscriptionByAdminRequest.cabofficeid, insertSubscriptionByAdminRequest.qty,"");
             return subscription;            
         }
+
 
         public List<CreditDeductionType> GetAllCreditDeductionDetail()
         {
@@ -36,15 +39,39 @@ namespace CabicsSubscription.API.Controllers
             
         }
 
-        public List<Subscription> GetUserAllSubscriptionDetail(string userguid)
+        [HttpGet]
+        public List<Service.Subscription> GetUserAllSubscriptionDetail(int cabOfficeId)
         {
             SubscriptionService subscriptionService = new SubscriptionService();
+            return subscriptionService.GetUserAllSubscriptionDetail(cabOfficeId);
+        }
 
-            return null;
+        [HttpPost]
+        public bool RefundSubscription(RefundRequest refundRequest)
+        {
+
+            Braintree.Environment environment;
+            if (ConfigurationManager.AppSettings["BtEnvironmentTestMode"].ToString() == "1")
+                environment = Braintree.Environment.SANDBOX;
+            else
+                environment = Braintree.Environment.PRODUCTION;
+
+
+            var gateway = new BraintreeGateway
+            {
+                Environment = environment,
+                MerchantId = ConfigurationManager.AppSettings["BtMerchantId"],
+                PublicKey = ConfigurationManager.AppSettings["BtPublicKey"],
+                PrivateKey = ConfigurationManager.AppSettings["BtPrivateKey"]
+            };
+
+           var refundResult = gateway.Transaction.Refund(refundRequest.TransactionId, Convert.ToDecimal(refundRequest.Amount));
+           return refundResult.IsSuccess();
+
         }
 
         [HttpGet]
-        public Subscription ShowCurrentSubscription(string userguid)
+        public Service.Subscription ShowCurrentSubscription(string userguid)
         {
             if (userguid != "undefined")
             {

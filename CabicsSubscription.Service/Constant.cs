@@ -16,6 +16,15 @@ namespace CabicsSubscription.Service
             Expired = 3
         }
 
+        public enum Gateway
+        {
+
+            BrainTree = 1,
+            PayPal = 2,
+        }
+
+
+
         public enum PlayType
         {
 
@@ -26,10 +35,8 @@ namespace CabicsSubscription.Service
 
         public enum SubscriptionType
         {
-
-            Pending = 1,
-            Active = 2,
-            Expired = 3
+            PayAsYouGo = 1,
+            Monthly = 2,
         }
 
 
