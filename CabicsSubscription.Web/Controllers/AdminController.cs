@@ -12,6 +12,9 @@ namespace CabicsSubscription.Web.Controllers
 {
     public class AdminController : Controller
     {
+        SubscriptionService subscriptionService = new SubscriptionService();
+
+
         // GET: Admin
         public ActionResult Index()
         {
@@ -82,6 +85,11 @@ namespace CabicsSubscription.Web.Controllers
             if (form["hdnmode"].ToString() == "1")
             {
               refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString());
+
+                subscriptionService.DeleteSubscription(transactionId);
+
+            
+                
             }
             else
             {
@@ -105,7 +113,7 @@ namespace CabicsSubscription.Web.Controllers
             if(refundResult.Target != null)
                 refundTranactionLog.RefundTransactionId = refundResult.Target.RefundedTransactionId;
 
-            SubscriptionService subscriptionService = new SubscriptionService();
+            
             subscriptionService.InsertRefundTranactionLog(refundTranactionLog);
 
            

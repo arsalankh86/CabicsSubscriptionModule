@@ -27,11 +27,11 @@
             dataType: "json",
             success: function (data) {
                 console.log(data);
-                var html = '<table border="1"><tr><td>Plan Name</td><td>Plan Code</td><td>Description</td><td>Amount</td><td>Credit</td><td>Delete</td><td>Purchase For Cab Office</td></tr>'
+                var html = '<table class="table table-bordered table-striped"> <thead><tr><td>Plan Name</td><td>Plan Code</td><td>Description</td><td>Amount</td><td>Credit</td><td>Delete</td><td>Purchase For Cab Office</td></tr></thead><tbody>'
 
                 $.each(data, function (index, value) {
                     console.log(value);
-                    html += '<tr><td>' + value.Name + '</td><td>' + value.PlanCode + '</td><td>' + value.Description + '</td><td>' + value.CreditPrice + '</td><td>' + value.Credit + '</td><td>'
+                    html += ' <tr><td>' + value.Name + '</td><td>' + value.PlanCode + '</td><td>' + value.Description + '</td><td>' + value.CreditPrice + '</td><td>' + value.Credit + '</td><td>'
                     +
                         '<a data-PlanId ="' + value.Id +
                         '" data-AccountId="' + account +
@@ -42,12 +42,12 @@
                         '<a data-PlanId ="' + value.Id +
                         '" onclick="PurchseForCabOffice(this)">Purchase Plan(S)</a>'
                         +
-                    '</td ></tr > ';
+                    '</td ></tr >  ';
 
                 });
                 console.log(html);
 
-                html += '</table>';
+                html += '  </tbody></table>';
 
                 $("#dvplan").append(html);
                 $("#divLoader").css("display", "none");

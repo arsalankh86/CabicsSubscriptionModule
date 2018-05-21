@@ -30,6 +30,7 @@ var ViewAllCabOffice = new function () {
                     +
                         '<a data-AccountId ="' + value.Id +
                         '" data-AccountToken="' + value.Token +
+                        '" data-email="' + value.Email +
                         '" onclick="ViewAllSubscription(this)">View All Sunscriptiond(S)</a>'
                     +
                     '</td ></tr > ';
@@ -59,8 +60,9 @@ ViewAllSubscription = function (obj) {
 
     var accountId = $(obj).attr('data-AccountId');
     var accountguid = $(obj).attr('data-AccountToken');
+    var email = $(obj).attr('data-email');
 
-    window.open('/Admin/ViewUserSubscription?id=' + accountId + '&token=' + accountguid);
+    window.open('/Admin/ViewUserSubscription?id=' + accountId + '&token=' + accountguid + '&email=' + email);
 
 
 

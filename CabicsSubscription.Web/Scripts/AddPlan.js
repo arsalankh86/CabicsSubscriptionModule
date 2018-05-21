@@ -28,7 +28,7 @@ var addplan = new function () {
         $(plantype).on("change", function () {
 
             var selectedplantype = $(plantype).val();
-            if (selectedplantype === 2) {
+            if (selectedplantype == 2) {
                 $(dvmonthly).css('display', 'block');
               //  $(dvpayasgo).css('display', 'none');
             }

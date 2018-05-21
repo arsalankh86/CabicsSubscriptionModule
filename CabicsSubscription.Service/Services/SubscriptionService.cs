@@ -54,7 +54,6 @@ namespace CabicsSubscription.Service.Services
             if (plan.PlanTypeId == (int)Constant.PlayType.Monthly)
             {
                 subscription.EndDate = DateTime.Now.AddMonths(1);
-                subscription.CreatedDateTime = DateTime.Now;
                 subscription.IsActive = true;
                 subscription.NoOfAgents = plan.NoOfAgents;
                 subscription.NoOfDrivers = plan.NoOfDrivers;
@@ -70,6 +69,7 @@ namespace CabicsSubscription.Service.Services
                 subscription.RemainingCredit = qty;
             }
             subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Active;
+            subscription.CreatedDateTime = DateTime.Now;
 
             int subscriptionId = InsertSubscription(subscription);
 
@@ -81,20 +81,47 @@ namespace CabicsSubscription.Service.Services
 
         }
 
+        public void DeleteSubscription(string transactionId)
+        {
+            DataContext context = new DataContext();
+            Subscription subscription = context.Subscription.FirstOrDefault(x => x.IsActive == true && x.btTransactionId == transactionId);
+            subscription.IsActive = false;
+            context.SaveChanges();
+        }
+
+
+        public void MinusCreditFromSubscription(string transactionId, double amount)
+        {
+            DataContext context = new DataContext();
+            Subscription subscription = context.Subscription.FirstOrDefault(x => x.IsActive == true && x.btTransactionId == transactionId);
+            double subscriptionPrice = subscription.SubscriptionPrice;
+            double finalPrice = subscriptionPrice - amount;
+
+            //double totalCredit = finalPrice * subscription.TotalCredit;
+            //double remianingCredit = totalCredit - subscription.RemainingCredit;
+
+
+            //subscription.RemainingCredit = remianingCredit;
+            //subscription.TotalCredit = totalCredit;
+            //context.SaveChanges();
+
+        }
+
+
         public List<Subscription> GetUserAllSubscriptionDetail(int cabOfficeId)
         {
             DataContext context = new DataContext();
             return context.Subscription.Where(x => x.IsActive == true && x.AccountId == cabOfficeId).ToList();
         }
 
-        public Subscription ShowCurrentSubscription(string userguid)
+        public List<Subscription> ShowCurrentSubscription(string userguid)
         {
             DataContext context = new DataContext();
             var account = context.Accounts.FirstOrDefault(x => x.Token == userguid && x.IsActive == true);
 
-            Subscription subscription = new Subscription();
+            List<Subscription> subscription = new List<Subscription>();
             if (account != null)
-                subscription = context.Subscription.FirstOrDefault(x => x.AccountId == account.Id && x.IsActive == true);
+                subscription = context.Subscription.Where(x => x.AccountId == account.Id && x.IsActive == true).ToList();
 
             return subscription;
 

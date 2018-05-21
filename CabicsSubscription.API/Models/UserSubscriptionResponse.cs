@@ -37,5 +37,10 @@ namespace CabicsSubscription.API.Models
 
         public bool IsActiveSubscription { get; set; }
 
+        public bool CustomerStatus { get; set; }
+
+
     }
+
+
 }

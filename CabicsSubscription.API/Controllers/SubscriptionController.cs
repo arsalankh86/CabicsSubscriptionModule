@@ -71,7 +71,7 @@ namespace CabicsSubscription.API.Controllers
         }
 
         [HttpGet]
-        public Service.Subscription ShowCurrentSubscription(string userguid)
+        public List<Service.Subscription> ShowCurrentSubscription(string userguid)
         {
             if (userguid != "undefined")
             {

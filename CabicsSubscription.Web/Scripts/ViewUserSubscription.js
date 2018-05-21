@@ -2,6 +2,9 @@
 
 
     var id = GetParameterValues('id');
+    var email = GetParameterValues('email');
+
+    $("#dvcaboffice").append(email);
 
     function GetParameterValues(param) {
         var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -27,9 +30,28 @@
                 console.log(data);
 
                
-                var html = '<table border="1"><tr><td>Plan Name</td><td>Subscription Type</td><td>No Of Sms Purchase</td><td>SMS Price</td><td>TotalPrice</td>';
-                    html += '<td>TotalCredit</td><td>RemainingCredit</td><td>StartDate</td><td>EndDate</td><td>NoOfAgents</td><td>NoOfDrivers</td>';
-                    html += '<td>NoOfVehicles</td><td>RemainingNoOfAgents</td><td>RemainingNoOfDrivers</td><td>RemainingNoOfVehicles</td><td>PerSMSPrice</td><td>ChequeNo</td><td>Created Date</td><td>Refund</td></tr>';
+                var html = '<table class="table table-bordered table-striped">';
+                html += '<thead><tr>';
+                html += '<td> Plan Name</td >';
+                html += '<td>Subscription Type</td>';
+                html += '<td>No Of Sms Purchase</td>';
+                html += '<td>SMS Price</td>';
+                html += '<td>TotalPrice</td>';
+                html += '<td>TotalCredit</td>';
+                html += '<td>RemainingCredit</td>';
+                html += '<td>StartDate</td>';
+                html += '<td>EndDate</td>';
+                html += '<td>NoOfAgents</td>';
+                html += '<td>NoOfDrivers</td>';
+                html += '<td>NoOfVehicles</td>';
+                html += '<td>RemainingNoOfAgents</td>';
+                html += '<td>RemainingNoOfDrivers</td>';
+                html += '<td>RemainingNoOfVehicles</td>';
+                html += '<td>PerSMSPrice</td>';
+                html += '<td>ChequeNo</td>';
+                html += '<td>Created Date</td>';
+                html += '<td>Refund</td>'
+                html += '</tr></thead>';
 
 
                     $.each(data, function (index, value) {
@@ -41,10 +63,27 @@
                         else if (value.SubscriptionTypeId == 2)
                             subscriptionname = "Monthly";
 
-                        html += '<tr><td>' + value.PlanName + '</td><td>' + subscriptionname + '</td><td>' + value.NoOfSmsPurchase + '</td><td>' + value.SMSPrice + '</td><td>';
-                        html += '<td>' + value.TotalPrice + '</td><td>' + value.TotalCredit + '</td><td>' + value.RemainingCredit + '</td><td>' + value.StartDate + '</td><td>' + value.EndDate + '</td><td>';
-                        html += '<td>' + value.NoOfAgents + '</td><td>' + value.NoOfDrivers + '</td><td>' + value.NoOfVehicles + '</td><td>' + value.RemainingNoOfAgents + '</td><td>' + value.RemainingNoOfDrivers + '</td><td>';
-                        html += '<td>' + value.RemainingNoOfVehicles + '</td><td>' + value.PerSMSPrice + '</td><td>' + value.ChequeNo + '</td><td>' + value.CreatedDateTime + '</td><td><a data-TransactionId ="' + value.btTransactionId + '" onclick="RefudSubscription(this)">Refund Subscription(S)</a></td ></tr > ';
+                        html += '<tbody><tr>';
+                        html += '<td> ' + value.PlanName + '</td>';
+                        html += '<td>' + subscriptionname + '</td>';
+                        html += '<td> ' + value.NoOfSmsPurchase + '</td >';
+                        html += '<td> ' + value.SMSPrice + '</td >';
+                        html += '<td>' + value.TotalPrice + '</td>';
+                        html += '<td>' + value.TotalCredit + '</td>';
+                        html += '<td>' + value.RemainingCredit + '</td>';
+                        html += '<td>' + value.StartDate + '</td>';
+                        html += '<td>' + value.EndDate + '</td>';
+                        html += '<td>' + value.NoOfAgents + '</td>';
+                        html += '<td> ' + value.NoOfDrivers + '</td >';
+                        html += '<td>' + value.NoOfVehicles + '</td>';
+                        html += '<td>' + value.RemainingNoOfAgents + '</td>';
+                        html += '<td>' + value.RemainingNoOfDrivers + '</td>';
+                        html += '<td>' + value.RemainingNoOfVehicles + '</td>';
+                        html += '<td>' + value.PerSMSPrice + '</td>';
+                        html += '<td> ' + value.ChequeNo + '</td >';
+                        html += '<td>' + value.CreatedDateTime + '</td>';
+                        html += '<td><a data-TransactionId="' + value.btTransactionId + '" onclick="RefudSubscription(this)">Refund Subscription(S)</a></td >';
+                        html += '</tr > </tbody> ';
 
                     });
 

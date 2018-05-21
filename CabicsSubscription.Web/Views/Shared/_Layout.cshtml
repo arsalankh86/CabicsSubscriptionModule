@@ -6,31 +6,84 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <!-- #CSS Links -->
+    <!-- Basic Styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/font-awesome.min.css">
+
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/smartadmin-production.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/smartadmin-skins.min.css">
+
+    <!-- We recommend you use "your_style.css" to override SmartAdmin
+         specific styles this will also ensure you retrain your customization with each SmartAdmin update.
+    <link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
+    <!-- #GOOGLE FONT -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+
+
+
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/Helper.js"></script>
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-         
-            
-            
-        </div>
-    </div>
-    <div class="container body-content">
-        <div id="subs"></div>
+<body  class="no-menu">
+
+    <!-- #MAIN PANEL -->
+    <div id="main" role="main">
+       
+        <!-- #MAIN CONTENT -->
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; Vitalsoft</p>
-        </footer>
+
     </div>
-    
+    <!-- END #MAIN PANEL -->
+    <!-- #SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+          Note: These tiles are completely responsive, you can add as many as you like -->
+    <div id="shortcut">
+        <ul>
+            <li>
+                <a href="index.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-envelope fa-4x"></i> <span>Mail <span class="label pull-right bg-color-darken">14</span></span> </span> </a>
+            </li>
+        </ul>
+    </div>
+    <!-- END SHORTCUT AREA -->
+
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/Helper.js")
     @RenderSection("scripts", required: false)
 
+    <!--================================================== -->
+    <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+    <script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+    <!-- #PLUGINS -->
+    <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        if (!window.jQuery) {
+            document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
+        }
+    </script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script>
+        if (!window.jQuery.ui) {
+            document.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+        }
+    </script>
+
+    <!-- IMPORTANT: APP CONFIG -->
+    <script src="~/js/app.config.seed.js"></script>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="~/js/bootstrap/bootstrap.min.js"></script>
+
+    <!--[if IE 8]>
+        <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+    <![endif]-->
+    <!-- MAIN APP JS FILE -->
+    <script src="~/js/app.seed.js"></script>
 
     <script src="~/Scripts/Shared.js"></script>
     <script>

@@ -4,9 +4,103 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Dashboard</h2>
+<div class="">
+    <div class="col-md-12">
+        <h1 class="page-title txt-color-blueDark">
+            <!-- PAGE HEADER -->
+            <i class="fa-fw fa fa-plus-square"></i>
+            Dashboard
+        </h1>
+    </div>
+</div>
 
-<br />
-<div id="dvlink"></div>
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+
+    <div class="">
+
+        <!-- NEW COL START -->
+        <article class="col-md-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
+
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div class="widget-body">
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h5>Account Status</h5>
+                                    <div class="list-group">
+                                        <span class="list-group-item"><div id="dvstatus"></div></span>
+                                    </div>
+
+                                    <h5>Subscription Type</h5>
+                                    <div class="list-group">
+                                        <span class="list-group-item"><div id="dvsubstype"></div></span>
+                                    </div>
+
+                                    <h5>Subscription Status</h5>
+                                    <div class="list-group" id="subsdetail" name="subsdetail">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-9">
+                                    <h5>Purchase Subscription</h5>
+                                    <div class="table-responsive" id="dvsubscriptiongrid">
+                                        
+                                    </div>
+                                </div>
+
+                                <br />
+                                <div id="dvlink"></div>
+                                <div id="subs"></div>
+
+
+                            </div>
+
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- END COL -->
+
+
+    </div>
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+<!-- END #MAIN CONTENT -->
+
+
+
+
 
 <script src="~/Scripts/Dashboard.js"></script>
+<script src="~/Scripts/Shared.js"></script>

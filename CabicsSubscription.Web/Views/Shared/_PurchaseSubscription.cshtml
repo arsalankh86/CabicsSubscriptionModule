@@ -1,4 +1,189 @@
 ﻿<div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
+
+
+<div class="">
+    <div class="col-md-12">
+        <h1 class="page-title txt-color-blueDark">
+            <!-- PAGE HEADER -->
+            <i class="fa-fw fa fa-plus-square"></i>
+            Purchase Plan
+        </h1>
+    </div>
+</div>
+
+
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+
+    <div class="">
+
+        <!-- NEW COL START -->
+        <article class="col-md-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
+
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div id="alerts"></div>
+
+                    <div id="dvcrruentsubscription">
+                    </div>
+                    <h1 id="plan-name-title">
+                        <span id="dvbuycredit" name="dvbuycredit">   </span>
+
+                    </h1>
+
+                    <div id="dvmonthly" name="dvmonthly"></div>
+                    <br />
+                    <div id="dvcreditdeductiondetail">
+                    </div>
+                    <br />
+                    <br />
+
+
+                    <div class="widget-body no-padding">
+
+                        <form id="checkout-form" class="smart-form" novalidate="novalidate">
+
+                            <fieldset>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-prepend fa fa-user"></i>
+                                            <input type="text" id="txtplancode" name="txtplancode" placeholder="Plane Code">
+                                        </label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-prepend fa fa-hashtag"></i>
+                                            <input type="text" id="txtplanname" name="txtplanname" placeholder="Plan Name">
+                                        </label>
+                                    </section>
+                                </div>
+                            </fieldset>
+
+
+                            <fieldset>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-prepend fa fa-user"></i>
+                                            <input type="text" id="txtplandes" name="txtplandes" placeholder="Plan Description">
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-6">
+
+                                        <label class="input">
+                                            <i class="icon-prepend fa fa-user"></i>
+                                            <input type="text" id="txtcreditamount" name="txtcreditamount" placeholder="Credit Amount">
+                                        </label>
+                                    </section>
+
+                                </div>
+                            </fieldset>
+
+
+
+
+
+                            <fieldset>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <div class="form-group">
+                                            <label for="plancode">Plan Expiry Month</label>
+                                            <input type="text" id="planexpirydate" name="planexpirydate">
+                                        </div>
+                                    </section>
+
+                                    <section class="col col-6">
+                                        <label for="plantype">Plan Type</label>
+                                        <select class="selectpicker" id="plantype" name="plantype">
+                                            <option id="1" value="1">Pay as you go</option>
+                                            <option id="2" value="2">Monthlhy</option>
+                                        </select>
+                                    </section>
+                                </div>
+                            </fieldset>
+
+
+
+                            <div id="dvmonthly" style="display:none;">
+
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col col-6">
+                                            <label class="textarea">
+                                                <input class="form-control" id="txtnoofdriver" name="txtnoofdriver" placeholder="No. of Driver">
+                                            </label>
+
+                                            <label class="textarea">
+                                                <input class="form-control" id="txtnoofagent" name="txtnoofagent" placeholder="No. of Agent">
+                                            </label>
+                                        </section>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset>
+                                    <div class="row">
+                                        <section>
+                                            <label class="textarea">
+                                                <input class="form-control" id="txtnoofvehicle" name="txtnoofvehicle" placeholder="No. of Vehicle">
+                                            </label>
+
+                                            <label class="textarea">
+                                                <input class="form-control" id="txtpricepersms" name="txtpricepersms" placeholder="Per SMS Credit Price">
+                                            </label>
+                                        </section>
+                                    </div>
+                                </fieldset>
+
+                            </div>
+
+
+                            <footer>
+                                <input type="button" value="Add Plan" id="btnsubmut" name="btnsubmit" class="btn btn-primary" />
+                            </footer>
+                        </form>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- END COL -->
+
+
+    </div>
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+<!-- END #MAIN CONTENT -->
+
+
+
+
+
 <div class="site-width" id="payment-tabs">
     <div id="alerts"></div>
 
@@ -57,51 +242,6 @@
 
 
     <div>
-
-        @*<div class="form-group">
-                    <label for="crdnumber">Card Number:</label>
-                    <input type="text" class="form-control" id="crdnumber">
-                </div>
-                <div class="form-group">
-                    <label>Exp. Month:</label>
-                    <input type="text" class="form-control" id="expmonth">
-                </div>
-                <div class="form-group">
-                    <label>Exp. Yer:</label>
-                    <input type="text" class="form-control" id="expyear">
-                </div>
-                <div class="form-group">
-                    <label>Streat Address:</label>
-                    <input type="text" class="form-control" id="add">
-                </div>
-                <div class="form-group">
-                    <label>Address2:</label>
-                    <input type="text" class="form-control" id="add2">
-                </div>
-                <div class="form-group">
-                    <label>City:</label>
-                    <input type="text" class="form-control" id="city">
-
-                </div>
-                <div class="form-group">
-                    <label>State:</label>
-                    <input type="text" class="form-control" id="state">
-                </div>
-                <div class="form-group">
-                    <label>Zip:</label>
-                    <input type="text" class="form-control" id="zip">
-                </div>
-
-            <div class="form-group">
-                <label>Credit: (<span id="lblprice" name="lblprice"></span>)</label>
-                <input type="text" class="form-control" id="qty">
-            </div>
-
-                Total: (<label id="lbltotal" name="lbltotal"></label>)
-            </div>
-
-            <button type="submit" id="btnSubmit" name="btnSubmit" class="btn btn-default">Submit</button>*@
-
 
     </div>
 </div>

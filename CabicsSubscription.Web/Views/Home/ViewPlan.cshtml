@@ -4,11 +4,106 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ViewPlan</h2>
 
 
-<div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
-<div id="dvplan" name="dvplan"></div>
+
+<!-- #MAIN PANEL -->
+<div id="main" role="main">
+
+    <!-- RIBBON -->
+    <!-- <div id="ribbon">
+        <ol class="breadcrumb">
+            <li>Home</li>
+            <li>Blank</li>
+        </ol>
+    </div> -->
+    <!-- END RIBBON -->
+    <!-- #MAIN CONTENT -->
+
+    <div class="">
+        <div class="col-md-12">
+            <h1 class="page-title txt-color-blueDark">
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa  fa-check-square-o"></i>
+                View Plan
+            </h1>
+        </div>
+    </div>
+
+
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+
+        <div class="">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-md-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget well" id="wid-id-0a" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body">
+
+
+
+                            <div class="col-md-9">
+                                <h5>Purchase Subscription</h5>
+                                <div class="table-responsive">
+                                    <div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
+                                    <div id="dvplan" name="dvplan"></div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+                <!-- end widget -->
+
+            </article>
+            <!-- WIDGET END -->
+
+
+        </div>
+
+        <!-- end row -->
+
+    </section>
+    <!-- end widget grid -->
+    <!-- END #MAIN CONTENT -->
+
+</div>
+<!-- END #MAIN PANEL -->
+<!-- #SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+     Note: These tiles are completely responsive, you can add as many as you like -->
+<div id="shortcut">
+    <ul>
+        <li>
+            <a href="index.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-envelope fa-4x"></i> <span>Mail <span class="label pull-right bg-color-darken">14</span></span> </span> </a>
+        </li>
+    </ul>
+</div>
+<!-- END SHORTCUT AREA -->
+
+
+
 
 
 @section scripts{

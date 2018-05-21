@@ -27,7 +27,7 @@
             dataType: "json",
             success: function (data) {
                 console.log(data);
-                var html = '<table border="1"><tr><td>Plan Name</td><td>Plan Code</td><td>Description</td><td>Amount</td><td>Credit</td><td>Purchase</td></tr>'
+                var html = '<table class="table table-bordered table-striped"> <thead><tr><td>Plan Name</td><td>Plan Code</td><td>Description</td><td>Amount</td><td>Credit</td><td>Purchase</td></tr></thead><tbody>'
 
                 $.each(data, function (index, value) {
                     console.log(value);
@@ -42,7 +42,7 @@
                 });
                 console.log(html);
 
-                html += '</table>';
+                html += '</tbody></table>';
 
                 $("#dvplan").append(html);
                 $("#divLoader").css("display", "none");
