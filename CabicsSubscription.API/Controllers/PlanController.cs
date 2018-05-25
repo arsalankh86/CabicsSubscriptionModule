@@ -53,10 +53,32 @@ namespace CabicsSubscription.API.Controllers
                 plan.PerCreditSMSPrice = planrequest.PerSMSPrice;
                 plan.IsActive = true;
                 plan.CreatedDateTime = DateTime.Now;
+                plan.UpdatedDateTime = DateTime.Now;
                 // plan.PlanExpiryDate = DateTime.Now.AddMonths(6); 
                 plan.PlanExpiryDate = Convert.ToDateTime(planrequest.PlanExpiryDate.ToString());
                 plan = planService.InsertPlan(plan);
                 return plan.Id;
+        }
+
+        [HttpPost]
+        public int EditPlan(InsertPlanRequest planrequest)
+        {
+            Plan plan = new Plan();
+            plan.Name = planrequest.Name;
+            plan.PlanCode = planrequest.PlanCode;
+            plan.Description = planrequest.Description;
+            plan.Credit = planrequest.Credit;
+            plan.CreditPrice = planrequest.CreditPrice;
+            plan.PlanTypeId = planrequest.PlanTypeId;
+            plan.NoOfAgents = planrequest.NoOfAgents;
+            plan.NoOfDrivers = planrequest.NoOfDrivers;
+            plan.NoOfVehicles = planrequest.NoOfVehicles;
+            plan.PerCreditSMSPrice = planrequest.PerSMSPrice;
+            plan.UpdatedDateTime = DateTime.Now;
+            // plan.PlanExpiryDate = DateTime.Now.AddMonths(6); 
+            plan.PlanExpiryDate = Convert.ToDateTime(planrequest.PlanExpiryDate.ToString());
+            plan = planService.Editplan(plan);
+            return plan.Id;
         }
 
         private int PlanAlreadyExist(string planCode, int planTypeId)

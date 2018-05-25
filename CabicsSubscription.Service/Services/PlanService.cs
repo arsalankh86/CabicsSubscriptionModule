@@ -29,6 +29,12 @@ namespace CabicsSubscription.Service.Services
             return plan;
         }
 
+        public Plan GetPlanDetailByPlanCode(string planCode)
+        {
+            Plan plan = context.plans.FirstOrDefault(x => x.IsActive == true && x.PlanCode == planCode);
+            return plan;
+        }
+
         public Plan InsertPlan(Plan plan)
         {
             try { 
@@ -57,6 +63,27 @@ namespace CabicsSubscription.Service.Services
             }
 
 
+        }
+
+        public Plan Editplan(Plan planrequest)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Plan plan = context.plans.FirstOrDefault(x => x.IsActive == true && x.PlanCode == planrequest.PlanCode);
+                plan.Name = planrequest.Name;
+                plan.Description = planrequest.Description;
+                plan.CreditPrice = planrequest.CreditPrice;
+                plan.NoOfAgents = planrequest.NoOfAgents;
+                plan.NoOfDrivers = planrequest.NoOfDrivers;
+                plan.NoOfVehicles = planrequest.NoOfVehicles;
+                plan.PerCreditSMSPrice = planrequest.PerCreditSMSPrice;
+                plan.UpdatedDateTime = DateTime.Now;
+                // plan.PlanExpiryDate = DateTime.Now.AddMonths(6); 
+                plan.PlanExpiryDate = Convert.ToDateTime(planrequest.PlanExpiryDate.ToString());
+                context.SaveChanges();
+                return plan;
+
+            }
         }
     }
 }

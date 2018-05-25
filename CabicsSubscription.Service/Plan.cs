@@ -24,6 +24,7 @@ namespace CabicsSubscription.Service
         public Nullable<int> NoOfVehicles { get; set; }
         public Nullable<double> PerCreditSMSPrice { get; set; }
         public DateTime CreatedDateTime { get; set; }
+        public DateTime UpdatedDateTime { get; set; }
         public bool IsActive { get; set; }
        
 

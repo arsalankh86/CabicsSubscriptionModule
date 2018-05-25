@@ -27,7 +27,7 @@
             dataType: "json",
             success: function (data) {
                 console.log(data);
-                var html = '<table class="table table-bordered table-striped"> <thead><tr><td>Plan Name</td><td>Plan Code</td><td>Description</td><td>Amount</td><td>Credit</td><td>Delete</td><td>Purchase For Cab Office</td></tr></thead><tbody>'
+                var html = '<table class="table table-bordered table-striped"> <thead><tr><td>Plan Name</td><td>Plan Code</td><td>Description</td><td>Amount</td><td>Credit</td><td>Delete</td><td>Purchase For Cab Office</td><td>Edit Plan</td></tr></thead><tbody>'
 
                 $.each(data, function (index, value) {
                     console.log(value);
@@ -41,6 +41,11 @@
                         +
                         '<a data-PlanId ="' + value.Id +
                         '" onclick="PurchseForCabOffice(this)">Purchase Plan(S)</a>'
+                        +
+                    '</td ><td>'
+                        +
+                        '<a data-PlanId ="' + value.Id +
+                        '" onclick="EditPlan(this)">Edit Plan</a>'
                         +
                     '</td ></tr >  ';
 
@@ -71,6 +76,16 @@
         window.open('/Home/PurchaseSubscription?id=' + PlanId + '/' + accountguid);
 		
 		
+
+        return false;
+
+
+    }
+
+    EditPlan = function (obj) {
+
+        var PlanId = $(obj).attr('data-PlanId');
+        window.location.href = webUrl + "/Admin/EditPlan?planid=" + PlanId;
 
         return false;
 
@@ -128,15 +143,4 @@
     }
 
 
-    EditPlan = function (obj) {
-
-        var PlanId = $(obj).attr('data-PlanId');
-
-
-        window.location.href = webUrl + "/Admin/AddSubscriptionByAdmin?id=" + PlanId;
-
-        return false;
-
-
-    }
 });

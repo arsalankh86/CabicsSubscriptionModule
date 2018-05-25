@@ -15,7 +15,11 @@ namespace CabicsSubscription.Web.Controllers
         {
             return View();
         }
-
+        
+        public ActionResult TextLocalConfiguration()
+        {
+            return View();
+        }
 
         public ActionResult ViewPlan()
         {
@@ -183,13 +187,20 @@ namespace CabicsSubscription.Web.Controllers
                 {
                     errorMessages += "Error: " + (int)error.Code + " - " + error.Message + "\n";
                 }
-               // TempData["Flash"] = errorMessages;
-                return RedirectToAction("New");
+                TempData["Flash"] = errorMessages;
+                return RedirectToAction("PaymentResponse");
             }
             return RedirectToAction("Thankyou");
             //return View();
 
 
+        }
+
+
+        public ActionResult PaymentResponse()
+        {
+            ViewBag.Result = TempData["Flash"];
+            return View();
         }
 
 

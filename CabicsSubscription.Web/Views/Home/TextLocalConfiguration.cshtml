@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "TextLocalConfiguration";
+}
+
+
+<div class="">
+    <div class="col-md-12">
+        <h1 class="page-title txt-color-blueDark">
+            <!-- PAGE HEADER -->
+            <i class="fa-fw fa fa-plus-square"></i>
+            TextLocal Configuration
+        </h1>
+    </div>
+</div>
+
+
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+    <!-- row -->
+    <div class="">
+        <!-- NEW COL START -->
+        <article class="col-md-12">
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
+
+                <!-- widget div-->
+                <div>
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+                        <form id="checkout-form" class="smart-form" novalidate="novalidate">
+                            <fieldset>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-prepend fa fa-user"></i>
+                                            <input type="text" id="txtApiKey" name="txtApiKey" placeholder="API Key">
+                                        </label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-prepend fa fa-hashtag"></i>
+                                            <input type="text" id="txtusername" name="txtusername" placeholder="User Name">
+                                        </label>
+                                    </section>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-prepend fa fa-user"></i>
+                                            <input type="text" id="txtHash" name="txtHash" placeholder="Hash">
+                                        </label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-prepend fa fa-user"></i>
+                                            <input type="text" id="txtPassword" name="txtPassword" placeholder="Password">
+                                        </label>
+                                    </section>
+
+                                </div>
+                            </fieldset>
+
+                            <footer>
+                                <input type="button" value="Add Textlocal Configuration" id="btnsubmut" name="btnsubmit" class="btn btn-primary" /><div id="dvback">
+</div>
+                            </footer>
+
+                           
+
+
+                        </form>
+                    </div>
+                    <!-- end widget content -->
+                </div>
+                <!-- end widget div -->
+            </div>
+            <!-- end widget -->
+        </article>
+        <!-- END COL -->
+
+    </div>
+    <!-- end row -->
+</section>
+<!-- end widget grid -->
+<!-- END #MAIN CONTENT -->
+
+
+<script src="~/Scripts/TextlocalConfiguration.js"></script>
+<script>
+        $(function () {
+
+            textlocalConfiguration.InitalizeEvents();
+        })
+</script>

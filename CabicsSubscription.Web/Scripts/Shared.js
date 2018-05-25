@@ -49,8 +49,13 @@
                 subscriptiongrid += '<th>Purchse Date</th>';
                 subscriptiongrid += '</tr>';
 
+               
+
                 $.each(data, function (index, value) {
+                 
                     console.log(value);
+
+                    localStorage.setItem("accountId", value.AccountId);
 
                     var subscriptionname = "";
                     if (value.SubscriptionTypeId == 1)

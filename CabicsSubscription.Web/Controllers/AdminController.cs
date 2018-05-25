@@ -26,8 +26,16 @@ namespace CabicsSubscription.Web.Controllers
             return View();
         }
 
-
+        public ActionResult EditPlan()
+        {
+            return View();
+        }
         public ActionResult ViewPlan()
+        {
+            return View();
+        }
+
+        public ActionResult TextLocalConfiguration()
         {
             return View();
         }

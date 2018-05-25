@@ -355,6 +355,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\TextlocalConfiguration.js" />
     <Content Include="Scripts\ViewAllCabOffice.js" />
     <Content Include="Scripts\ViewAllUserSubscription.js" />
     <Content Include="Scripts\ViewPlanAdmin.js" />
@@ -389,11 +390,13 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Home\Thankyou.cshtml" />
     <Content Include="Views\Admin\EditPlan.cshtml" />
-    <Content Include="Views\Shared\Plan\_EditAddPlan.cshtml" />
+    <Content Include="Views\Shared\Plan\_EditPlan.cshtml" />
     <Content Include="Views\Admin\ViewAllCabOffice.cshtml" />
     <Content Include="Views\Admin\ViewUserSubscription.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Admin\RefundRequest.cshtml" />
+    <Content Include="Views\Home\TextLocalConfiguration.cshtml" />
+    <Content Include="Views\Home\PaymentResponse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

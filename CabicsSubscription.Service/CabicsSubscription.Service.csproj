@@ -56,6 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="Migrations\201805232110550_subscriptionv3.cs" />
+    <Compile Include="Migrations\201805232110550_subscriptionv3.Designer.cs">
+      <DependentUpon>201805232110550_subscriptionv3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TextlocalConfiguration.cs" />
     <Compile Include="Migrations\201805191858505_subscriptionv2.cs" />
     <Compile Include="Migrations\201805191858505_subscriptionv2.Designer.cs">
       <DependentUpon>201805191858505_subscriptionv2.cs</DependentUpon>
@@ -64,6 +69,11 @@
     <Compile Include="Migrations\201805191901336_subscriptionv21.Designer.cs">
       <DependentUpon>201805191901336_subscriptionv21.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805222237170_subscriptionv22.cs" />
+    <Compile Include="Migrations\201805222237170_subscriptionv22.Designer.cs">
+      <DependentUpon>201805222237170_subscriptionv22.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="TranactionLog.cs" />
     <Compile Include="RefundTranactionLog.cs" />
     <Compile Include="Migrations\201805172043547_subscriptionv1.cs" />
@@ -107,6 +117,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805191901336_subscriptionv21.resx">
       <DependentUpon>201805191901336_subscriptionv21.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805222237170_subscriptionv22.resx">
+      <DependentUpon>201805222237170_subscriptionv22.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805232110550_subscriptionv3.resx">
+      <DependentUpon>201805232110550_subscriptionv3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

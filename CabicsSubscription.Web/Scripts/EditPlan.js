@@ -19,10 +19,14 @@ var editplan = new function () {
     var btnsubmut = "#btnsubmut";
 
 
+
   
 
     this.InitalizeEvents = function () {
         
+
+
+
         $("#planexpirydate").datepicker();
 
         $(plantype).on("change", function () {
@@ -42,6 +46,7 @@ var editplan = new function () {
 
         $(btnsubmut).click(function () {
 
+            var planId = GetParameterValues('planid');
 
             if (ValidateControl($("input[name=txtplancode]")) == false)
                 return false;
@@ -94,12 +99,12 @@ var editplan = new function () {
                 PlanTypeId: $(plantype).val(),
                 Description:$(txtplandes).val(),
                 CreditPrice:$(txtcreditamount).val(),
-                Credit:0,
+                Credit:1,
                 NoOfAgents:$(txtnoofagent).val(),
                 NoOfDrivers:$(txtnoofdriver).val(),
                 NoOfVehicles:$(txtnoofvehicle).val(),
                 PerSMSPrice: $(txtpricepersms).val(),
-                PlanExpiryDate: $(planexpirydate).val() 
+                PlanExpiryDate: $(planexpirydate).val(),
 
             };
 
@@ -107,7 +112,7 @@ var editplan = new function () {
 
             $.ajax({
                 type: "POST",
-                url: servicePath + "/Plan/InsertPlan",
+                url: servicePath + "/Plan/EditPlan",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(plan),
                 dataType: "json",               
@@ -115,8 +120,7 @@ var editplan = new function () {
                 },
 
                 success: function (response) {
-                    //alert(response);
-                    window.location.href = webUrl + "/Admin/Viewplan";
+                        window.location.href = webUrl + "/Admin/Viewplan";
                 },
 
                 failure: function (response) {
@@ -129,6 +133,52 @@ var editplan = new function () {
 
 
     };
+
+    this.GetPlanById = new function()
+    {
+
+        var planId = GetParameterValues('planid');
+
+        $.ajax({
+            type: "Get",
+            url: servicePath + "/Plan/GetAllPlanByPlanId?planid="+planId,
+            //data: JSON.stringify(account),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+
+                $(txtplancode).val(data.PlanCode);
+                $(txtplanname).val(data.Name);
+                $(txtplandes).val(data.Description);
+                $(txtcreditamount).val(data.CreditPrice);
+                $(txtnoofagent).val(data.NoOfAgents);
+                $(txtnoofdriver).val(data.NoOfDrivers);
+                $(txtnoofvehicle).val(data.NoOfVehicles);
+                $(txtpricepersms).val(data.PerCreditSMSPrice);
+
+                $(planexpirydate).val(data.PlanExpiryDate);
+                $(plantype).val(data.PlanTypeId);
+
+                
+
+            },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
+
+    }
+
+    function GetParameterValues(param) {
+        var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < url.length; i++) {
+            var urlparam = url[i].split('=');
+            if (urlparam[0] == param) {
+                return urlparam[1];
+            }
+        }
+    }
 
 
 }
