@@ -29,7 +29,8 @@
             </h1>
         </div>
     </div>
-
+    <div class="" id="dvlink" name="dvlink">
+    </div>
 
     <!-- widget grid -->
     <section id="widget-grid" class="">
@@ -56,16 +57,36 @@
                         <!-- widget content -->
                         <div class="widget-body">
 
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h5>Account Status</h5>
+                                    <div class="list-group">
+                                        <span class="list-group-item"><div id="dvstatus"></div></span>
+                                    </div>
+
+                                    <h5>Subscription Type</h5>
+                                    <div class="list-group">
+                                        <span class="list-group-item"><div id="dvsubstype"></div></span>
+                                    </div>
+
+                                    <h5>Subscription Status</h5>
+                                    <div class="list-group" id="subsdetail" name="subsdetail">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-9">
+                                    <h5>View Plan</h5>
+                                    <div class="table-responsive">
+                                        <div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
+                                        <div id="dvplan" name="dvplan"></div>
 
 
-                            <div class="col-md-9">
-                                <h5>Purchase Subscription</h5>
-                                <div class="table-responsive">
-                                    <div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
-                                    <div id="dvplan" name="dvplan"></div>
-
+                                    </div>
 
                                 </div>
+                                <br />
+                                <div id="subs"></div>
+
 
                             </div>
                         </div>

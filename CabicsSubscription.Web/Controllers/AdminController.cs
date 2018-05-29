@@ -26,6 +26,16 @@ namespace CabicsSubscription.Web.Controllers
             return View();
         }
 
+        public ActionResult CreditUtilizationReport()
+        {
+            return View();
+        }
+
+        public ActionResult Dashboard()
+        {
+            return View();
+        }
+
         public ActionResult EditPlan()
         {
             return View();

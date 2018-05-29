@@ -1,14 +1,24 @@
 ﻿var shared = new function () {
 
-    var account = GetParameterValues('data');
+    var data = GetParameterValues('data');
 
-    localStorage.setItem("accounttoken", account);
+    localStorage.setItem("accounttoken", data);
 
     var subs = "#subs";
+    var dvlink = "#dvlink";
 
     this.InitalizeEvents = function () {
 
         shared.ShowCurrentSubscription();
+
+        var dashboardLink = "<a class='active' href=Dashboard?data=" + data + ">Dashboard</a>";
+        var viewPlanLink = "<a class='active' href=ViewPlan?data=" + data + ">View Plan</a>";
+        var textLocalConfigurationHtml = "<a href=TextLocalConfiguration?data=" + data + ">TextLocal Configuration</a>";
+        var menu = dashboardLink + " | " + viewPlanLink + " | " + textLocalConfigurationHtml;
+
+
+        $(dvlink).append(menu);
+
         
     }
 
@@ -24,13 +34,13 @@
 
     this.ShowCurrentSubscription = function () {
 
-        if (account == 'undefined')
+        if (data == 'undefined')
             return;
 
         $.ajax({
             type: "Get",
-            url: servicePath + "/Subscription/ShowCurrentSubscription?userguid=" + account,
-            //data: JSON.stringify(account),
+            url: servicePath + "/Subscription/ShowCurrentSubscription?userguid=" + data,
+            //data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
@@ -84,17 +94,30 @@
                     var subshtml = "<a href='#' class='list-group-item'>Your current subscription is Active. <span class='badge'></span></a>";
 
                     var subsType = "Pay As You Go";
+                    var isallow = true;
                     if (data[0].SubscriptionTypeId == 2) {
 
-                        subshtml += "<a href='#' class='list-group-item'>Total Credit <span class='badge'>" + data[0].StartDate + "</span></a>";
-                        subshtml += "<a href='#' class='list-group-item'>Remaimimg Credit <span class='badge'>" + data[0].EndDate + "</span></a>";
+                        subshtml += "<a href='#' class='list-group-item'>Start Date <span class='badge'>" + data[0].StartDate + "</span></a>";
+                        subshtml += "<a href='#' class='list-group-item'>End Date <span class='badge'>" + data[0].EndDate + "</span></a>";
 
                         subsType = "Monthly";
+
                     }
                     else {
 
-                        subshtml += "<a href='#' class='list-group-item'>Start Date <span class='badge'>" + data[0].TotalCredit + "</span></a>";
-                        subshtml += "<a href='#' class='list-group-item'>End Date <span class='badge'>" + data[0].RemainingCredit + "</span></a>";
+                        subshtml += "<a href='#' class='list-group-item'>Total Credit <span class='badge'>" + data[0].TotalCredit + "</span></a>";
+                        
+
+                        if (data[0].RemainingCredit == 0) {
+                            isallow = false;
+                            subshtml += "<a href='#' class='list-group-item' style='color:red;'>Remaimimg Credit  <span class='badge' style='color:red;' >" + data[0].RemainingCredit + "</span></a>";
+
+                        }
+                        else {
+                            subshtml += "<a href='#' class='list-group-item'>Remaimimg Credit  <span class='badge'>" + data[0].RemainingCredit + "</span></a>";
+
+                        }
+
                        
                     }
                     $("#subsdetail").append(subshtml);
@@ -102,6 +125,14 @@
                     $("#dvsubstype").append(subsType);
 
                     localStorage.setItem("Subscription", 1);
+
+                    if (isallow == false)
+                          bootbox.alert("Your credit limit has finished!");
+
+                    //var d = new Date();
+                    //var strDate = d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
+
+                    //alert(strDate);
                 }
                 else {
                     html = 'Your Current Subscription is Deactive';
