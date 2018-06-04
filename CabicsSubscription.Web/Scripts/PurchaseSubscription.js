@@ -29,6 +29,8 @@
     this.InitalizeEvents = function () {
         $(divLoader).css("display", "none");
 
+
+
         PurchaseSubscription.SetPlanValue();
 
         PurchaseSubscription.SetCreditDeduction();
@@ -57,6 +59,13 @@
             $(hdnamount).val(amount);
 
         });
+
+
+        $(document).on('change', 'input[Id="chkautorenewel"]', function (e) {
+            //alert($(this).val());
+            $("#dvbillingcycle").css('display', 'block')
+        });
+
 
         };
 

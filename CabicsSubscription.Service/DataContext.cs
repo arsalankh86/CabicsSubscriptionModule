@@ -22,8 +22,8 @@ namespace CabicsSubscription.Service
         public virtual DbSet<SubscriptionType> SubscriptionType { get; set; }
         public virtual DbSet<RefundTranactionLog> RefundTranactionLogs { get; set; }
         public virtual DbSet<TranactionLog> TranactionLogs { get; set; }
-
         public virtual DbSet<TextlocalConfiguration> TextlocalConfigurations { get; set; }
+        public virtual DbSet<WindowsServiceExecution> WindowsServiceExecutions { get; set; }
 
         public DataContext() : base("CabicsSubscriptionDB")
         {

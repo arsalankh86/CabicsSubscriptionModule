@@ -23,6 +23,7 @@ namespace CabicsSubscription.Service
 
         //Foreign key for Client
         public int ClientId { get; set; }
+        public string PaymentMethodNonce { get; set; }
         public Client client { get; set; }
 
     }

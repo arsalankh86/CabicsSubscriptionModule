@@ -104,7 +104,7 @@ namespace CabicsSubscription.Web.Controllers
             {
               refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString());
 
-                subscriptionService.DeleteSubscription(transactionId);
+                subscriptionService.DeactivateCurrentSubscription(transactionId);
 
             
                 

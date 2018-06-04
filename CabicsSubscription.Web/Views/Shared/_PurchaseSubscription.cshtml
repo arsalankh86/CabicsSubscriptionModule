@@ -13,175 +13,6 @@
 
 
 
-<!-- widget grid -->
-<section id="widget-grid" class="">
-
-    <!-- row -->
-
-    <div class="">
-
-        <!-- NEW COL START -->
-        <article class="col-md-12">
-
-            <!-- Widget ID (each widget will need unique ID)-->
-            <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
-
-
-                <!-- widget div-->
-                <div>
-
-                    <!-- widget edit box -->
-                    <div class="jarviswidget-editbox">
-                        <!-- This area used as dropdown edit box -->
-
-                    </div>
-                    <!-- end widget edit box -->
-                    <!-- widget content -->
-                    <div id="alerts"></div>
-
-                    <div id="dvcrruentsubscription">
-                    </div>
-                    <h1 id="plan-name-title">
-                        <span id="dvbuycredit" name="dvbuycredit">   </span>
-
-                    </h1>
-
-                    <div id="dvmonthly" name="dvmonthly"></div>
-                    <br />
-                    <div id="dvcreditdeductiondetail">
-                    </div>
-                    <br />
-                    <br />
-
-
-                    <div class="widget-body no-padding">
-
-                        <form id="checkout-form" class="smart-form" novalidate="novalidate">
-
-                            <fieldset>
-                                <div class="row">
-                                    <section class="col col-6">
-                                        <label class="input">
-                                            <i class="icon-prepend fa fa-user"></i>
-                                            <input type="text" id="txtplancode" name="txtplancode" placeholder="Plane Code">
-                                        </label>
-                                    </section>
-                                    <section class="col col-6">
-                                        <label class="input">
-                                            <i class="icon-prepend fa fa-hashtag"></i>
-                                            <input type="text" id="txtplanname" name="txtplanname" placeholder="Plan Name">
-                                        </label>
-                                    </section>
-                                </div>
-                            </fieldset>
-
-
-                            <fieldset>
-                                <div class="row">
-                                    <section class="col col-6">
-                                        <label class="input">
-                                            <i class="icon-prepend fa fa-user"></i>
-                                            <input type="text" id="txtplandes" name="txtplandes" placeholder="Plan Description">
-                                        </label>
-                                    </section>
-
-                                    <section class="col col-6">
-
-                                        <label class="input">
-                                            <i class="icon-prepend fa fa-user"></i>
-                                            <input type="text" id="txtcreditamount" name="txtcreditamount" placeholder="Credit Amount">
-                                        </label>
-                                    </section>
-
-                                </div>
-                            </fieldset>
-
-
-
-
-
-                            <fieldset>
-                                <div class="row">
-                                    <section class="col col-6">
-                                        <div class="form-group">
-                                            <label for="plancode">Plan Expiry Month</label>
-                                            <input type="text" id="planexpirydate" name="planexpirydate">
-                                        </div>
-                                    </section>
-
-                                    <section class="col col-6">
-                                        <label for="plantype">Plan Type</label>
-                                        <select class="selectpicker" id="plantype" name="plantype">
-                                            <option id="1" value="1">Pay as you go</option>
-                                            <option id="2" value="2">Monthlhy</option>
-                                        </select>
-                                    </section>
-                                </div>
-                            </fieldset>
-
-
-
-                            <div id="dvmonthly" style="display:none;">
-
-                                <fieldset>
-                                    <div class="row">
-                                        <section class="col col-6">
-                                            <label class="textarea">
-                                                <input class="form-control" id="txtnoofdriver" name="txtnoofdriver" placeholder="No. of Driver">
-                                            </label>
-
-                                            <label class="textarea">
-                                                <input class="form-control" id="txtnoofagent" name="txtnoofagent" placeholder="No. of Agent">
-                                            </label>
-                                        </section>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <div class="row">
-                                        <section>
-                                            <label class="textarea">
-                                                <input class="form-control" id="txtnoofvehicle" name="txtnoofvehicle" placeholder="No. of Vehicle">
-                                            </label>
-
-                                            <label class="textarea">
-                                                <input class="form-control" id="txtpricepersms" name="txtpricepersms" placeholder="Per SMS Credit Price">
-                                            </label>
-                                        </section>
-                                    </div>
-                                </fieldset>
-
-                            </div>
-
-
-                            <footer>
-                                <input type="button" value="Add Plan" id="btnsubmut" name="btnsubmit" class="btn btn-primary" />
-                            </footer>
-                        </form>
-
-                    </div>
-                    <!-- end widget content -->
-
-                </div>
-                <!-- end widget div -->
-
-            </div>
-            <!-- end widget -->
-
-        </article>
-        <!-- END COL -->
-
-
-    </div>
-
-    <!-- end row -->
-
-</section>
-<!-- end widget grid -->
-<!-- END #MAIN CONTENT -->
-
-
-
 
 
 <div class="site-width" id="payment-tabs">
@@ -232,9 +63,17 @@
                 Total: <input type="text" class="form-control" id="totalamount" name="totalamount" disabled="disabled">
             </div>
 
-            <div class="bt-drop-in-wrapper">
-                <div id="bt-dropin"></div>
+            <div class="form-group">
+                Auto Renewel: <input type="checkbox" class="form-control" id="chkautorenewel" name="chkautorenewel">
+
             </div>
+            <div class="form-group" id="dvbillingcycle" name="dvbillingcycle" style="display:none;">
+              No. Of Billing Cycle:  <input type="text" class="form-control" id="noOfBillingCycle" name="noOfBillingCycle">
+            </div>
+
+                <div class="bt-drop-in-wrapper">
+                    <div id="bt-dropin"></div>
+                </div>
         </section>
         <input id="nonce" name="payment_method_nonce" type="hidden" />
         <button class="button" type="submit" onclick="ValidateSubscription(this)"><span>Test Transaction</span></button>

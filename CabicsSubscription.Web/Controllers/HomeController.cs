@@ -124,6 +124,8 @@ namespace CabicsSubscription.Web.Controllers
             AccountService accountService = new AccountService();
             Account account = accountService.getCabOfficeByAccountId(accountid);
 
+            bool resultt;
+            Transaction transactionid;
 
             var gateway = new BraintreeGateway
             {
@@ -145,20 +147,59 @@ namespace CabicsSubscription.Web.Controllers
             }
 
             var nonce = Request["payment_method_nonce"];
-            var request = new TransactionRequest
+            var chkautorenewel = form["chkautorenewel"];
+            if(chkautorenewel == "No")
             {
-                Amount = amount,
-                PaymentMethodNonce = nonce,
-                Options = new TransactionOptionsRequest
+                var request = new TransactionRequest
                 {
-                    SubmitForSettlement = true
-                }
-            };
+                    Amount = amount,
+                    PaymentMethodNonce = nonce,
+                    Options = new TransactionOptionsRequest
+                    {
+                        SubmitForSettlement = true
+                    }
+                };
 
-            Result<Transaction> result = gateway.Transaction.Sale(request);
-            if (result.IsSuccess())
+                Result<Transaction> result = gateway.Transaction.Sale(request);
+
+                resultt = result.IsSuccess();
+                transactionid = result.Target;
+            }
+            else
             {
-                Transaction transaction = result.Target;
+                var rrequest = new CustomerRequest
+                {
+                    FirstName = "Fred",
+                    LastName = "Jones",
+                    PaymentMethodNonce = nonce
+                };
+                Result<Customer> rresult = gateway.Customer.Create(rrequest);
+
+                bool success = rresult.IsSuccess();
+                // true
+
+                Customer customer = rresult.Target;
+                string customerId = customer.Id;
+                // e.g. 160923
+
+                string cardToken = customer.PaymentMethods[0].Token;
+                // e.g. f28w
+
+
+                var request = new SubscriptionRequest
+                {
+                    PaymentMethodToken = cardToken,
+                    PlanId = "aa05"
+                };
+
+                Result<Braintree.Subscription> result = gateway.Subscription.Create(request);
+                resultt = result.IsSuccess();
+            }
+
+            
+            if (resultt)
+            {
+                Transaction transaction = null;
                 //return RedirectToAction("Show", new { id = transaction.Id });
                 SubscriptionService subscriptionService = new SubscriptionService();
 
@@ -176,20 +217,20 @@ namespace CabicsSubscription.Web.Controllers
 
                 subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "", smscreditqty, hdnsmscreditamount, transaction.Id);
             }
-            else if (result.Transaction != null)
-            {
-                //return RedirectToAction("Show", new { id = result.Transaction.Id });
-            }
-            else
-            {
-                string errorMessages = "";
-                foreach (ValidationError error in result.Errors.DeepAll())
-                {
-                    errorMessages += "Error: " + (int)error.Code + " - " + error.Message + "\n";
-                }
-                TempData["Flash"] = errorMessages;
-                return RedirectToAction("PaymentResponse");
-            }
+            //else if (resultt.Transaction != null)
+            //{
+            //    //return RedirectToAction("Show", new { id = result.Transaction.Id });
+            //}
+            //else
+            //{
+            //    string errorMessages = "";
+            //    foreach (ValidationError error in result.Errors.DeepAll())
+            //    {
+            //        errorMessages += "Error: " + (int)error.Code + " - " + error.Message + "\n";
+            //    }
+            //    TempData["Flash"] = errorMessages;
+            //    return RedirectToAction("PaymentResponse");
+            //}
             return RedirectToAction("Thankyou");
             //return View();
 

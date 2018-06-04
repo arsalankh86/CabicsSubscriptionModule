@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Braintree">
+      <HintPath>dll\Braintree.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -60,6 +63,16 @@
     <Compile Include="Migrations\201805232110550_subscriptionv3.Designer.cs">
       <DependentUpon>201805232110550_subscriptionv3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805302220262_subscriptionv31.cs" />
+    <Compile Include="Migrations\201805302220262_subscriptionv31.Designer.cs">
+      <DependentUpon>201805302220262_subscriptionv31.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806032330068_subscription-v4.cs" />
+    <Compile Include="Migrations\201806032330068_subscription-v4.Designer.cs">
+      <DependentUpon>201806032330068_subscription-v4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\AutomatedService.cs" />
+    <Compile Include="Services\WindowsServiceExecutionService.cs" />
     <Compile Include="TextlocalConfiguration.cs" />
     <Compile Include="Migrations\201805191858505_subscriptionv2.cs" />
     <Compile Include="Migrations\201805191858505_subscriptionv2.Designer.cs">
@@ -97,6 +110,7 @@
     <Compile Include="Services\SubscriptionService.cs" />
     <Compile Include="SubscriptionStatus.cs" />
     <Compile Include="SubscriptionType.cs" />
+    <Compile Include="WindowsServiceExecution.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tables.txt" />
@@ -123,6 +137,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805232110550_subscriptionv3.resx">
       <DependentUpon>201805232110550_subscriptionv3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805302220262_subscriptionv31.resx">
+      <DependentUpon>201805302220262_subscriptionv31.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806032330068_subscription-v4.resx">
+      <DependentUpon>201806032330068_subscription-v4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

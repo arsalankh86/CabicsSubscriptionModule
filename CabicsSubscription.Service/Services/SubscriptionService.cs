@@ -23,6 +23,11 @@ namespace CabicsSubscription.Service.Services
             }
         }
 
+        internal Subscription GetSubscriptionBySubscriptionId(int subscriptionId)
+        {
+            throw new NotImplementedException();
+        }
+
         public int InsertRefundTranactionLog(RefundTranactionLog refundTranactionLog)
         {
             try
@@ -81,7 +86,9 @@ namespace CabicsSubscription.Service.Services
 
         }
 
-        public void DeleteSubscription(string transactionId)
+       
+
+        public void DeactivateCurrentSubscription(string transactionId)
         {
             DataContext context = new DataContext();
             Subscription subscription = context.Subscription.FirstOrDefault(x => x.IsActive == true && x.btTransactionId == transactionId);

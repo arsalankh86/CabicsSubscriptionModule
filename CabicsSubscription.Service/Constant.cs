@@ -39,6 +39,12 @@ namespace CabicsSubscription.Service
             Monthly = 2,
         }
 
+        public enum WindowsServiceExecutionStatus
+        {
+            Pending = 1,
+            Done = 2,
+            Error = 3
+        }
 
     }
 }

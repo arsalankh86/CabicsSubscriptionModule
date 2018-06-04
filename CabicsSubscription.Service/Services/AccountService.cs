@@ -84,6 +84,28 @@ namespace CabicsSubscription.Service.Services
                 return account;
             }
         }
+
+        public Account getCabOfficeByCabOfficeId(int cabOfficeId)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Account account = context.Accounts.FirstOrDefault(x => x.Id == cabOfficeId && x.IsActive == true);
+                return account;
+            }
+        }
+
+
+        public void UpdatePaymentNonceInCabOfficeAccount(int cabOfficeId, string nonce)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Account account = context.Accounts.FirstOrDefault(x => x.Id == cabOfficeId && x.IsActive == true);
+                account.PaymentMethodNonce = nonce;
+                context.SaveChanges();
+            }
+
+        }
+
     }
 
 }

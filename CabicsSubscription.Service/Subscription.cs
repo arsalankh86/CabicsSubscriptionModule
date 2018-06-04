@@ -33,6 +33,9 @@ namespace CabicsSubscription.Service
         public string btTransactionId { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public bool IsActive { get; set; }
+        public bool IsAutoRenewel { get; set; }
+        public int NoOfBillingCycle { get; set; }
+        public string btSubscriptionId { get; set; }
 
         public int AccountId { get; set; }
         public int PlanId { get; set; }
