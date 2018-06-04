@@ -71,6 +71,10 @@
     <Compile Include="Migrations\201806032330068_subscription-v4.Designer.cs">
       <DependentUpon>201806032330068_subscription-v4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806042100379_subscriptionv5.cs" />
+    <Compile Include="Migrations\201806042100379_subscriptionv5.Designer.cs">
+      <DependentUpon>201806042100379_subscriptionv5.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\AutomatedService.cs" />
     <Compile Include="Services\WindowsServiceExecutionService.cs" />
     <Compile Include="TextlocalConfiguration.cs" />
@@ -143,6 +147,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806032330068_subscription-v4.resx">
       <DependentUpon>201806032330068_subscription-v4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806042100379_subscriptionv5.resx">
+      <DependentUpon>201806042100379_subscriptionv5.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

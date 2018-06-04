@@ -19,6 +19,7 @@ namespace CabicsSubscription.API.Models
         public int NoOfVehicles { get; set; }
         public double PerSMSPrice { get; set; }
         public string PlanExpiryDate { get; set; }
+        public string BrainTreePlan { get; set; }
 
     }
 }

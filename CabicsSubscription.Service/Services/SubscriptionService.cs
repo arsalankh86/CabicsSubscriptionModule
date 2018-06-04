@@ -44,7 +44,7 @@ namespace CabicsSubscription.Service.Services
         }
 
 
-        public Subscription PurchaseSubscription(int planId, double totalAmonut, int cabOfficeId, int qty, string chequeNo)
+        public int PurchaseSubscription(int planId, double totalAmonut, int cabOfficeId, int qty, string chequeNo)
         {
             PlanService planService = new PlanService();
             Plan plan = planService.GetPlanDetail(planId);
@@ -81,7 +81,7 @@ namespace CabicsSubscription.Service.Services
             AccountService accountService = new AccountService();
             accountService.UpdateActiveSubsctionForAccount(subscriptionId, cabOfficeId);
 
-            return subscription;
+            return subscriptionId;
 
 
         }
@@ -134,8 +134,8 @@ namespace CabicsSubscription.Service.Services
 
         }
 
-        public Subscription PurchaseSubscription(int planId, double totalAmonut, int cabOfficeId, int qty, string chequeNo, 
-            int smscreditqty, double smscreditamount, string transactionId)
+        public int PurchaseSubscription(int planId, double totalAmonut, int cabOfficeId, int qty, string chequeNo, 
+            int smscreditqty, double smscreditamount, string transactionId, string btSubsccriptionId, bool isAutoRenewel, int noOfBillingCycle)
         {
 
             /// If plan is pay as you go and this user alreasy have subscription
@@ -143,6 +143,7 @@ namespace CabicsSubscription.Service.Services
 
             DataContext context = new DataContext();
             Subscription subscription = context.Subscription.FirstOrDefault(x => x.IsActive == true && x.AccountId == cabOfficeId && x.SubscriptionTypeId == (int)Constant.SubscriptionType.PayAsYouGo);
+            int subscriptionId = 0;
 
             if (subscription == null)
             {
@@ -175,16 +176,20 @@ namespace CabicsSubscription.Service.Services
                 {
                  
                 }
+                subscription.IsAutoRenewel = isAutoRenewel;
+                subscription.NoOfBillingCycle = noOfBillingCycle;
+                subscription.btSubscriptionId = btSubsccriptionId;
                 subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Active;
                 subscription.IsActive = true;
 
-                int subscriptionId = InsertSubscription(subscription);
+                subscriptionId = InsertSubscription(subscription);
 
                 AccountService accountService = new AccountService();
                 accountService.UpdateActiveSubsctionForAccount(subscriptionId, cabOfficeId);
             }
             else
             {
+                subscriptionId = subscription.Id;
                 subscription.TotalCredit = subscription.TotalCredit + qty;
                 subscription.RemainingCredit = subscription.RemainingCredit + qty;
                 subscription.TotalPrice = subscription.TotalPrice + totalAmonut;
@@ -192,7 +197,7 @@ namespace CabicsSubscription.Service.Services
             }
 
 
-            return subscription;
+            return subscriptionId;
 
 
         }

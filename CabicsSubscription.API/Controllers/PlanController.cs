@@ -51,6 +51,7 @@ namespace CabicsSubscription.API.Controllers
                 plan.NoOfDrivers = planrequest.NoOfDrivers;
                 plan.NoOfVehicles = planrequest.NoOfVehicles;
                 plan.PerCreditSMSPrice = planrequest.PerSMSPrice;
+                plan.BrainTreePlanName = planrequest.BrainTreePlan;
                 plan.IsActive = true;
                 plan.CreatedDateTime = DateTime.Now;
                 plan.UpdatedDateTime = DateTime.Now;
@@ -90,7 +91,7 @@ namespace CabicsSubscription.API.Controllers
 
                 if (planChk1 != null)
                     return -1001;
-                else if (planChk2 != null)
+                else if (planChk2.PlanTypeId == planTypeId)
                     return -1002;
 
                 return 1;

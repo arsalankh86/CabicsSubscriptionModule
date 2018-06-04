@@ -112,11 +112,14 @@ namespace CabicsSubscription.Web.Controllers
         [HttpPost]
         public ActionResult SubmitContact(FormCollection form)
         {
+            PlanService planService = new PlanService();
             var planId = 0;
             var accountid="";
 
             if (form["hdnplanid"] != null)
                 planId = Convert.ToInt32(form["hdnplanid"].ToString());
+
+           CabicsSubscription.Service.Plan plan = planService.GetPlanDetailByPlanId(planId);
 
             if (form["hdnaccount"] != null)
                 accountid = form["hdnaccount"].ToString();
@@ -147,8 +150,13 @@ namespace CabicsSubscription.Web.Controllers
             }
 
             var nonce = Request["payment_method_nonce"];
-            var chkautorenewel = form["chkautorenewel"];
-            if(chkautorenewel == "No")
+            bool chkautorenewel = false;
+            int noOfInstallment = 0;
+
+            if (form["chkautorenewel"] != null)
+                chkautorenewel = Convert.ToBoolean(form["chkautorenewel"].ToString());
+
+            if (chkautorenewel == false)
             {
                 var request = new TransactionRequest
                 {
@@ -164,13 +172,37 @@ namespace CabicsSubscription.Web.Controllers
 
                 resultt = result.IsSuccess();
                 transactionid = result.Target;
+
+                var transaction = result.Target;
+
+                //return RedirectToAction("Show", new { id = transaction.Id });
+                SubscriptionService subscriptionService = new SubscriptionService();
+
+                int qty = 1;
+                if (form["qty"] != null)
+                    qty = Convert.ToInt32(form["qty"]);
+
+                int smscreditqty = 0;
+                if (form["smscreditqty"] != "")
+                    smscreditqty = Convert.ToInt32(form["smscreditqty"]);
+
+                double hdnsmscreditamount = 0;
+                if (form["hdnsmscreditamount"] != "")
+                    hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
+
+                int subscriptionId = subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "", smscreditqty, hdnsmscreditamount, 
+                    transaction.Id,"", chkautorenewel, noOfInstallment);
             }
             else
             {
+                if (form["noOfBillingCycle"] != null)
+                    noOfInstallment = Convert.ToInt32(form["noOfBillingCycle"].ToString());
+
+
                 var rrequest = new CustomerRequest
                 {
-                    FirstName = "Fred",
-                    LastName = "Jones",
+                    FirstName = form["fname"],
+                    LastName = form["lname"],
                     PaymentMethodNonce = nonce
                 };
                 Result<Customer> rresult = gateway.Customer.Create(rrequest);
@@ -189,11 +221,55 @@ namespace CabicsSubscription.Web.Controllers
                 var request = new SubscriptionRequest
                 {
                     PaymentMethodToken = cardToken,
-                    PlanId = "aa05"
+                    PlanId = plan.BrainTreePlanName
                 };
 
                 Result<Braintree.Subscription> result = gateway.Subscription.Create(request);
                 resultt = result.IsSuccess();
+
+
+
+                var transaction = result.Target;
+
+                //return RedirectToAction("Show", new { id = transaction.Id });
+                SubscriptionService subscriptionService = new SubscriptionService();
+
+                bool chkAutoRenewel = false;
+                string btSubscriptionId = result.Subscription.Id;
+
+                int qty = 1;
+                if (form["qty"] != null)
+                    qty = Convert.ToInt32(form["qty"]);
+
+                int smscreditqty = 0;
+                if (form["smscreditqty"] != "")
+                    smscreditqty = Convert.ToInt32(form["smscreditqty"]);
+
+                double hdnsmscreditamount = 0;
+                if (form["hdnsmscreditamount"] != "")
+                    hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
+
+                int subscriptionId =  subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "", smscreditqty, hdnsmscreditamount,
+                    transaction.Id, btSubscriptionId, chkautorenewel, noOfInstallment);
+
+                //// Insert into execution service
+
+                WindowsServiceExecution winservice = new WindowsServiceExecution();
+                winservice.WindowsServiceFunction = "Automatic Charging";
+                winservice.WindowsServiceArgumrnt = subscriptionId;
+                winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
+                winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
+                winservice.IsActive = true;
+                winservice.CreatedDate = DateTime.Now;
+
+                WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
+                windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
+
+
+
+
+
+
             }
 
             
@@ -215,7 +291,7 @@ namespace CabicsSubscription.Web.Controllers
                 if (form["hdnsmscreditamount"] != "")
                     hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
 
-                subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "", smscreditqty, hdnsmscreditamount, transaction.Id);
+                //subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "", smscreditqty, hdnsmscreditamount, transaction.Id);
             }
             //else if (resultt.Transaction != null)
             //{

@@ -46,5 +46,12 @@ namespace CabicsSubscription.Service
             Error = 3
         }
 
+
+        public enum WindowsFunction
+        {
+            AutomaticCharging = 1
+        }
+
+
     }
 }

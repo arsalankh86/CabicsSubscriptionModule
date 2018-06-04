@@ -13,6 +13,7 @@ namespace CabicsSubscription.Service
         public int Id { get; set; }
         public string PlanCode { get; set; }
         public string Name { get; set; }
+        public string BrainTreePlanName { get; set; }
         public int PlanTypeId { get; set; }
         public string Description { get; set; }
         public DateTime PlanExpiryDate { get; set; }
@@ -26,6 +27,8 @@ namespace CabicsSubscription.Service
         public DateTime CreatedDateTime { get; set; }
         public DateTime UpdatedDateTime { get; set; }
         public bool IsActive { get; set; }
+
+
        
 
         

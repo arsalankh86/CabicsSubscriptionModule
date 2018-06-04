@@ -12,8 +12,8 @@ var addplan = new function () {
     var txtnoofdriver = "#txtnoofdriver";
     var txtpricepersms = "#txtpricepersms";
     var planexpirydate = "#planexpirydate";
-
-
+    var txtbraintreeplan = "#txtbraintreeplan";
+    
     var dvpayasgo = "#dvpayasgo";
     var dvmonthly = "#dvmonthly";
     var btnsubmut = "#btnsubmut";
@@ -99,7 +99,8 @@ var addplan = new function () {
                 NoOfDrivers:$(txtnoofdriver).val(),
                 NoOfVehicles:$(txtnoofvehicle).val(),
                 PerSMSPrice: $(txtpricepersms).val(),
-                PlanExpiryDate: $(planexpirydate).val() 
+                PlanExpiryDate: $(planexpirydate).val(),
+                BrainTreePlan: $(txtbraintreeplan).val()
 
             };
 
