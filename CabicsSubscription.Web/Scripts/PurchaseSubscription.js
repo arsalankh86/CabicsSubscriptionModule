@@ -49,21 +49,30 @@
 
         $(smscreditqty).bind('input', function () {
             /* This will be fired every time, when textbox's value changes. */
+
             var totalprice = $(hdnamount).val();
             var lblsmscreditprice = $(hdnsmscreditamount).text();
             var smscreditqty = this.value;
             var totalsmscreditprice = lblsmscreditprice * smscreditqty;
-            var amount = totalprice + totalsmscreditprice;
+
+            var amount = parseInt(totalprice) + parseInt(totalsmscreditprice);
+
+            if (smscreditqty == "") { 
+                $(totalamount).val(totalprice);
+                $("#hdnsmscreditotaltamount").val(0);            
+        }
 
             $(totalamount).val(amount);
-            $(hdnamount).val(amount);
+            $("#hdnsmscreditotaltamount").val(totalsmscreditprice);
+
+          //  $(hdnamount).val(amount);
 
         });
 
 
         $(document).on('change', 'input[Id="chkautorenewel"]', function (e) {
             //alert($(this).val());
-            $("#dvbillingcycle").css('display', 'block')
+            $("#dvbillingcycle").css('display', 'block');
         });
 
 
@@ -129,12 +138,15 @@
 
                     $(dvmonthly).append(monthlyplandetail);
                     $(hdnamount).val(data.CreditPrice);
+                    $(totalamount).val(data.CreditPrice);
                     $(hdnsmscreditamount).text(data.PerCreditSMSPrice);
-                    $(lblsmscreditrice).text(data.PerCreditSMSPrice);
+                    $(lblsmscreditprice).text(data.PerCreditSMSPrice);
                     $(qty).css('display', 'none');
+                    $("#dvAutoRenewel").css('display', 'block');
 
                 }
                 else {
+
                     $(dvsmscreditqty).css('display', 'none');
                 }
 

@@ -112,6 +112,15 @@ namespace CabicsSubscription.Web.Controllers
         [HttpPost]
         public ActionResult SubmitContact(FormCollection form)
         {
+            Decimal planamount = 0, smscreditamount = 0, amount = 0;
+           
+            if (form["hdnamount"] != null && form["hdnamount"]!= "")
+                planamount = Convert.ToDecimal(form["hdnamount"]);
+            if(form["hdnsmscreditotaltamount"] != null && form["hdnsmscreditotaltamount"] != "")
+                smscreditamount = Convert.ToDecimal(form["hdnsmscreditotaltamount"]);
+
+            amount = planamount + smscreditamount;
+
             PlanService planService = new PlanService();
             var planId = 0;
             var accountid="";
@@ -138,23 +147,16 @@ namespace CabicsSubscription.Web.Controllers
                 PrivateKey = "374d896ef9682b3550a76d2b82811d1a"
             };
 
-            Decimal amount;
-            try
-            {
-                amount = Convert.ToDecimal(form["hdnamount"]);
-            }
-            catch (FormatException e)
-            {
-               // TempData["Flash"] = "Error: 81503: Amount is an invalid format.";
-                return RedirectToAction("New");
-            }
-
             var nonce = Request["payment_method_nonce"];
             bool chkautorenewel = false;
             int noOfInstallment = 0;
 
+            var bit = "off";
             if (form["chkautorenewel"] != null)
-                chkautorenewel = Convert.ToBoolean(form["chkautorenewel"].ToString());
+                bit = form["chkautorenewel"].ToString();
+
+            if (bit == "on")
+                chkautorenewel = true;
 
             if (chkautorenewel == false)
             {
@@ -221,7 +223,8 @@ namespace CabicsSubscription.Web.Controllers
                 var request = new SubscriptionRequest
                 {
                     PaymentMethodToken = cardToken,
-                    PlanId = plan.BrainTreePlanName
+                    PlanId = plan.BrainTreePlanName,
+                    NumberOfBillingCycles = noOfInstallment
                 };
 
                 Result<Braintree.Subscription> result = gateway.Subscription.Create(request);
@@ -235,7 +238,7 @@ namespace CabicsSubscription.Web.Controllers
                 SubscriptionService subscriptionService = new SubscriptionService();
 
                 bool chkAutoRenewel = false;
-                string btSubscriptionId = result.Subscription.Id;
+                string btSubscriptionId = result.Target.Id;
 
                 int qty = 1;
                 if (form["qty"] != null)
@@ -249,7 +252,7 @@ namespace CabicsSubscription.Web.Controllers
                 if (form["hdnsmscreditamount"] != "")
                     hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
 
-                int subscriptionId =  subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "", smscreditqty, hdnsmscreditamount,
+                int subscriptionId =  subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount), account.Id, qty, "", smscreditqty, hdnsmscreditamount,
                     transaction.Id, btSubscriptionId, chkautorenewel, noOfInstallment);
 
                 //// Insert into execution service

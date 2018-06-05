@@ -44,6 +44,8 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
+                if (data == null)
+                    return;
                 console.log(data);
 
                 var subscriptiongrid = '<table class="table table-bordered table-striped">';
