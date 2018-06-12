@@ -77,6 +77,15 @@ namespace CabicsSubscription.Web.Controllers
             return View();
         }
 
+        
+        public ActionResult ExecuteService()
+        {
+            AutomatedService automatedService = new AutomatedService();
+            automatedService.ExecutonFunction();
+
+            return View();
+        }
+
 
         [HttpPost]
         public ActionResult SubmitRefund(FormCollection form)

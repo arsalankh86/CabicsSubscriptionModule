@@ -22,5 +22,22 @@ namespace CabicsSubscription.Service.Services
             return context.WindowsServiceExecutions.Where(x => x.WindowsServiceStatus == (int)Constant.WindowsServiceExecutionStatus.Pending && x.IsActive == true).ToList();
         }
 
+        public List<WindowsServiceExecution> GetAutoRenewelEntryBySubscriptionID(int subscriptionId)
+        {
+            // return context.WindowsServiceExecutions.Where(x => x.WindowsServiceStatus == (int)Constant.WindowsServiceExecutionStatus.Pending && x.IsActive == true).ToList();
+
+            return null;
+        }
+
+        public void MarkWindowsServiceStatus(int windowsServiceExecutionId, int status)
+        {
+            using (DataContext context = new DataContext())
+            {
+                WindowsServiceExecution windowsServiceExecution = context.WindowsServiceExecutions.FirstOrDefault(x => x.Id == windowsServiceExecutionId);
+                windowsServiceExecution.WindowsServiceStatus = status;
+                windowsServiceExecution.UpdatedDate = DateTime.Now;
+                context.SaveChanges();
+            }
+        }
     }
 }

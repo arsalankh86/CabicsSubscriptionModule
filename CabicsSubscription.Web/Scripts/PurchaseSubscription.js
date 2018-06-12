@@ -72,7 +72,7 @@
 
         $(document).on('change', 'input[Id="chkautorenewel"]', function (e) {
             //alert($(this).val());
-            $("#dvbillingcycle").css('display', 'block');
+           // $("#dvbillingcycle").css('display', 'block');
         });
 
 
@@ -127,6 +127,7 @@
             success: function (data) {
                 console.log(data);
 
+
                 var html = 'Buy Credit (' + data.Credit + ' Credit = £' + data.CreditPrice+')';
                 var price = data.CreditPrice;
 
@@ -135,6 +136,7 @@
                     monthlyplandetail += '<br /> No of Driver:' + data.NoOfDrivers;
                     monthlyplandetail += ' No of Vehicles:' + data.NoOfVehicles;
                     monthlyplandetail += ' SMS Credit Price :' + data.PerCreditSMSPrice;
+                    html = 'Buy Credit (' + data.Credit + ' Month = £' + data.CreditPrice + ')';;
 
                     $(dvmonthly).append(monthlyplandetail);
                     $(hdnamount).val(data.CreditPrice);

@@ -59,6 +59,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="DbErrorLog.cs" />
+    <Compile Include="Migrations\201806102240581_subscriptionv41.cs" />
+    <Compile Include="Migrations\201806102240581_subscriptionv41.Designer.cs">
+      <DependentUpon>201806102240581_subscriptionv41.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\DbErrorLogService.cs" />
     <Compile Include="Migrations\201805232110550_subscriptionv3.cs" />
     <Compile Include="Migrations\201805232110550_subscriptionv3.Designer.cs">
       <DependentUpon>201805232110550_subscriptionv3.cs</DependentUpon>
@@ -115,6 +121,7 @@
     <Compile Include="SubscriptionStatus.cs" />
     <Compile Include="SubscriptionType.cs" />
     <Compile Include="WindowsServiceExecution.cs" />
+    <Compile Include="WindowsServiceLogging.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tables.txt" />
@@ -150,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806042100379_subscriptionv5.resx">
       <DependentUpon>201806042100379_subscriptionv5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806102240581_subscriptionv41.resx">
+      <DependentUpon>201806102240581_subscriptionv41.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -415,6 +415,7 @@
     <Content Include="Views\Home\PaymentResponse.cshtml" />
     <Content Include="Views\Admin\Dashboard.cshtml" />
     <Content Include="Views\Admin\CreditUtilizationReport.cshtml" />
+    <Content Include="Views\Admin\ExecuteService.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

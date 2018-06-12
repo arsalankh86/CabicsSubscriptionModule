@@ -197,7 +197,7 @@ namespace CabicsSubscription.Web.Controllers
             }
             else
             {
-                if (form["noOfBillingCycle"] != null)
+                if (form["noOfBillingCycle"] != null && form["noOfBillingCycle"] != "")
                     noOfInstallment = Convert.ToInt32(form["noOfBillingCycle"].ToString());
 
 
@@ -223,8 +223,8 @@ namespace CabicsSubscription.Web.Controllers
                 var request = new SubscriptionRequest
                 {
                     PaymentMethodToken = cardToken,
-                    PlanId = plan.BrainTreePlanName,
-                    NumberOfBillingCycles = noOfInstallment
+                    PlanId = plan.BrainTreePlanName
+                    //,NumberOfBillingCycles = noOfInstallment
                 };
 
                 Result<Braintree.Subscription> result = gateway.Subscription.Create(request);
@@ -241,15 +241,15 @@ namespace CabicsSubscription.Web.Controllers
                 string btSubscriptionId = result.Target.Id;
 
                 int qty = 1;
-                if (form["qty"] != null)
+                if (form["qty"] != null && form["qty"] != "")
                     qty = Convert.ToInt32(form["qty"]);
 
                 int smscreditqty = 0;
-                if (form["smscreditqty"] != "")
+                if (form["smscreditqty"]!= null && form["smscreditqty"] != "")
                     smscreditqty = Convert.ToInt32(form["smscreditqty"]);
 
                 double hdnsmscreditamount = 0;
-                if (form["hdnsmscreditamount"] != "")
+                if (form["hdnsmscreditamount"] != null && form["hdnsmscreditamount"] != "")
                     hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
 
                 int subscriptionId =  subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount), account.Id, qty, "", smscreditqty, hdnsmscreditamount,
@@ -283,15 +283,15 @@ namespace CabicsSubscription.Web.Controllers
                 SubscriptionService subscriptionService = new SubscriptionService();
 
                 int qty = 1;
-                if (form["qty"] != null)
+                if (form["qty"]!= "" && form["qty"] != null)
                     qty = Convert.ToInt32(form["qty"]);
 
                 int smscreditqty = 0;
-                if (form["smscreditqty"] != "")
+                if (form["smscreditqty"]!= null && form["smscreditqty"] != "")
                     smscreditqty = Convert.ToInt32(form["smscreditqty"]);
 
                 double hdnsmscreditamount = 0;
-                if (form["hdnsmscreditamount"] != "")
+                if (form["hdnsmscreditamount"]!= null && form["hdnsmscreditamount"] != "")
                     hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
 
                 //subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "", smscreditqty, hdnsmscreditamount, transaction.Id);

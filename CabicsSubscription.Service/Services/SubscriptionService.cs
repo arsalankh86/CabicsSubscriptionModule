@@ -13,7 +13,7 @@ namespace CabicsSubscription.Service.Services
             try
             {
                 DataContext context = new DataContext();
-                context.Subscription.Add(subscription);
+                context.Subscriptions.Add(subscription);
                 context.SaveChanges();
                 return subscription.Id;
             }
@@ -23,9 +23,10 @@ namespace CabicsSubscription.Service.Services
             }
         }
 
-        internal Subscription GetSubscriptionBySubscriptionId(int subscriptionId)
+        public Subscription GetSubscriptionBySubscriptionId(int subscriptionId)
         {
-            throw new NotImplementedException();
+            DataContext context = new DataContext();
+            return context.Subscriptions.FirstOrDefault(x => x.Id == subscriptionId && x.IsActive == true);
         }
 
         public int InsertRefundTranactionLog(RefundTranactionLog refundTranactionLog)
@@ -91,7 +92,7 @@ namespace CabicsSubscription.Service.Services
         public void DeactivateCurrentSubscription(string transactionId)
         {
             DataContext context = new DataContext();
-            Subscription subscription = context.Subscription.FirstOrDefault(x => x.IsActive == true && x.btTransactionId == transactionId);
+            Subscription subscription = context.Subscriptions.FirstOrDefault(x => x.IsActive == true && x.btTransactionId == transactionId);
             subscription.IsActive = false;
             context.SaveChanges();
         }
@@ -100,7 +101,7 @@ namespace CabicsSubscription.Service.Services
         public void MinusCreditFromSubscription(string transactionId, double amount)
         {
             DataContext context = new DataContext();
-            Subscription subscription = context.Subscription.FirstOrDefault(x => x.IsActive == true && x.btTransactionId == transactionId);
+            Subscription subscription = context.Subscriptions.FirstOrDefault(x => x.IsActive == true && x.btTransactionId == transactionId);
             double subscriptionPrice = subscription.SubscriptionPrice;
             double finalPrice = subscriptionPrice - amount;
 
@@ -118,7 +119,7 @@ namespace CabicsSubscription.Service.Services
         public List<Subscription> GetUserAllSubscriptionDetail(int cabOfficeId)
         {
             DataContext context = new DataContext();
-            return context.Subscription.Where(x => x.IsActive == true && x.AccountId == cabOfficeId).ToList();
+            return context.Subscriptions.Where(x => x.IsActive == true && x.AccountId == cabOfficeId).ToList();
         }
 
         public List<Subscription> ShowCurrentSubscription(string userguid)
@@ -128,7 +129,7 @@ namespace CabicsSubscription.Service.Services
 
             List<Subscription> subscription = new List<Subscription>();
             if (account != null)
-                subscription = context.Subscription.Where(x => x.AccountId == account.Id && x.IsActive == true).ToList();
+                subscription = context.Subscriptions.Where(x => x.AccountId == account.Id && x.IsActive == true).ToList();
 
             return subscription;
 
@@ -142,11 +143,12 @@ namespace CabicsSubscription.Service.Services
             /// 
 
             DataContext context = new DataContext();
-            Subscription subscription = context.Subscription.FirstOrDefault(x => x.IsActive == true && x.AccountId == cabOfficeId && x.SubscriptionTypeId == (int)Constant.SubscriptionType.PayAsYouGo);
+            Subscription subscription = context.Subscriptions.FirstOrDefault(x => x.IsActive == true && x.AccountId == cabOfficeId && x.SubscriptionTypeId == (int)Constant.SubscriptionType.PayAsYouGo);
             int subscriptionId = 0;
 
             if (subscription == null)
             {
+                subscription = new Subscription();
                 PlanService planService = new PlanService();
                 Plan plan = planService.GetPlanDetail(planId);
 
