@@ -209,6 +209,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="add-plan.html" />
     <Content Include="assets\bootstrap\css\bootstrap-theme.css" />
     <Content Include="assets\bootstrap\css\bootstrap.min.css" />
     <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular.svg" />
@@ -337,6 +338,9 @@
     <Content Include="js\bootstrap\bootstrap.min.js" />
     <Content Include="js\libs\jquery-2.1.1.min.js" />
     <Content Include="js\libs\jquery-ui-1.10.3.min.js" />
+    <Content Include="purchase-plan-01.html" />
+    <Content Include="purchase-plan-02.html" />
+    <Content Include="purchase-subscription.html" />
     <Content Include="Scripts\EditPlan.js" />
     <Content Include="Scripts\AddSubscriptionByAdmin.js" />
     <Content Include="Scripts\AddPlan.js" />
@@ -399,6 +403,8 @@
     <Content Include="Scripts\ViewPlanAdmin.js" />
     <Content Include="Scripts\ViewPlan.js" />
     <Content Include="Scripts\ViewUserSubscription.js" />
+    <Content Include="view-plan-cabOffice.html" />
+    <Content Include="view-plan.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

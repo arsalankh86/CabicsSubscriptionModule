@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    
+    <title>Add Plan</title>
+        
+    <!-- Bootstrape CSS and JS -->
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    
+    <!-- Font Awesome CSS -->
+    <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">   
+    
+    <!-- VS CSS -->
+    <link href="css/subscription-style.css" rel="stylesheet" type="text/css">
+    <link href="css/subscription-responsive.css" rel="stylesheet" type="text/css">
+    
+</head>
+
+<body>
+
+<!-- <h1 class="text-center">Add Subscription By Admin</h1> -->
+<!-- <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> -->
+
+<!-- <br><br> -->
+
+<div class="my-body">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="my-field">
+                <label>Plan Code</label>
+                <input type="text" placeholder="Code">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="my-field">
+                <label>Plan Name</label>
+                <input type="text" placeholder="Name">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="my-field">
+                <label>Plan Description</label>
+                <input type="text" placeholder="Description">
+            </div>
+        </div>
+
+        <div class="col-md-4">
+                <div class="my-field">
+                    <label>Plan Expiry Month</label>
+                    <input type="text" placeholder="Code">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="my-field">
+                    <label>Plan Type</label>
+                    <select onchange="showDiv(this)">
+                        <option id="1" value="0">PayAsYouGo</option>
+                        <option id="2" value="1">Monthlhy</option>
+                        <option id="3" value="1">Custom</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="my-field">
+                    <label>Credit Price</label>
+                    <input type="text" placeholder="Description">
+                </div>
+            </div>
+    </div>
+
+    <hr id="mountly-cutsom-hr">
+
+    <div id="mountly-cutsom-form" class="row">
+        <div class="col-md-4">
+            <div class="my-field">
+                <label>No. of Driver</label>
+                <input type="text" placeholder="Code">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="my-field">
+                <label>No. of Agent</label>
+                <input type="text" placeholder="Name">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="my-field">
+                <label>No. of Vehicle</label>
+                <input type="text" placeholder="Description">
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="my-field">
+                <label>Price per SMS</label>
+                <input type="text" placeholder="Code">
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="my-footer">
+    <button class="btn btn-success btn-lg">Add Plan</button>
+</div>
+
+<script>
+    function showDiv(elem){
+        if(elem.value == 1){
+            document.getElementById('mountly-cutsom-form').style.display = "block";
+            document.getElementById('mountly-cutsom-hr').style.display = "block";
+        }        
+        else{
+            document.getElementById('mountly-cutsom-form').style.display = "none";
+            document.getElementById('mountly-cutsom-hr').style.display = "none";
+        }
+    }
+</script>
+</body>
+
+</html>
