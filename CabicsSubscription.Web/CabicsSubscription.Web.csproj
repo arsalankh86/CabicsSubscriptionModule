@@ -209,16 +209,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\bootstrap\css\bootstrap-theme.css" />
+    <Content Include="assets\bootstrap\css\bootstrap.min.css" />
+    <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="assets\bootstrap\js\bootstrap.min.js" />
+    <Content Include="assets\font-awesome\css\font-awesome.min.css" />
+    <Content Include="assets\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\loader.gif" />
-    <Content Include="css\bootstrap.min.css" />
-    <Content Include="css\font-awesome.min.css" />
-    <Content Include="css\lockscreen.min.css" />
-    <Content Include="css\smartadmin-production.min.css" />
-    <Content Include="css\smartadmin-rtl.min.css" />
-    <Content Include="css\smartadmin-skins.min.css" />
-    <Content Include="css\your_style.css" />
+    <Content Include="css\subscription-responsive.css" />
+    <Content Include="css\subscription-style.css" />
     <Content Include="dll\System.Web.Cors.dll" />
     <Content Include="dll\System.Web.Http.Cors.dll" />
     <Content Include="dll\System.Web.Http.dll" />
@@ -350,6 +351,27 @@
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="js\libs\jquery-2.1.1.min.map" />
+    <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="assets\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="assets\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="assets\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="assets\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="assets\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="assets\font-roboto\Roboto-Black.ttf" />
+    <Content Include="assets\font-roboto\Roboto-BlackItalic.ttf" />
+    <Content Include="assets\font-roboto\Roboto-Bold.ttf" />
+    <Content Include="assets\font-roboto\Roboto-BoldItalic.ttf" />
+    <Content Include="assets\font-roboto\Roboto-Italic.ttf" />
+    <Content Include="assets\font-roboto\Roboto-Light.ttf" />
+    <Content Include="assets\font-roboto\Roboto-LightItalic.ttf" />
+    <Content Include="assets\font-roboto\Roboto-Medium.ttf" />
+    <Content Include="assets\font-roboto\Roboto-MediumItalic.ttf" />
+    <Content Include="assets\font-roboto\Roboto-Regular.ttf" />
+    <Content Include="assets\font-roboto\Roboto-Thin.ttf" />
+    <Content Include="assets\font-roboto\Roboto-ThinItalic.ttf" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Dashboard.js" />
@@ -419,6 +441,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="imgs\" />
     <Folder Include="Scripts\Admin\" />
     <Folder Include="Scripts\CabOffice\" />
   </ItemGroup>

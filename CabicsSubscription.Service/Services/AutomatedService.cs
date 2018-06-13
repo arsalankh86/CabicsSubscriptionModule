@@ -40,7 +40,7 @@ namespace CabicsSubscription.Service
             DbErrorLog errorlog = new DbErrorLog();
             errorlog.FunctionArgument = "2";
             errorlog.Error = "Entered";
-            errorlog.ModuleFunction = "Ponka";
+            errorlog.ModuleFunction = "Check";
             DataContext dataContext = new DataContext();
             dataContext.DbErrorLogs.Add(errorlog);
             dataContext.SaveChanges();
