@@ -4,10 +4,23 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<title>View Plan</title>
+
+<!-- Bootstrape CSS and JS -->
+<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Font Awesome CSS -->
+<link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<!-- VS CSS -->
+<link href="/css/subscription-style.css" rel="stylesheet" type="text/css">
+<link href="/css/subscription-responsive.css" rel="stylesheet" type="text/css">
 
 
 
-<!-- #MAIN PANEL -->
+
 <div id="main" role="main">
 
     <!-- RIBBON -->
@@ -58,25 +71,23 @@
 
 
 
-                                <div class="col-md-9">
-                                    <h5>Purchase Subscription</h5>
-                                    <div class="table-responsive">
-                                        <div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
-                                        <div id="dvplan" name="dvplan"></div>
+                            <div class="col-md-9">
+                                <h5>Purchase Subscription</h5>
+                                <div class="table-responsive">
+                                    <div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
+                                    <div id="dvplan" name="dvplan"></div>
 
 
-                                    </div>
-                                   
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
-                        <!-- end widget content -->
 
                     </div>
-                    <!-- end widget div -->
+                    <!-- end widget content -->
 
-               
+                </div>
+                <!-- end widget div -->
                 <!-- end widget -->
 
             </article>
@@ -92,19 +103,377 @@
     <!-- END #MAIN CONTENT -->
 
 </div>
-<!-- END #MAIN PANEL -->
-<!-- #SHORTCUT AREA : With large tiles (activated via clicking user name tag)
-     Note: These tiles are completely responsive, you can add as many as you like -->
-<div id="shortcut">
-    <ul>
+
+
+
+<h1 class="text-center">Plans and Pricing</h1>
+<p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+
+<div id="plan-tabs">
+
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#1" data-toggle="tab">PayAsYouGo</a>
+        </li>
         <li>
-            <a href="index.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-envelope fa-4x"></i> <span>Mail <span class="label pull-right bg-color-darken">14</span></span> </span> </a>
+            <a href="#2" data-toggle="tab">Monthly</a>
         </li>
     </ul>
+
+    <div class="tab-content ">
+        <div class="tab-pane active" id="1">
+
+            <div class="plans">
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class=""><a href="purchase-plan-01.html">Purchase</a></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class=""><a href="purchase-plan-02.html">Purchase</a></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class="">Purchase</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class="">Purchase</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class="">Purchase</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class="">Purchase</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="tab-pane" id="2">
+
+            <div class="plans">
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class=""><a href="purchase-plan-01.html">Purchase</a></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class=""><a href="purchase-plan-02.html">Purchase</a></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class="">Purchase</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class="">Purchase</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class="">Purchase</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-box">
+                        <h2>Plan Name</h2>
+                        <div class="amount">
+                            <h6>Amount</h6>
+                            <h3><b>£</b>100</h3>
+                            <ul>
+                                <li>
+                                    <span>Plan Code</span>
+                                    PLAN1K
+                                </li>
+                                <li>
+                                    <span>Credit</span>
+                                    1000
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                        <div class="footer-btns">
+                            <button class="">Delete</button>
+                            <button class="">Purchase</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
 </div>
-<!-- END SHORTCUT AREA -->
-
-
 
 
 
