@@ -31,6 +31,36 @@
 
                 $.each(data, function (index, value) {
                     console.log(value);
+
+
+                    var html1 = "<div class='plan-item'>";
+                    html1 += "<div class='plan-box'>";
+                    html1 += "        <h2>" + value.Name + "</h2>";
+                    html1 += "<div class='amount'>";
+                    html1 += "  <h6>Amount</h6>";
+                    html1 += "  <h3><b>£</b>" + value.CreditPrice + "</h3>";
+                    html1 += "  <ul>";
+                    html1 += "      <li>";
+                    html1 += "          <span>Plan Code</span>";
+                    html1 += "          " + value.PlanCode + "";
+                    html1 += "  </li>";
+                    html1 += "      <li>";
+                    html1 += "          <span>Credit</span>";
+                    html1 += "          " + value.Credit + "";
+                    html1 += "  </li>";
+                    html1 += "  </ul>";
+                    html1 += " </div>";
+                    html1 += "<div class='description'>";
+                    html1 += "  <h4>Description</h4>";
+                    html1 += "  <p>" + value.Description + "</p>";
+                    html1 += "</div>";
+                    html1 += " <div class='footer-btns'>";
+                    html1 += "  <button class=''>Delete</button>";
+                    html1 += "  <button class=''><a href='purchase-plan-01.html'>Purchase</a></button>";
+                    html1 += "</div>";
+                    html1 += "</div>";
+                    html1 += "</div>";
+
                     html += ' <tr><td>' + value.Name + '</td><td>' + value.PlanCode + '</td><td>' + value.Description + '</td><td>' + value.CreditPrice + '</td><td>' + value.Credit + '</td><td>'
                     +
                         '<a data-PlanId ="' + value.Id +
@@ -54,7 +84,7 @@
 
                 html += '  </tbody></table>';
 
-                $("#dvplan").append(html);
+                $("#dvplan").append(html1);
                 $("#divLoader").css("display", "none");
 
                // window.location.href = webUrl + "/Home/Index?data=" + data;
