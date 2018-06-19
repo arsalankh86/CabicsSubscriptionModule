@@ -1,20 +1,28 @@
 ﻿
 @{
-    ViewBag.Title = "ViewPlan";
+    ViewBag.Title = "ViewAllCabOffice";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>ViewPlan</h2>
+<!-- Bootstrape CSS and JS -->
+<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 
+<!-- Font Awesome CSS -->
+<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+<!-- VS CSS -->
+<link href="/css/subscription-style.css" rel="stylesheet" type="text/css">
+<link href="/css/subscription-responsive.css" rel="stylesheet" type="text/css">
 
+<div class="container">
+    <h2>View All Cab Office</h2>
 
-<div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
-<div id="dvcaboffice" name="dvcaboffice"></div>
+    <div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
+    <div id="dvcaboffice" name="dvcaboffice"></div>
+</div>
 
-
-@section scripts{
-
-    <script src="~/Scripts/ViewAllCabOffice.js"></script>
-}
-
+    @section scripts{
+        <script src="~/Scripts/ViewAllCabOffice.js"></script>
+    }

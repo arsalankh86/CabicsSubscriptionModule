@@ -341,6 +341,7 @@
     <Content Include="purchase-plan-01.html" />
     <Content Include="purchase-plan-02.html" />
     <Content Include="purchase-subscription.html" />
+    <Content Include="Scripts\CreditUtilizationReport.js" />
     <Content Include="Scripts\EditPlan.js" />
     <Content Include="Scripts\AddSubscriptionByAdmin.js" />
     <Content Include="Scripts\AddPlan.js" />

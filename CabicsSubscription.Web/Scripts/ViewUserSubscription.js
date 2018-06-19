@@ -51,6 +51,7 @@
                 html += '<td>ChequeNo</td>';
                 html += '<td>Created Date</td>';
                 html += '<td>Refund</td>'
+                html += '<td>CreditUtilizationReport</td>'
                 html += '</tr></thead>';
 
 
@@ -83,6 +84,7 @@
                         html += '<td> ' + value.ChequeNo + '</td >';
                         html += '<td>' + value.CreatedDateTime + '</td>';
                         html += '<td><a data-TransactionId="' + value.btTransactionId + '" onclick="RefudSubscription(this)">Refund Subscription(S)</a></td >';
+                        html += '<td><a data-accountid="' + id + '" data-subscriptionid= "' + value.Id + '" onclick="CreditUtilizationReport(this)" >Credit Utilization Report</a></td >';
                         html += '</tr > </tbody> ';
 
                     });
@@ -110,6 +112,17 @@
         var transactionId = $(obj).attr('data-TransactionId');
 
         window.location.href = webUrl + "/Admin/RefundRequest?tid=" + transactionId;
+
+        return false;
+
+    }
+
+    CreditUtilizationReport = function (obj) {
+
+        var accountId = $(obj).attr('data-accountid');
+        var subscriptionId = $(obj).attr('data-subscriptionid');
+
+        window.location.href = webUrl + "/Admin/CreditUtilizationReport?accountId=" + accountId + "&subscriptionId=" + subscriptionId;
 
         return false;
 

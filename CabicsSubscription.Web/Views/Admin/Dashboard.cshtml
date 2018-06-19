@@ -1,14 +1,29 @@
 ﻿
 @{
-    ViewBag.Title = "Dashboard";
+    ViewBag.Title = "_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Dashboard</h2>
+<!-- Bootstrape CSS and JS -->
+<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 
-<a href="AddPlan">Add Plan </a><br />
+<!-- Font Awesome CSS -->
+<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-<a href="ViewPlan"> View Plan</a><br />
+<!-- VS CSS -->
+<link href="/css/subscription-style.css" rel="stylesheet" type="text/css">
+<link href="/css/subscription-responsive.css" rel="stylesheet" type="text/css">
 
-<a href="ViewAllCabOffice"> View Cab Office Subscription </a><br />
 
-<a href="CreditUtilizationReport"> Credit Utilization Report  </a><br />
+
+<div class="container">
+    <h2>Dashboard</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><a href="AddPlan">Add Plan</a> </li>
+        <li class="list-group-item"><a href="ViewPlan">View Plan</a> </li>
+        <li class="list-group-item"><a href="ViewAllCabOffice"> View Cab Office Subscription</a> </li>
+        @*<li class="list-group-item"><a href="CreditUtilizationReport">Credit Utilization Report </a></li>*@
+    </ul>
+</div>

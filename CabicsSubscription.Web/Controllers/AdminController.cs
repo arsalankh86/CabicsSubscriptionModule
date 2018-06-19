@@ -90,7 +90,7 @@ namespace CabicsSubscription.Web.Controllers
         [HttpPost]
         public ActionResult SubmitRefund(FormCollection form)
         {
-
+            PlanService planService = new PlanService();
 
             Braintree.Environment environment;
             if (ConfigurationManager.AppSettings["BtEnvironmentTestMode"].ToString() == "1")
@@ -106,16 +106,22 @@ namespace CabicsSubscription.Web.Controllers
                 PublicKey = ConfigurationManager.AppSettings["BtPublicKey"],
                 PrivateKey = ConfigurationManager.AppSettings["BtPrivateKey"]
             };
-            Result<Transaction> refundResult;
+            Result<Transaction> refundResult = null;
             string transactionId = form["hdntransactionid"].ToString();
+            Service.Subscription subscription = subscriptionService.GetSubscriptionByTransactionId(transactionId);
+            int creditused = subscription.TotalCredit - subscription.RemainingCredit;
+            double amountused=0, remainingamount=0, creditAmount=0;
 
             if (form["hdnmode"].ToString() == "1")
             {
-              refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString());
+                if (creditused != 0)
+                {
+                    ViewBag.Error = "Unable to Fully Refund due to "+creditused+" credit(s) used ";
+                    return View();
+                }
 
+                refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString());
                 subscriptionService.DeactivateCurrentSubscription(transactionId);
-
-            
                 
             }
             else
@@ -126,8 +132,48 @@ namespace CabicsSubscription.Web.Controllers
                     return View();
                 }
 
-                refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString(), Convert.ToDecimal(form["txtamount"]));
+                Service.Plan plan = planService.GetPlanDetailByPlanId(subscription.PlanId);
+                if (subscription.SubscriptionTypeId == 1)
+                {
+                   
+                   creditAmount = Convert.ToDouble(plan.CreditPrice);
+                   amountused = creditAmount * creditused;
+                   remainingamount = subscription.SubscriptionPrice - amountused;
+                    double newTotalPrice = subscription.SubscriptionPrice - Convert.ToDouble(form["txtamount"]);
+                    double totalCredit = newTotalPrice / creditAmount; 
+                    if (Convert.ToDouble(form["txtamount"]) > remainingamount)
+                    {
+                        ViewBag.Error = "Amount is greater than remaining amount ";
+                        return View();
+                    }
+                    refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString(), Convert.ToDecimal(form["txtamount"]));
+                    subscriptionService.UpdateTotalCreditAndAmount(subscription.Id, newTotalPrice, totalCredit);
+                }
+                else if(subscription.SubscriptionTypeId == 2)
+                {
+                    var daysInCurrentMonths = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+                    var perDayCreditAmount = subscription.TotalPrice / daysInCurrentMonths;
+
+                    var dayspend = Convert.ToInt32(DateTime.Now.ToString("d"));
+
+                    var amountUsed = dayspend * perDayCreditAmount;
+
+
+                    if (Convert.ToDouble(form["txtamount"]) > amountused)
+                    {
+                        ViewBag.Error = "Amount is greater than remaining amount ";
+                        return View();
+
+                    }
+
+                    var remainingAmount = subscription.TotalPrice - Convert.ToDouble(form["txtamount"]);
+                    refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString(), Convert.ToDecimal(form["txtamount"]));
+                    subscriptionService.UpdateTotalCreditAndAmount(subscription.Id, remainingAmount, 0);
+                }
+
             }
+
+              
 
             RefundTranactionLog refundTranactionLog = new RefundTranactionLog();
             refundTranactionLog.TransactionId = transactionId;

@@ -64,6 +64,10 @@
     <Compile Include="Migrations\201806102240581_subscriptionv41.Designer.cs">
       <DependentUpon>201806102240581_subscriptionv41.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806172323534_migrationv4.cs" />
+    <Compile Include="Migrations\201806172323534_migrationv4.Designer.cs">
+      <DependentUpon>201806172323534_migrationv4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\DbErrorLogService.cs" />
     <Compile Include="Migrations\201805232110550_subscriptionv3.cs" />
     <Compile Include="Migrations\201805232110550_subscriptionv3.Designer.cs">
@@ -160,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806102240581_subscriptionv41.resx">
       <DependentUpon>201806102240581_subscriptionv41.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806172323534_migrationv4.resx">
+      <DependentUpon>201806172323534_migrationv4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

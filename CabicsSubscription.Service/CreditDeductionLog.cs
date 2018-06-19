@@ -16,6 +16,9 @@ namespace CabicsSubscription.Service
         public int CreditDeductionTypeId { get; set; }
         public int JobId { get; set; }
         public int Credits { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public bool IsActive { get; set; }
 
     }
 }

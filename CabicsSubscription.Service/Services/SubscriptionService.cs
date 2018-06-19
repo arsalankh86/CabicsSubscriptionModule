@@ -87,7 +87,10 @@ namespace CabicsSubscription.Service.Services
 
         }
 
-       
+        public Subscription GetSubscriptionByTransactionId(string transactionId)
+        {
+            throw new NotImplementedException();
+        }
 
         public void DeactivateCurrentSubscription(string transactionId)
         {
@@ -97,6 +100,10 @@ namespace CabicsSubscription.Service.Services
             context.SaveChanges();
         }
 
+        public List<Subscription> GetCredititUtilizationReport(int cabOfficeId, int subscriptionId)
+        {
+            throw new NotImplementedException();
+        }
 
         public void MinusCreditFromSubscription(string transactionId, double amount)
         {
@@ -115,11 +122,24 @@ namespace CabicsSubscription.Service.Services
 
         }
 
-
+     
         public List<Subscription> GetUserAllSubscriptionDetail(int cabOfficeId)
         {
             DataContext context = new DataContext();
             return context.Subscriptions.Where(x => x.IsActive == true && x.AccountId == cabOfficeId).ToList();
+        }
+
+        public void UpdateTotalCreditAndAmount(int id, double totalPrice, double totalCredit)
+        {
+            using (DataContext context = new DataContext())
+            {
+
+                Subscription subscription = context.Subscriptions.FirstOrDefault(x => x.Id == id && x.IsActive == true);
+                subscription.TotalPrice = totalPrice;
+                subscription.TotalCredit = Convert.ToInt32(totalCredit);
+                context.SaveChanges();
+
+            }
         }
 
         public List<Subscription> ShowCurrentSubscription(string userguid)
@@ -213,6 +233,7 @@ namespace CabicsSubscription.Service.Services
 
             }
         }
+
 
     }
 }

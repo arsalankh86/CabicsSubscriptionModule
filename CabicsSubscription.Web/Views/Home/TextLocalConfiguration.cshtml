@@ -3,6 +3,19 @@
     ViewBag.Title = "TextLocalConfiguration";
 }
 
+<!-- Bootstrape CSS and JS -->
+<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Font Awesome CSS -->
+<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<!-- VS CSS -->
+<link href="/css/subscription-style.css" rel="stylesheet" type="text/css">
+<link href="/css/subscription-responsive.css" rel="stylesheet" type="text/css">
+
+
 
 <div class="">
     <div class="col-md-12">
@@ -10,6 +23,7 @@
             <!-- PAGE HEADER -->
             <i class="fa-fw fa fa-plus-square"></i>
             TextLocal Configuration
+            <br />
         </h1>
     </div>
 </div>
@@ -17,7 +31,7 @@
 
 
 <!-- widget grid -->
-<section id="widget-grid" class="">
+@*<section id="widget-grid" class="">
     <!-- row -->
     <div class="">
         <!-- NEW COL START -->
@@ -72,10 +86,10 @@
 
                             <footer>
                                 <input type="button" value="Add Textlocal Configuration" id="btnsubmut" name="btnsubmit" class="btn btn-primary" /><div id="dvback">
-</div>
+                                </div>
                             </footer>
 
-                           
+
 
 
                         </form>
@@ -90,15 +104,58 @@
 
     </div>
     <!-- end row -->
-</section>
+</section>*@
 <!-- end widget grid -->
 <!-- END #MAIN CONTENT -->
 
 
+
+<form id="checkout-form" class="smart-form" novalidate="novalidate">
+    <div class="my-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="my-field">
+                    <label>API Key</label>
+                    <input type="text" id="txtApiKey" name="txtApiKey" placeholder="API Key">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="my-field">
+                    <label>User Name</label>
+                    <input type="text" id="txtusername" name="txtusername" placeholder="User Name">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="my-field">
+                    <label>Hash</label>
+                    <input type="text" id="txtHash" name="txtHash" placeholder="Hash">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="my-field">
+                    <label>Password</label>
+                    <input type="password" id="txtPassword" name="txtPassword" placeholder="Password" >
+                </div>
+            </div>
+        </div>
+
+        <hr id="mountly-cutsom-hr">
+
+        
+
+
+    </div>
+    <div class="my-footer">
+        <input type="button" value="Add Plan" id="btnsubmut" name="btnsubmit" class="btn btn-success btn-lg" />
+    </div>
+</form>
+
+
 <script src="~/Scripts/TextlocalConfiguration.js"></script>
 <script>
-        $(function () {
+    $(function () {
 
-            textlocalConfiguration.InitalizeEvents();
-        })
+        textlocalConfiguration.InitalizeEvents();
+    })
 </script>

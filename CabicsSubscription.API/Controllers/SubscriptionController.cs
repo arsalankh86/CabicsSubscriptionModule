@@ -81,6 +81,12 @@ namespace CabicsSubscription.API.Controllers
             return null;
         }
 
+        [HttpGet]
+        public List<Service.Subscription> GetCredititUtilizationReport(int cabOfficeId, int subscriptionId)
+        {
+                SubscriptionService subscriptionService = new SubscriptionService();
+                return subscriptionService.GetCredititUtilizationReport(cabOfficeId, subscriptionId);
+        }
 
     }
 }

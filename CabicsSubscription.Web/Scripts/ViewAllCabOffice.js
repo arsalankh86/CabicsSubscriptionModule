@@ -21,19 +21,19 @@ var ViewAllCabOffice = new function () {
             dataType: "json",
             success: function (response) {
                 console.log(response);
-                var html = '<table border="1"><tr><td>Full Name</td><td>Email</td><td>Token</td><td>Action</td></tr>'
+                var html = '<table class="table"> <thead> <tr><td>Full Name</td><td>Email</td><td>Token</td><td>Subscriptions</td></tr></thead>'
 
                 $.each(response, function (index, value) {
 
                     console.log(value);
-                    html += '<tr><td>' + value.FullName + '</td><td>' + value.Email + '</td><td>' + value.Token + '</td><td>'
+                    html += '<tbody><tr><td>' + value.FullName + '</td><td>' + value.Email + '</td><td>' + value.Token + '</td><td>'
                     +
                         '<a data-AccountId ="' + value.Id +
                         '" data-AccountToken="' + value.Token +
                         '" data-email="' + value.Email +
                         '" onclick="ViewAllSubscription(this)">View All Sunscriptiond(S)</a>'
                     +
-                    '</td ></tr > ';
+                    '</td ></tr ></tbody> ';
 
                 });
 
