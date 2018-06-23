@@ -145,6 +145,7 @@
                     $(lblsmscreditprice).text(data.PerCreditSMSPrice);
                     $(qty).css('display', 'none');
                     $("#dvAutoRenewel").css('display', 'block');
+                    $("#chkautorenewel").attr("checked", "checked");
 
                 }
                 else {

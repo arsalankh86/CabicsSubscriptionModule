@@ -66,6 +66,17 @@ namespace CabicsSubscription.Service.Services
                     Account account = context.Accounts.FirstOrDefault(x => x.Id == cabofficeid && x.IsActive == true);
                     account.CurrentSubscriptionId = subscriptionId;
                     context.SaveChanges();
+
+                    List<Subscription> lstSubscription = context.Subscriptions.Where(x => x.AccountId == cabofficeid && x.Id != subscriptionId).ToList();
+                    foreach(Subscription subscription in lstSubscription)
+                    {
+                        subscription.IsActive = false;
+                        context.SaveChanges();
+                    }
+
+
+
+
                 }
 
                 return true;

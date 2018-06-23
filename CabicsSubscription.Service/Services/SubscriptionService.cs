@@ -149,7 +149,7 @@ namespace CabicsSubscription.Service.Services
 
             List<Subscription> subscription = new List<Subscription>();
             if (account != null)
-                subscription = context.Subscriptions.Where(x => x.AccountId == account.Id && x.IsActive == true).ToList();
+                subscription = context.Subscriptions.Where(x => x.AccountId == account.Id).ToList();
 
             return subscription;
 
@@ -163,14 +163,19 @@ namespace CabicsSubscription.Service.Services
             /// 
 
             DataContext context = new DataContext();
-            Subscription subscription = context.Subscriptions.FirstOrDefault(x => x.IsActive == true && x.AccountId == cabOfficeId && x.SubscriptionTypeId == (int)Constant.SubscriptionType.PayAsYouGo);
+            PlanService planService = new PlanService();
+            Plan plan = planService.GetPlanDetail(planId);
+
+            Subscription subscription = null;
+            if (plan.PlanTypeId == (int)Constant.SubscriptionType.PayAsYouGo)
+                subscription = context.Subscriptions.FirstOrDefault(x => x.IsActive == true && x.AccountId == cabOfficeId && x.SubscriptionTypeId == (int)Constant.SubscriptionType.PayAsYouGo);
+
             int subscriptionId = 0;
 
             if (subscription == null)
             {
                 subscription = new Subscription();
-                PlanService planService = new PlanService();
-                Plan plan = planService.GetPlanDetail(planId);
+               
 
                 subscription.PlanId = plan.Id;
                 subscription.PlanName = plan.Name;
@@ -193,14 +198,17 @@ namespace CabicsSubscription.Service.Services
                     subscription.RemainingNoOfVehicles = plan.NoOfVehicles;
                     subscription.SMSPrice = smscreditamount;
                     subscription.NoOfSmsCreditPurchase = smscreditqty;
+                    subscription.IsAutoRenewel = isAutoRenewel;
+                    subscription.NoOfBillingCycle = noOfBillingCycle;
+                    subscription.btSubscriptionId = btSubsccriptionId;
                 }
                 if (plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
                 {
+                    subscription.TotalCredit = qty;
+                    subscription.RemainingCredit = qty;
                  
                 }
-                subscription.IsAutoRenewel = isAutoRenewel;
-                subscription.NoOfBillingCycle = noOfBillingCycle;
-                subscription.btSubscriptionId = btSubsccriptionId;
+                
                 subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Active;
                 subscription.IsActive = true;
 
