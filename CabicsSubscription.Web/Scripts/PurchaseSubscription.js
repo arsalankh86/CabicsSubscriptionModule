@@ -24,7 +24,11 @@
     var lblsmscreditprice = "#lblsmscreditprice";
     var smscreditqty = "#smscreditqty";
     var dvcreditdeductiondetail = "#dvcreditdeductiondetail";
-    var dvsmscreditqty = "#dvsmscreditqty";
+    var spnnoOfAgents = "#spnnoOfAgents";
+    var spnnoOfDrivers = "#spnnoOfDrivers";
+    var spnnoOfVehicles = "#spnnoOfVehicles";
+    var spnpricePerSMS = "#spnpricePerSMS";
+    var dvmonthlynew = "#dvmonthlynew";
  
     this.InitalizeEvents = function () {
         $(divLoader).css("display", "none");
@@ -111,7 +115,7 @@
     this.SetPlanValue = function () {
        
        var planid = GetParameterValues('id');
-       var account = GetParameterValues('account');
+       var account = GetParameterValues('data');
 
        $(hdnaccount).val(account);
        $(hdnplanid).val(planid);
@@ -139,6 +143,12 @@
                     html = 'Buy Credit (' + data.Credit + ' Month = £' + data.CreditPrice + ')';;
 
                     $(dvmonthly).append(monthlyplandetail);
+                    $(dvmonthlynew).css('display', 'block');
+                    $(spnnoOfAgents).text(data.NoOfAgents);
+                    $(spnnoOfDrivers).text(data.NoOfDrivers);
+                    $(spnnoOfVehicles).text(data.NoOfVehicles);
+                    $(spnpricePerSMS).text(data.PerCreditSMSPrice);
+
                     $(hdnamount).val(data.CreditPrice);
                     $(totalamount).val(data.CreditPrice);
                     $(hdnsmscreditamount).text(data.PerCreditSMSPrice);
@@ -177,7 +187,7 @@
 
                 var html = '<h3> Credit Deduction Detail is: </h3>';
                 $.each(data, function (i) {
-                    html += '<br />' + data[i].Name + ' ' + data[i].Credit;
+                    html += '' + data[i].Name + ' ' + data[i].Credit;
                     html += '<br />';
                 });
               
@@ -213,11 +223,5 @@
             }
         });
     }
-
-
-
-
-
-    
 
 }

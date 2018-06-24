@@ -57,7 +57,7 @@
                         html1 += "  <p>" + value.Description + "</p>";
                         html1 += "</div>";
                         html1 += " <div class='footer-btns full-btn'>";
-                        html1 += "  <button data-PlanId ='" + value.Id + "' onclick='PurchseForCabOffice(this)' class=''>Purchase Plan</button>";
+                        html1 += "  <button data-PlanId ='" + value.Id + "'  data-AccountId='" + account +"' onclick='PurchseForCabOffice(this)' class=''>Purchase Plan</button>";
                         html1 += "</div>";
                         html1 += "</div>";
                         html1 += "</div>";
@@ -85,7 +85,7 @@
                         html2 += "  <p>" + value.Description + "</p>";
                         html2 += "</div>";
                         html2 += " <div class='footer-btns full-btn'>";
-                        html2 += "  <button data-PlanId ='" + value.Id + "' onclick='PurchseForCabOffice(this)' class=''>Purchase Plan</button>";
+                        html2 += "  <button data-PlanId ='" + value.Id + "' data-AccountId='" + account +"' onclick='PurchseForCabOffice(this)' class=''>Purchase Plan</button>";
                         html2 += "</div>";
                         html2 += "</div>";
                         html2 += "</div>";

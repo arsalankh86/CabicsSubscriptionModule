@@ -1,96 +1,110 @@
-﻿<div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
+﻿<!-- Bootstrape CSS and JS -->
+<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Font Awesome CSS -->
+<link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<!-- VS CSS -->
+<link href="/css/subscription-style.css" rel="stylesheet" type="text/css">
+<link href="/css/subscription-responsive.css" rel="stylesheet" type="text/css">
 
 
-<div class="">
-    <div class="col-md-12">
-        <h1 class="page-title txt-color-blueDark">
-            <!-- PAGE HEADER -->
-            <i class="fa-fw fa fa-plus-square"></i>
-            Purchase Plan
-        </h1>
+
+<div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
+
+<h1 class="text-center">Purchase Subscription</h1>
+<h3 class="text-center"> <span id="dvbuycredit" name="dvbuycredit">   </span></h3>
+@*<div id="dvmonthly" name="dvmonthly"></div>*@
+<div id="dvcreditdeductiondetail">
+</div>
+<br />
+<div class="row" id="dvmonthlynew" style="display:none;">
+    <div class="col-md-3 col-sm-3 col-xs-6">
+        <div class="dash-box">
+            <span>No of Agents</span>
+            <h1><label id="spnnoOfAgents"></label></h1>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-3 col-xs-6">
+        <div class="dash-box">
+            <span>No of Driver</span>
+            <h1><label id="spnnoOfDrivers"></label></h1>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-3 col-xs-6">
+        <div class="dash-box">
+            <span>No of Vehicles</span>
+            <h1><label id="spnnoOfVehicles"></label></h1>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-3 col-xs-6">
+        <div class="dash-box">
+            <span>Price Per SMS</span>
+            <h1><label id="spnpricePerSMS"></label></h1>
+        </div>
     </div>
 </div>
 
 
+<form id="payment-form" method="post" class="smart-form" action="/Home/SubmitContact">
+    <input type="hidden" name="hdnplanid" id="hdnplanid" />
+    <input type="hidden" name="hdnaccount" id="hdnaccount" />
 
-
-
-<div class="site-width" id="payment-tabs">
-    <div id="alerts"></div>
-
-    <div id="dvcrruentsubscription">
-    </div>
-    <h1 id="plan-name-title">
-        <span id="dvbuycredit" name="dvbuycredit">   </span>
-
-    </h1>
-
-    <div id="dvmonthly" name="dvmonthly"></div>
-    <br />
-    <div id="dvcreditdeductiondetail">
-    </div>
-    <br />
-    <br />
-    <form id="payment-form" method="post" class="smart-form" action="/Home/SubmitContact">
-            <input type="hidden" name="hdnplanid" id="hdnplanid" />
-            <input type="hidden" name="hdnaccount" id="hdnaccount" />
-
-            <div class="my-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="my-field">
-                            @*<label>First Name</label>*@
-                            <input type="text" id="fname" name="fname" placeholder="First Name">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="my-field">
-                            @*<label>Last Name</label>*@
-                            <input type="text" id="lname" name="lname" placeholder="Last Name">
-                        </div>
-                    </div>
-
-                    <div class="col-md-4" id="dvsmscreditqty" name="dvsmscreditqty">
-                        <label>SMS Credit Quantity: (Per SMS Credit Price £<span id="lblsmscreditprice" name="lblsmscreditprice"></span>)</label>
-                        <input type="text" class="form-control" id="smscreditqty" name="smscreditqty">
-                        <input type="hidden" name="hdnsmscreditamount" id="hdnsmscreditamount" />
-                        <input type="hidden" name="hdnsmscreditotaltamount" id="hdnsmscreditotaltamount" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label>Credit: (£<span id="lblprice" name="lblprice"></span>)</label>
-                        <input type="text" class="form-control" id="qty" name="qty" placeholder="Quantity">
-                        <input type="hidden" name="hdnamount" id="hdnamount" />
-                    </div>
-
-                    <div class="col-md-4">
-                        Total: <input type="text" class="form-control" id="totalamount" name="totalamount" disabled="disabled">
-                    </div>
-
-                    <div class="col-md-4" id="dvAutoRenewel" name="dvAutoRenewel" style="display:none;">
-                        Auto Renewel: <input type="checkbox" class="form-control" id="chkautorenewel" name="chkautorenewel">
-                    </div>
-                    <div class="col-md-4" id="dvbillingcycle" name="dvbillingcycle" style="display:none;">
-                        No. Of Billing Cycle:  <input type="text" class="form-control" id="noOfBillingCycle" name="noOfBillingCycle">
-                    </div>
-
+    <div class="my-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="my-field">
+                    @*<label>First Name</label>*@
+                    <input type="text" id="fname" name="fname" placeholder="First Name">
                 </div>
-
-                <div class="bt-drop-in-wrapper">
-                    <div id="bt-dropin"></div>
+            </div>
+            <div class="col-md-4">
+                <div class="my-field">
+                    @*<label>Last Name</label>*@
+                    <input type="text" id="lname" name="lname" placeholder="Last Name">
                 </div>
-                <input id="nonce" name="payment_method_nonce" type="hidden" />
+            </div>
 
-                <div class="my-footer">
-                    <button class="button" type="submit" onclick="ValidateSubscription(this)"><span>Test Transaction</span></button>
-                </div>
+            <div class="col-md-4" id="dvsmscreditqty" name="dvsmscreditqty">
+                @*<label>SMS Credit Quantity: (Per SMS Credit Price £<span id="lblsmscreditprice" name="lblsmsreditprice"></span>)</label>*@
+                <input type="text" class="form-control" id="smscreditqty" name="smscreditqty" placeholder="SMS Credit Quantity">
+                <input type="hidden" name="hdnsmscreditamount" id="hdnsmscreditamount" />
+                <input type="hidden" name="hdnsmscreditotaltamount" id="hdnsmscreditotaltamount" />
+            </div>
+
+            <div class="col-md-4">
+                @*<label>Credit: (£<span id="lblprice" name="lblprice"></span>)</label>*@
+                <input type="text" class="form-control" id="qty" name="qty" placeholder="Quantity">
+                <input type="hidden" name="hdnamount" id="hdnamount" />
+            </div>
+
+            <div class="col-md-4">
+                Total: <input type="text" class="form-control" id="totalamount" name="totalamount" disabled="disabled">
+            </div>
+
+            <div class="col-md-4" id="dvAutoRenewel" name="dvAutoRenewel" style="display:none;">
+                Auto Renewel: <input type="checkbox" class="form-control" id="chkautorenewel" name="chkautorenewel">
+            </div>
+            <div class="col-md-4" id="dvbillingcycle" name="dvbillingcycle" style="display:none;">
+                No. Of Billing Cycle:  <input type="text" class="form-control" id="noOfBillingCycle" name="noOfBillingCycle">
+            </div>
+
+        </div>
+
+        <div class="bt-drop-in-wrapper">
+            <div id="bt-dropin"></div>
+        </div>
+        <input id="nonce" name="payment_method_nonce" type="hidden" />
+
+        <div class="my-footer">
+            <button class="btn btn-success btn-lg" type="submit" onclick="ValidateSubscription(this)"><span>Purchase</span></button>
+        </div>
 
 
-                <div>
-        </form>
-
-</div>
-</div>
+        
+</form>
 
 
 
