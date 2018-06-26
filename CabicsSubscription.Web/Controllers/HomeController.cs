@@ -119,7 +119,7 @@ namespace CabicsSubscription.Web.Controllers
             if(form["hdnsmscreditotaltamount"] != null && form["hdnsmscreditotaltamount"] != "")
                 smscreditamount = Convert.ToDecimal(form["hdnsmscreditotaltamount"]);
 
-            amount = planamount + smscreditamount;
+            amount = planamount;// + smscreditamount;
 
             PlanService planService = new PlanService();
             var planId = 0;

@@ -55,7 +55,7 @@
             /* This will be fired every time, when textbox's value changes. */
 
             var totalprice = $(hdnamount).val();
-            var lblsmscreditprice = $(hdnsmscreditamount).text();
+            var lblsmscreditprice = $(hdnsmscreditamount).val();
             var smscreditqty = this.value;
             var totalsmscreditprice = lblsmscreditprice * smscreditqty;
 
@@ -151,7 +151,7 @@
 
                     $(hdnamount).val(data.CreditPrice);
                     $(totalamount).val(data.CreditPrice);
-                    $(hdnsmscreditamount).text(data.PerCreditSMSPrice);
+                    $(hdnsmscreditamount).val(data.PerCreditSMSPrice);
                     $(lblsmscreditprice).text(data.PerCreditSMSPrice);
                     $(qty).css('display', 'none');
                     $("#dvAutoRenewel").css('display', 'block');
@@ -161,6 +161,7 @@
                 else {
 
                     $(dvsmscreditqty).css('display', 'none');
+                    
                 }
 
                 $(dvbuycredit).text(html);

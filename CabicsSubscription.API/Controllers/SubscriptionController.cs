@@ -23,15 +23,82 @@ namespace CabicsSubscription.API.Controllers
         }
 
         [HttpPost]
-        public Service.Subscription InsertSubscriptionbyAdmin(InsertSubscriptionByAdminRequest insertSubscriptionByAdminRequest)
+        public int InsertSubscriptionbyAdmin(InsertSubscriptionByAdminRequest insertSubscriptionByAdminRequest)
         {
-            SubscriptionService subscriptionService = new SubscriptionService();
-            Service.Subscription subscription = null; //subscriptionService.PurchaseSubscription(insertSubscriptionByAdminRequest.PlanId, insertSubscriptionByAdminRequest.totalamount, insertSubscriptionByAdminRequest.cabofficeid, insertSubscriptionByAdminRequest.qty,"");
-            return subscription;            
+            double planamount = 0, smscreditamount = 0, amount = 0;
+
+            if (insertSubscriptionByAdminRequest.hdnsmscreditamount != null && insertSubscriptionByAdminRequest.hdnsmscreditamount != 0)
+                smscreditamount = Convert.ToDouble(insertSubscriptionByAdminRequest.hdnsmscreditamount) * insertSubscriptionByAdminRequest.smscreditqty;
+
+            amount = Convert.ToDouble(insertSubscriptionByAdminRequest.hdnamount);
+
+            PlanService planService = new PlanService();
+            int planId = 0;
+            int accountid = 0;
+
+            if (insertSubscriptionByAdminRequest.PlanId != 0)
+                planId = insertSubscriptionByAdminRequest.PlanId;
+
+            CabicsSubscription.Service.Plan plan = planService.GetPlanDetailByPlanId(planId);
+
+            if (insertSubscriptionByAdminRequest.cabofficeid != 0)
+                accountid = insertSubscriptionByAdminRequest.cabofficeid;
+
+            bool resultt;
+            Transaction transactionid;
+
+            bool chkautorenewel = false;
+            int noOfInstallment = 0;
+
+            var bit = "off";
+            if (insertSubscriptionByAdminRequest.chkautorenewel != null)
+                bit = insertSubscriptionByAdminRequest.chkautorenewel.ToString();
+
+            if (bit == "on")
+                chkautorenewel = true;
+
+           
+                //return RedirectToAction("Show", new { id = transaction.Id });
+                SubscriptionService subscriptionService = new SubscriptionService();
+
+                int qty = 1;
+                if (insertSubscriptionByAdminRequest.qty != null)
+                    qty = Convert.ToInt32(insertSubscriptionByAdminRequest.qty);
+
+                int smscreditqty = 0;
+                if (insertSubscriptionByAdminRequest.smscreditqty != 0)
+                    smscreditqty = insertSubscriptionByAdminRequest.smscreditqty;
+
+                double hdnsmscreditamount = 0;
+                    hdnsmscreditamount = Convert.ToInt32(insertSubscriptionByAdminRequest.hdnsmscreditotaltamount);
+
+                int subscriptionId = subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(insertSubscriptionByAdminRequest.hdnamount),
+                    insertSubscriptionByAdminRequest.cabofficeid, qty, insertSubscriptionByAdminRequest.chequeNo, smscreditqty, smscreditamount,
+                   "adminsubscriptionbycheque", "", chkautorenewel, noOfInstallment);
+
+            if(chkautorenewel == true)
+            {
+
+                //// Insert into execution service
+
+                WindowsServiceExecution winservice = new WindowsServiceExecution();
+                winservice.WindowsServiceFunction = "Automatic Charging";
+                winservice.WindowsServiceArgumrnt = subscriptionId;
+                winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
+                winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
+                winservice.IsActive = true;
+                winservice.CreatedDate = DateTime.Now;
+
+                WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
+                windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
+
+
+            }
+
+            return subscriptionId;
         }
 
-
-        public List<CreditDeductionType> GetAllCreditDeductionDetail()
+            public List<CreditDeductionType> GetAllCreditDeductionDetail()
         {
             SubscriptionService subscriptionService = new SubscriptionService();
             return subscriptionService.GetCreditDeductionDetail();
