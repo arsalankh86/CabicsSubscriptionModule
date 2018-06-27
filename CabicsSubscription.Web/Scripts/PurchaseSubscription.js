@@ -47,6 +47,13 @@
             $(totalamount).val(this.value * credit);
             $(hdnamount).val(this.value * credit);
             //alert(this.value);
+
+
+            var planid = GetParameterValues('id');
+            var account = GetParameterValues('account');
+
+            $(hdnaccount).val(account);
+            $(hdnplanid).val(planid);
         });
 
 

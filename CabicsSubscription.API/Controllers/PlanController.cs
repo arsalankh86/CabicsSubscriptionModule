@@ -88,9 +88,13 @@ namespace CabicsSubscription.API.Controllers
             {
                 Plan planChk1 = context.plans.FirstOrDefault(x => x.PlanCode == planCode);
                 Plan planChk2 = context.plans.FirstOrDefault(x => x.PlanTypeId == 1);
+                
 
+                
                 if (planChk1 != null)
                     return -1001;
+                if(planChk2 == null)
+                    return 1;
                 else if (planChk2.PlanTypeId == planTypeId)
                     return -1002;
 

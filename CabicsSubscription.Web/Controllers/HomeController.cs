@@ -238,7 +238,12 @@ namespace CabicsSubscription.Web.Controllers
                 SubscriptionService subscriptionService = new SubscriptionService();
 
                 bool chkAutoRenewel = false;
-                string btSubscriptionId = result.Target.Id;
+                string btSubscriptionId = "", transactionId = "";
+
+                if (result.Target != null)
+                    btSubscriptionId = result.Target.Id;
+                if (transaction != null)
+                    transactionId = transaction.Id;
 
                 int qty = 1;
                 if (form["qty"] != null && form["qty"] != "")
@@ -249,11 +254,11 @@ namespace CabicsSubscription.Web.Controllers
                     smscreditqty = Convert.ToInt32(form["smscreditqty"]);
 
                 double hdnsmscreditamount = 0;
-                if (form["hdnsmscreditamount"] != null && form["hdnsmscreditamount"] != "")
-                    hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
+                if (form["hdnsmscreditotaltamount"] != null && form["hdnsmscreditotaltamount"] != "")
+                    hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditotaltamount"]);
 
                 int subscriptionId =  subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount), account.Id, qty, "", smscreditqty, hdnsmscreditamount,
-                    transaction.Id, btSubscriptionId, chkautorenewel, noOfInstallment);
+                    transactionId, btSubscriptionId, chkautorenewel, noOfInstallment);
 
                 //// Insert into execution service
 

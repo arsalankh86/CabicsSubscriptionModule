@@ -127,6 +127,9 @@
         form.addEventListener('submit', function (event) {
             event.preventDefault();
 
+           
+
+
             instance.requestPaymentMethod(function (err, payload) {
                 if (err) {
                     console.log('Error', err);
