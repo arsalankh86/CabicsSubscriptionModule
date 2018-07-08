@@ -23,7 +23,9 @@ var addplan = new function () {
 
     this.InitalizeEvents = function () {
         
-        $("#planexpirydate").datepicker();
+        $("#planexpirydate").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
 
         $(plantype).on("change", function () {
 

@@ -2,6 +2,7 @@
 using CabicsSubscription.Service.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,25 +81,74 @@ namespace CabicsSubscription.Service
                 WindowsServiceLogging.WriteEventLog("******************* -- Checking for Date Matched EndDate: " + endDate+ " Today Date: " + todayDate + " -- ***********************");
                 if (endDate == todayDate)
                 {
+
+
+
                     WindowsServiceLogging.WriteEventLog("******************* -- Date Matched -- ***********************");
-                    //// Insert Re-Subscription
-                    subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount), account.Id, qty, "", smscreditqty, hdnsmscreditamount,
-                       subscription.btTransactionId, subscription.btSubscriptionId, subscription.IsAutoRenewel, subscription.NoOfBillingCycle);
-                    
 
-                    //// Mark execution service Done
-                    windowsServiceExecutionService.MarkWindowsServiceStatus(windowsServiceExecution.Id, (int)Constant.WindowsServiceExecutionStatus.Done);
+                    /// Generate Monthly Sale
 
-                    //// Insert into execution service
-                    WindowsServiceExecution winservice = new WindowsServiceExecution();
-                    winservice.WindowsServiceFunction = "Automatic Charging";
-                    winservice.WindowsServiceArgumrnt = subscriptionId;
-                    winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
-                    winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
-                    winservice.IsActive = true;
-                    winservice.CreatedDate = DateTime.Now;
-                    windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
+                    if (account.Token == null || account.Token != "")
+                        return;
 
+                    #region Payment 
+
+                    bool saleResult;
+                    Braintree.Environment environment;
+                    if (ConfigurationManager.AppSettings["BtEnvironmentTestMode"].ToString() == "1")
+                        environment = Braintree.Environment.SANDBOX;
+                    else
+                        environment = Braintree.Environment.PRODUCTION;
+
+                    var gateway = new BraintreeGateway
+                    {
+                        Environment = environment,
+                        MerchantId = ConfigurationManager.AppSettings["BtMerchantId"],
+                        PublicKey = ConfigurationManager.AppSettings["BtPublicKey"],
+                        PrivateKey = ConfigurationManager.AppSettings["BtPrivateKey"]
+                    };
+
+
+                    Result<PaymentMethodNonce> resultN = gateway.PaymentMethodNonce.Create(account.Token);
+                    var nonce_Generated = resultN.Target.Nonce;
+
+                    var request = new TransactionRequest
+                    {
+                        Amount = Convert.ToDecimal(amount),
+                        PaymentMethodNonce = nonce_Generated,
+                        //Options = new TransactionOptionsRequest
+                        //{
+                        //    SubmitForSettlement = true
+                        //}
+                    };
+
+                    Result<Transaction> result = gateway.Transaction.Sale(request);
+
+                    bool isSuccess = result.IsSuccess();
+                    Transaction transaction = result.Target;
+
+                    #endregion
+
+                    if (isSuccess)
+                    {
+                        //// Insert Re-Subscription
+                        subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount), account.Id, qty, "", smscreditqty, hdnsmscreditamount,
+                           subscription.btTransactionId, subscription.btSubscriptionId, subscription.IsAutoRenewel, subscription.NoOfBillingCycle);
+
+
+                        //// Mark execution service Done
+                        windowsServiceExecutionService.MarkWindowsServiceStatus(windowsServiceExecution.Id, (int)Constant.WindowsServiceExecutionStatus.Done);
+
+                        //// Insert into execution service
+                        WindowsServiceExecution winservice = new WindowsServiceExecution();
+                        winservice.WindowsServiceFunction = "Automatic Charging";
+                        winservice.WindowsServiceArgumrnt = subscriptionId;
+                        winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
+                        winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
+                        winservice.IsActive = true;
+                        winservice.CreatedDate = DateTime.Now;
+                        windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
+                    }
                 }
             }
             catch(Exception ex)

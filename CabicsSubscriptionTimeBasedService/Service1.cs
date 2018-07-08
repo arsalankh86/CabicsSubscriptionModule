@@ -24,7 +24,7 @@ namespace CabicsSubscriptionTimeBasedService
 
         protected override void OnStart(string[] args)
         {
-            System.Diagnostics.Debugger.Launch();
+           // System.Diagnostics.Debugger.Launch();
 
             WindowsServiceLogging.WriteEventLog("Timer is set for one day");
             WindowsServiceLogging.WriteEventLog("Service Started");

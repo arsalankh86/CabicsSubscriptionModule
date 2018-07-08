@@ -89,7 +89,9 @@ namespace CabicsSubscription.Service.Services
 
         public Subscription GetSubscriptionByTransactionId(string transactionId)
         {
-            throw new NotImplementedException();
+            DataContext context = new DataContext();
+            Subscription subscription = context.Subscriptions.FirstOrDefault(x => x.IsActive == true && x.btTransactionId == transactionId);
+            return subscription;
         }
 
         public void DeactivateCurrentSubscription(string transactionId)

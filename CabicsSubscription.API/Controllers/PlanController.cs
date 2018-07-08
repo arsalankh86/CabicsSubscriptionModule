@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using CabicsSubscription.Service.Services;
+using System.Globalization;
 
 namespace CabicsSubscription.API.Controllers
 {
@@ -41,23 +42,28 @@ namespace CabicsSubscription.API.Controllers
                 return result;
 
                 Plan plan = new Plan();
-                plan.Name = planrequest.Name;
-                plan.PlanCode = planrequest.PlanCode;
-                plan.Description = planrequest.Description;
-                plan.Credit = planrequest.Credit;
-                plan.CreditPrice = planrequest.CreditPrice;
-                plan.PlanTypeId = planrequest.PlanTypeId;
-                plan.NoOfAgents = planrequest.NoOfAgents;
-                plan.NoOfDrivers = planrequest.NoOfDrivers;
-                plan.NoOfVehicles = planrequest.NoOfVehicles;
-                plan.PerCreditSMSPrice = planrequest.PerSMSPrice;
-                plan.BrainTreePlanName = planrequest.BrainTreePlan;
-                plan.IsActive = true;
-                plan.CreatedDateTime = DateTime.Now;
-                plan.UpdatedDateTime = DateTime.Now;
-                // plan.PlanExpiryDate = DateTime.Now.AddMonths(6); 
-                plan.PlanExpiryDate = Convert.ToDateTime(planrequest.PlanExpiryDate.ToString());
-                plan = planService.InsertPlan(plan);
+            plan.Name = planrequest.Name;
+            plan.PlanCode = planrequest.PlanCode;
+            plan.Description = planrequest.Description;
+            plan.Credit = planrequest.Credit;
+            plan.CreditPrice = planrequest.CreditPrice;
+            plan.PlanTypeId = planrequest.PlanTypeId;
+            plan.NoOfAgents = planrequest.NoOfAgents;
+            plan.NoOfDrivers = planrequest.NoOfDrivers;
+            plan.NoOfVehicles = planrequest.NoOfVehicles;
+            plan.PerCreditSMSPrice = planrequest.PerSMSPrice;
+            plan.BrainTreePlanName = planrequest.BrainTreePlan;
+            plan.IsActive = true;
+            plan.CreatedDateTime = DateTime.Now;
+            plan.UpdatedDateTime = DateTime.Now;
+            plan.PlanExpiryDateString = planrequest.PlanExpiryDate.ToString();
+            // plan.PlanExpiryDate = DateTime.Now.AddMonths(6); 
+            //"7/10/2013"
+            string date = planrequest.PlanExpiryDate.ToString();
+            DateTime utcDate = DateTime.SpecifyKind(Convert.ToDateTime(date), DateTimeKind.Utc);
+            plan.PlanExpiryDate = utcDate; //Convert.ToDateTime(date);
+            //plan.PlanExpiryDate = DateTime.ParseExact(planrequest.PlanExpiryDate.ToString(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            plan = planService.InsertPlan(plan);
                 return plan.Id;
         }
 
@@ -76,8 +82,9 @@ namespace CabicsSubscription.API.Controllers
             plan.NoOfVehicles = planrequest.NoOfVehicles;
             plan.PerCreditSMSPrice = planrequest.PerSMSPrice;
             plan.UpdatedDateTime = DateTime.Now;
-            // plan.PlanExpiryDate = DateTime.Now.AddMonths(6); 
-            plan.PlanExpiryDate = Convert.ToDateTime(planrequest.PlanExpiryDate.ToString());
+            string date = planrequest.PlanExpiryDate.ToString();
+            DateTime utcDate = DateTime.SpecifyKind(Convert.ToDateTime(date), DateTimeKind.Utc);
+            plan.PlanExpiryDate = utcDate; //Convert.ToDateTime(date);
             plan = planService.Editplan(plan);
             return plan.Id;
         }

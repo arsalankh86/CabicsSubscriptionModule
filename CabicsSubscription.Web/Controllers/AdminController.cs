@@ -139,7 +139,7 @@ namespace CabicsSubscription.Web.Controllers
                    creditAmount = Convert.ToDouble(plan.CreditPrice);
                    amountused = creditAmount * creditused;
                    remainingamount = subscription.SubscriptionPrice - amountused;
-                    double newTotalPrice = subscription.SubscriptionPrice - Convert.ToDouble(form["txtamount"]);
+                    double newTotalPrice = subscription.TotalPrice - Convert.ToDouble(form["txtamount"]);
                     double totalCredit = newTotalPrice / creditAmount; 
                     if (Convert.ToDouble(form["txtamount"]) > remainingamount)
                     {
@@ -147,7 +147,8 @@ namespace CabicsSubscription.Web.Controllers
                         return View();
                     }
                     refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString(), Convert.ToDecimal(form["txtamount"]));
-                    subscriptionService.UpdateTotalCreditAndAmount(subscription.Id, newTotalPrice, totalCredit);
+                    if(refundResult.Message != "Cannot refund a transaction unless it is settled.")
+                        subscriptionService.UpdateTotalCreditAndAmount(subscription.Id, newTotalPrice, totalCredit);
                 }
                 else if(subscription.SubscriptionTypeId == 2)
                 {
@@ -168,7 +169,8 @@ namespace CabicsSubscription.Web.Controllers
 
                     var remainingAmount = subscription.TotalPrice - Convert.ToDouble(form["txtamount"]);
                     refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString(), Convert.ToDecimal(form["txtamount"]));
-                    subscriptionService.UpdateTotalCreditAndAmount(subscription.Id, remainingAmount, 0);
+                    if (refundResult.Message != "Cannot refund a transaction unless it is settled.")
+                        subscriptionService.UpdateTotalCreditAndAmount(subscription.Id, remainingAmount, 0);
                 }
 
             }
@@ -178,7 +180,8 @@ namespace CabicsSubscription.Web.Controllers
             RefundTranactionLog refundTranactionLog = new RefundTranactionLog();
             refundTranactionLog.TransactionId = transactionId;
             refundTranactionLog.Message = refundResult.Message;
-            refundTranactionLog.Errors = refundResult.Errors.ToString();
+            if(refundResult.Errors != null)
+                refundTranactionLog.Errors = refundResult.Errors.ToString();
             refundTranactionLog.IsActive = true;
             refundTranactionLog.CreatedDateTime = DateTime.Now;
             refundTranactionLog.Gateway = Constant.Gateway.BrainTree.ToString();

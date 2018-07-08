@@ -18,7 +18,21 @@ namespace CabicsSubscription.Service.Services
 
         public List<Plan> GetAllPlanForCabOffice()
         {
-            List<Plan> lstplan = context.plans.Where(x => x.IsActive == true && x.PlanExpiryDate >= DateTime.Now).ToList();
+
+            List<Plan> lstplan = context.plans.Where(x => x.IsActive == true).ToList();
+            //List<Plan> plan = new List<Plan>();
+            //foreach (Plan p in lstplan)
+            //{
+            //    DateTime PlanExpiryDate = Convert.ToDateTime(p.PlanExpiryDateString.Replace('/','-'));
+            //    if (PlanExpiryDate >= DateTime.Now)
+            //    {
+            //        plan.Add(p);
+            //    }
+
+            //}
+
+            //return plan;
+
             return lstplan;
 
         }

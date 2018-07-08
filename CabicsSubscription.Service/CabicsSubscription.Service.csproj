@@ -49,6 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,6 +68,10 @@
     <Compile Include="Migrations\201806172323534_migrationv4.cs" />
     <Compile Include="Migrations\201806172323534_migrationv4.Designer.cs">
       <DependentUpon>201806172323534_migrationv4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806282057182_v4.cs" />
+    <Compile Include="Migrations\201806282057182_v4.Designer.cs">
+      <DependentUpon>201806282057182_v4.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\DbErrorLogService.cs" />
     <Compile Include="Migrations\201805232110550_subscriptionv3.cs" />
@@ -167,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806172323534_migrationv4.resx">
       <DependentUpon>201806172323534_migrationv4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806282057182_v4.resx">
+      <DependentUpon>201806282057182_v4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

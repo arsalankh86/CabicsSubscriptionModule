@@ -117,6 +117,16 @@ namespace CabicsSubscription.Service.Services
 
         }
 
+        public void UpdateBrainTreeInfo(string btCustomerId, string btToken, int cabOfficeId)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Account account = context.Accounts.FirstOrDefault(x => x.Id == cabOfficeId && x.IsActive == true);
+                account.BtPaymentMethodToken = btToken;
+                account.BtCustomerId = btCustomerId;
+                context.SaveChanges();
+            }
+        }
     }
 
 }

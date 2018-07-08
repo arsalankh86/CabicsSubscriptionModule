@@ -1,11 +1,12 @@
-﻿using Braintree;
-using CabicsSubscription.Service;
-using CabicsSubscription.Service.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Braintree;
+using CabicsSubscription.Service;
+using CabicsSubscription.Service.Services;
 
 namespace CabicsSubscription.Web.Controllers
 {
@@ -39,12 +40,19 @@ namespace CabicsSubscription.Web.Controllers
 
 
 
+            Braintree.Environment environment;
+            if (ConfigurationManager.AppSettings["BtEnvironmentTestMode"].ToString() == "1")
+                environment = Braintree.Environment.SANDBOX;
+            else
+                environment = Braintree.Environment.PRODUCTION;
+
+
             var gateway = new BraintreeGateway
             {
-                Environment = Braintree.Environment.SANDBOX,
-                MerchantId = "gbhg9d4dvt83v4ff",
-                PublicKey = "n4yhd55nx6g2ygdn",
-                PrivateKey = "374d896ef9682b3550a76d2b82811d1a"
+                Environment = environment,
+                MerchantId = ConfigurationManager.AppSettings["BtMerchantId"],
+                PublicKey = ConfigurationManager.AppSettings["BtPublicKey"],
+                PrivateKey = ConfigurationManager.AppSettings["BtPrivateKey"]
             };
 
             var clientToken = gateway.ClientToken.Generate(
@@ -70,6 +78,41 @@ namespace CabicsSubscription.Web.Controllers
 
         public ActionResult About()
         {
+
+
+            Braintree.Environment environment;
+            if (ConfigurationManager.AppSettings["BtEnvironmentTestMode"].ToString() == "1")
+                environment = Braintree.Environment.SANDBOX;
+            else
+                environment = Braintree.Environment.PRODUCTION;
+
+
+            var gateway = new BraintreeGateway
+            {
+                Environment = environment,
+                MerchantId = ConfigurationManager.AppSettings["BtMerchantId"],
+                PublicKey = ConfigurationManager.AppSettings["BtPublicKey"],
+                PrivateKey = ConfigurationManager.AppSettings["BtPrivateKey"]
+            };
+
+            Result<PaymentMethodNonce> resultn = gateway.PaymentMethodNonce.Create("dxtcsh");
+            String nonce2 = resultn.Target.Nonce;
+
+            var requestp = new TransactionRequest
+            {
+                Amount = 20,
+                PaymentMethodNonce = nonce2,
+                //Options = new TransactionOptionsRequest
+                //{
+                //    SubmitForSettlement = true
+                //}
+            };
+
+            Result<Transaction> resultp = gateway.Transaction.Sale(requestp);
+
+           var resultt = resultp.IsSuccess();
+            var transactionid = resultp.Target;
+
             ViewBag.Message = "Your application description page.";
 
             return View();
@@ -112,6 +155,7 @@ namespace CabicsSubscription.Web.Controllers
         [HttpPost]
         public ActionResult SubmitContact(FormCollection form)
         {
+
             Decimal planamount = 0, smscreditamount = 0, amount = 0;
            
             if (form["hdnamount"] != null && form["hdnamount"]!= "")
@@ -121,36 +165,103 @@ namespace CabicsSubscription.Web.Controllers
 
             amount = planamount;// + smscreditamount;
 
-            PlanService planService = new PlanService();
-            var planId = 0;
-            var accountid="";
+       
 
-            if (form["hdnplanid"] != null)
-                planId = Convert.ToInt32(form["hdnplanid"].ToString());
+            #region Fetching CabOfficeAccount
 
-           CabicsSubscription.Service.Plan plan = planService.GetPlanDetailByPlanId(planId);
-
+            var accountid = "";
             if (form["hdnaccount"] != null)
                 accountid = form["hdnaccount"].ToString();
-
             AccountService accountService = new AccountService();
             Account account = accountService.getCabOfficeByAccountId(accountid);
 
-            bool resultt;
-            Transaction transactionid;
+            #endregion
+
+            #region Payment Initilizer
+            bool saleResult;
+
+            Braintree.Environment environment;
+            if (ConfigurationManager.AppSettings["BtEnvironmentTestMode"].ToString() == "1")
+                environment = Braintree.Environment.SANDBOX;
+            else
+                environment = Braintree.Environment.PRODUCTION;
 
             var gateway = new BraintreeGateway
             {
-                Environment = Braintree.Environment.SANDBOX,
-                MerchantId = "gbhg9d4dvt83v4ff",
-                PublicKey = "n4yhd55nx6g2ygdn",
-                PrivateKey = "374d896ef9682b3550a76d2b82811d1a"
+                Environment = environment,
+                MerchantId = ConfigurationManager.AppSettings["BtMerchantId"],
+                PublicKey = ConfigurationManager.AppSettings["BtPublicKey"],
+                PrivateKey = ConfigurationManager.AppSettings["BtPrivateKey"]
+            };
+            #endregion
+
+            #region Generate BTCustomer, token and Nonce
+            String nonce_Generated = "";
+            if (account.BtCustomerId == null || account.BtCustomerId == "")
+            {
+                /// Create Customer
+                /// 
+                var requestc = new CustomerRequest
+                {
+                    FirstName = account.FullName,
+                    LastName = account.FullName,
+                    Company = "",
+                    Email = account.Email,
+                    Fax = "",
+                    Phone = "",
+                    Website = ""
+                };
+                Result<Customer> resultc = gateway.Customer.Create(requestc);
+                string customerId = resultc.Target.Id;
+
+
+                /// Create PaymentMethod
+                /// 
+                var nonce = Request["payment_method_nonce"];
+                var requestP = new PaymentMethodRequest
+                {
+                    CustomerId = customerId,
+                    PaymentMethodNonce = nonce
+                };
+
+                Result<PaymentMethod> resultP = gateway.PaymentMethod.Create(requestP);
+                Result<PaymentMethodNonce> resultN = gateway.PaymentMethodNonce.Create(resultP.Target.Token);
+                nonce_Generated = resultN.Target.Nonce;
+
+                /// Update BtCustoemrId and BtToken in CabOfficeAccount
+                /// 
+                accountService.UpdateBrainTreeInfo(customerId, resultP.Target.Token, account.Id);
+
+            }
+            else
+            {
+                Result<PaymentMethodNonce> resultN = gateway.PaymentMethodNonce.Create(account.Token);
+                nonce_Generated = resultN.Target.Nonce;
+            }
+
+            #endregion
+            
+            #region Sale
+
+            var request = new TransactionRequest
+            {
+                Amount = amount,
+                PaymentMethodNonce = nonce_Generated,
+                //Options = new TransactionOptionsRequest
+                //{
+                //    SubmitForSettlement = true
+                //}
             };
 
-            var nonce = Request["payment_method_nonce"];
-            bool chkautorenewel = false;
-            int noOfInstallment = 0;
+            Result<Transaction> result = gateway.Transaction.Sale(request);
 
+            bool resultVal = result.IsSuccess();
+            Transaction transaction = result.Target;
+
+            #endregion
+
+
+            bool chkautorenewel = false;
             var bit = "off";
             if (form["chkautorenewel"] != null)
                 bit = form["chkautorenewel"].ToString();
@@ -158,26 +269,6 @@ namespace CabicsSubscription.Web.Controllers
             if (bit == "on")
                 chkautorenewel = true;
 
-            if (chkautorenewel == false)
-            {
-                var request = new TransactionRequest
-                {
-                    Amount = amount,
-                    PaymentMethodNonce = nonce,
-                    Options = new TransactionOptionsRequest
-                    {
-                        SubmitForSettlement = true
-                    }
-                };
-
-                Result<Transaction> result = gateway.Transaction.Sale(request);
-
-                resultt = result.IsSuccess();
-                transactionid = result.Target;
-
-                var transaction = result.Target;
-
-                //return RedirectToAction("Show", new { id = transaction.Id });
                 SubscriptionService subscriptionService = new SubscriptionService();
 
                 int qty = 1;
@@ -192,73 +283,19 @@ namespace CabicsSubscription.Web.Controllers
                 if (form["hdnsmscreditamount"] != "")
                     hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
 
-                int subscriptionId = subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "", smscreditqty, hdnsmscreditamount, 
-                    transaction.Id,"", chkautorenewel, noOfInstallment);
-            }
-            else
-            {
-                if (form["noOfBillingCycle"] != null && form["noOfBillingCycle"] != "")
-                    noOfInstallment = Convert.ToInt32(form["noOfBillingCycle"].ToString());
+                int accountId = 1;
+                if (account != null)
+                    accountId = account.Id;
+
+            int planId = 0;
+            if (form["hdnplanid"] != null)
+                planId = Convert.ToInt32(form["hdnplanid"].ToString());
 
 
-                var rrequest = new CustomerRequest
-                {
-                    FirstName = form["fname"],
-                    LastName = form["lname"],
-                    PaymentMethodNonce = nonce
-                };
-                Result<Customer> rresult = gateway.Customer.Create(rrequest);
+            int subscriptionId = subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount), accountId, qty, "", smscreditqty, hdnsmscreditamount, 
+                    transaction.Id,"", chkautorenewel, 0);
 
-                bool success = rresult.IsSuccess();
-                // true
-
-                Customer customer = rresult.Target;
-                string customerId = customer.Id;
-                // e.g. 160923
-
-                string cardToken = customer.PaymentMethods[0].Token;
-                // e.g. f28w
-
-
-                var request = new SubscriptionRequest
-                {
-                    PaymentMethodToken = cardToken,
-                    PlanId = plan.BrainTreePlanName
-                    //,NumberOfBillingCycles = noOfInstallment
-                };
-
-                Result<Braintree.Subscription> result = gateway.Subscription.Create(request);
-                resultt = result.IsSuccess();
-
-
-
-                var transaction = result.Target;
-
-                //return RedirectToAction("Show", new { id = transaction.Id });
-                SubscriptionService subscriptionService = new SubscriptionService();
-
-                bool chkAutoRenewel = false;
-                string btSubscriptionId = "", transactionId = "";
-
-                if (result.Target != null)
-                    btSubscriptionId = result.Target.Id;
-                if (transaction != null)
-                    transactionId = transaction.Id;
-
-                int qty = 1;
-                if (form["qty"] != null && form["qty"] != "")
-                    qty = Convert.ToInt32(form["qty"]);
-
-                int smscreditqty = 0;
-                if (form["smscreditqty"]!= null && form["smscreditqty"] != "")
-                    smscreditqty = Convert.ToInt32(form["smscreditqty"]);
-
-                double hdnsmscreditamount = 0;
-                if (form["hdnsmscreditotaltamount"] != null && form["hdnsmscreditotaltamount"] != "")
-                    hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditotaltamount"]);
-
-                int subscriptionId =  subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount), account.Id, qty, "", smscreditqty, hdnsmscreditamount,
-                    transactionId, btSubscriptionId, chkautorenewel, noOfInstallment);
+            if (chkautorenewel == true) {
 
                 //// Insert into execution service
 
@@ -272,52 +309,10 @@ namespace CabicsSubscription.Web.Controllers
 
                 WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
                 windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
-
-
-
-
-
-
             }
 
-            
-            if (resultt)
-            {
-                Transaction transaction = null;
-                //return RedirectToAction("Show", new { id = transaction.Id });
-                SubscriptionService subscriptionService = new SubscriptionService();
 
-                int qty = 1;
-                if (form["qty"]!= "" && form["qty"] != null)
-                    qty = Convert.ToInt32(form["qty"]);
-
-                int smscreditqty = 0;
-                if (form["smscreditqty"]!= null && form["smscreditqty"] != "")
-                    smscreditqty = Convert.ToInt32(form["smscreditqty"]);
-
-                double hdnsmscreditamount = 0;
-                if (form["hdnsmscreditamount"]!= null && form["hdnsmscreditamount"] != "")
-                    hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
-
-                //subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(form["hdnamount"]), account.Id, qty, "", smscreditqty, hdnsmscreditamount, transaction.Id);
-            }
-            //else if (resultt.Transaction != null)
-            //{
-            //    //return RedirectToAction("Show", new { id = result.Transaction.Id });
-            //}
-            //else
-            //{
-            //    string errorMessages = "";
-            //    foreach (ValidationError error in result.Errors.DeepAll())
-            //    {
-            //        errorMessages += "Error: " + (int)error.Code + " - " + error.Message + "\n";
-            //    }
-            //    TempData["Flash"] = errorMessages;
-            //    return RedirectToAction("PaymentResponse");
-            //}
-            return RedirectToAction("Thankyou");
-            //return View();
-
+            return View();
 
         }
 

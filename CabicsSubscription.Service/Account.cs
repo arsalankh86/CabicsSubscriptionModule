@@ -26,5 +26,9 @@ namespace CabicsSubscription.Service
         public string PaymentMethodNonce { get; set; }
         public Client client { get; set; }
 
+        public string BtCustomerId { get; set; }
+        public string BtPaymentMethodToken { get; set; }
+
+
     }
 }
