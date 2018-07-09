@@ -141,12 +141,18 @@ var editplan = new function () {
 
         $.ajax({
             type: "Get",
-            url: servicePath + "/Plan/GetAllPlanByPlanId?planid="+planId,
+            url: servicePath + "/Plan/GetPlanDetail?planid="+planId,
             //data: JSON.stringify(account),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
                 console.log(data);
+
+                if (data.PlanTypeId == 1)
+                    $("#plantype").prop('disabled', false);
+                else
+                    $(dvmonthly).css('display', 'block');
+
 
                 $(txtplancode).val(data.PlanCode);
                 $(txtplanname).val(data.Name);
