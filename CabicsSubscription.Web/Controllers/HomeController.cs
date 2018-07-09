@@ -306,20 +306,20 @@ namespace CabicsSubscription.Web.Controllers
 
                 ////// Insert into execution service
 
-                //WindowsServiceExecution winservice = new WindowsServiceExecution();
-                //winservice.WindowsServiceFunction = "Automatic Charging";
-                //winservice.WindowsServiceArgumrnt = subscriptionId;
-                //winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
-                //winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
-                //winservice.IsActive = true;
-                //winservice.CreatedDate = DateTime.Now;
+                WindowsServiceExecution winservice = new WindowsServiceExecution();
+                winservice.WindowsServiceFunction = "Automatic Charging";
+                winservice.WindowsServiceArgumrnt = subscriptionId;
+                winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
+                winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
+                winservice.IsActive = true;
+                winservice.CreatedDate = DateTime.Now;
 
                 //WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
                 //windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
             }
 
 
-            return View();
+            return RedirectToAction("Thankyou");
 
         }
 

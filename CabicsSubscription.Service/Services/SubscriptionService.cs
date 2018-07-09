@@ -189,8 +189,6 @@ namespace CabicsSubscription.Service.Services
                 if (plan.PlanTypeId == (int)Constant.PlayType.Monthly)
                 {
                     subscription.EndDate = DateTime.Now.AddMonths(1);
-                    subscription.CreatedDateTime = DateTime.Now;
-                    subscription.IsActive = true;
                     subscription.NoOfAgents = plan.NoOfAgents;
                     subscription.NoOfDrivers = plan.NoOfDrivers;
                     subscription.NoOfVehicles = plan.NoOfVehicles;
@@ -206,6 +204,7 @@ namespace CabicsSubscription.Service.Services
                 }
                 if (plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
                 {
+                    
                     subscription.TotalCredit = qty;
                     subscription.RemainingCredit = qty;
                  
@@ -214,6 +213,7 @@ namespace CabicsSubscription.Service.Services
                 subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Active;
                 subscription.IsActive = true;
                 subscription.ChequeNo = chequeNo;
+                subscription.CreatedDateTime = DateTime.Now;
 
                 if (plan.PlanTypeId == 1)
                    subscription.IsAutoRenewel = false;

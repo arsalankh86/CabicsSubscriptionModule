@@ -37,7 +37,7 @@
 
         PurchaseSubscription.SetPlanValue();
 
-        PurchaseSubscription.SetCreditDeduction();
+        
 
         $(qty).bind('input', function () {
             /* This will be fired every time, when textbox's value changes. */
@@ -166,7 +166,7 @@
 
                 }
                 else {
-
+                    PurchaseSubscription.SetCreditDeduction();
                     $(dvsmscreditqty).css('display', 'none');
                     
                 }

@@ -1,5 +1,6 @@
 ﻿using Braintree;
 using CabicsSubscription.Service.Services;
+using Hangfire;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -59,6 +60,9 @@ namespace CabicsSubscription.Service
                 //List<WindowsServiceExecution> lstSubscription = windowsServiceExecutionService.GetAutoRenewelEntryBySubscriptionID(subscriptionId);
                 Subscription subscription = subscriptionService.GetSubscriptionBySubscriptionId(subscriptionId);
 
+                if (subscription == null)
+                    return;
+
                 if (subscription.SubscriptionTypeId != (int)Constant.SubscriptionType.Monthly)
                     return;
 
@@ -88,7 +92,7 @@ namespace CabicsSubscription.Service
 
                     /// Generate Monthly Sale
 
-                    if (account.BtPaymentMethodToken == null || account.BtPaymentMethodToken != "")
+                    if (account.BtPaymentMethodToken == null || account.BtPaymentMethodToken == "")
                         return;
 
                     #region Payment 
@@ -136,18 +140,20 @@ namespace CabicsSubscription.Service
                            subscription.btTransactionId, subscription.btSubscriptionId, subscription.IsAutoRenewel, subscription.NoOfBillingCycle);
 
 
+                        RecurringJob.AddOrUpdate(() => MarkAutoRenewalSubscription(subscriptionId, null), Cron.Minutely);
+
                         ////// Mark execution service Done
                         //windowsServiceExecutionService.MarkWindowsServiceStatus(windowsServiceExecution.Id, (int)Constant.WindowsServiceExecutionStatus.Done);
 
-                        ////// Insert into execution service
-                        //WindowsServiceExecution winservice = new WindowsServiceExecution();
-                        //winservice.WindowsServiceFunction = "Automatic Charging";
-                        //winservice.WindowsServiceArgumrnt = subscriptionId;
-                        //winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
-                        //winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
-                        //winservice.IsActive = true;
-                        //winservice.CreatedDate = DateTime.Now;
-                        //windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
+                        //// Insert into execution service
+                        WindowsServiceExecution winservice = new WindowsServiceExecution();
+                        winservice.WindowsServiceFunction = "Automatic Charging";
+                        winservice.WindowsServiceArgumrnt = subscriptionId;
+                        winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
+                        winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
+                        winservice.IsActive = true;
+                        winservice.CreatedDate = DateTime.Now;
+                        windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
                     }
                 }
             }

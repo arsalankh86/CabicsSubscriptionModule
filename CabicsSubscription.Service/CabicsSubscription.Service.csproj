@@ -39,6 +39,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Hangfire.Core">
+      <HintPath>..\CabicsSubscription.Web\dll\Hangfire.Core.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.8.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\MySql.Data.dll</HintPath>
@@ -76,6 +79,10 @@
     <Compile Include="Migrations\201807082148068_migrationv41.cs" />
     <Compile Include="Migrations\201807082148068_migrationv41.Designer.cs">
       <DependentUpon>201807082148068_migrationv41.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807092202424_subscriptionv51.cs" />
+    <Compile Include="Migrations\201807092202424_subscriptionv51.Designer.cs">
+      <DependentUpon>201807092202424_subscriptionv51.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\DbErrorLogService.cs" />
     <Compile Include="Migrations\201805232110550_subscriptionv3.cs" />
@@ -182,6 +189,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807082148068_migrationv41.resx">
       <DependentUpon>201807082148068_migrationv41.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807092202424_subscriptionv51.resx">
+      <DependentUpon>201807092202424_subscriptionv51.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -110,7 +110,35 @@ namespace CabicsSubscription.API.Controllers
         public List<Service.Subscription> GetUserAllSubscriptionDetail(int cabOfficeId)
         {
             SubscriptionService subscriptionService = new SubscriptionService();
-            return subscriptionService.GetUserAllSubscriptionDetail(cabOfficeId);
+            List<Service.Subscription> lst = subscriptionService.GetUserAllSubscriptionDetail(cabOfficeId);
+
+            Braintree.Environment environment;
+            if (ConfigurationManager.AppSettings["BtEnvironmentTestMode"].ToString() == "1")
+                environment = Braintree.Environment.SANDBOX;
+            else
+                environment = Braintree.Environment.PRODUCTION;
+
+
+            var gateway = new BraintreeGateway
+            {
+                Environment = environment,
+                MerchantId = ConfigurationManager.AppSettings["BtMerchantId"],
+                PublicKey = ConfigurationManager.AppSettings["BtPublicKey"],
+                PrivateKey = ConfigurationManager.AppSettings["BtPrivateKey"]
+            };
+
+            List<Service.Subscription> finalLst = new List<Service.Subscription>();
+            foreach (Service.Subscription subs in lst)
+            {
+               Transaction transaction = gateway.Transaction.Find(subs.btTransactionId);
+                if (transaction.Status != Braintree.TransactionStatus.SETTLED  && transaction.Status != Braintree.TransactionStatus.SETTLEMENT_CONFIRMED)
+                { subs.btTransactionId = "-1"; }
+
+                finalLst.Add(subs);
+            }
+
+            return finalLst;
+
         }
 
         [HttpPost]

@@ -58,6 +58,7 @@
                     $.each(data, function (index, value) {
                         console.log(value);
 
+
                         var subscriptionname = "";
                         if (value.SubscriptionTypeId == 1)
                             subscriptionname = "Pay as you go";
@@ -83,7 +84,12 @@
                         html += '<td>' + value.PerSMSPrice + '</td>';
                         html += '<td> ' + value.ChequeNo + '</td >';
                         html += '<td>' + value.CreatedDateTime + '</td>';
-                        html += '<td><a data-TransactionId="' + value.btTransactionId + '" onclick="RefudSubscription(this)">Refund Subscription(S)</a></td >';
+                        if (value.btTransactionId == -1) {
+                            html += '<td>Refund Not Available</td >';
+                        }
+                        else {
+                            html += '<td><a data-TransactionId="' + value.btTransactionId + '" onclick="RefudSubscription(this)">Refund Subscription(S)</a></td >';
+                        }
                         html += '<td><a data-accountid="' + id + '" data-subscriptionid= "' + value.Id + '" onclick="CreditUtilizationReport(this)" >Credit Utilization Report</a></td >';
                         html += '</tr > </tbody> ';
 
