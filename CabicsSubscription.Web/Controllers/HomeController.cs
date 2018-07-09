@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Braintree;
 using CabicsSubscription.Service;
 using CabicsSubscription.Service.Services;
+using Hangfire;
 
 namespace CabicsSubscription.Web.Controllers
 {
@@ -163,7 +164,7 @@ namespace CabicsSubscription.Web.Controllers
             if(form["hdnsmscreditotaltamount"] != null && form["hdnsmscreditotaltamount"] != "")
                 smscreditamount = Convert.ToDecimal(form["hdnsmscreditotaltamount"]);
 
-            amount = planamount;// + smscreditamount;
+            amount = planamount + smscreditamount;
 
        
 
@@ -235,7 +236,7 @@ namespace CabicsSubscription.Web.Controllers
             }
             else
             {
-                Result<PaymentMethodNonce> resultN = gateway.PaymentMethodNonce.Create(account.Token);
+                Result<PaymentMethodNonce> resultN = gateway.PaymentMethodNonce.Create(account.BtPaymentMethodToken);
                 nonce_Generated = resultN.Target.Nonce;
             }
 
@@ -272,16 +273,16 @@ namespace CabicsSubscription.Web.Controllers
                 SubscriptionService subscriptionService = new SubscriptionService();
 
                 int qty = 1;
-                if (form["qty"] != null)
+                if (form["qty"] != null && form["qty"] != "")
                     qty = Convert.ToInt32(form["qty"]);
 
                 int smscreditqty = 0;
-                if (form["smscreditqty"] != "")
+                if (form["smscreditqty"] != null && form["smscreditqty"] != "")
                     smscreditqty = Convert.ToInt32(form["smscreditqty"]);
 
                 double hdnsmscreditamount = 0;
-                if (form["hdnsmscreditamount"] != "")
-                    hdnsmscreditamount = Convert.ToInt32(form["hdnsmscreditamount"]);
+                if (form["hdnsmscreditamount"] != null && form["hdnsmscreditamount"] != "")
+                    hdnsmscreditamount = Convert.ToDouble(form["hdnsmscreditamount"]);
 
                 int accountId = 1;
                 if (account != null)
@@ -297,18 +298,24 @@ namespace CabicsSubscription.Web.Controllers
 
             if (chkautorenewel == true) {
 
-                //// Insert into execution service
 
-                WindowsServiceExecution winservice = new WindowsServiceExecution();
-                winservice.WindowsServiceFunction = "Automatic Charging";
-                winservice.WindowsServiceArgumrnt = subscriptionId;
-                winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
-                winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
-                winservice.IsActive = true;
-                winservice.CreatedDate = DateTime.Now;
+                /// Mark Hangfire Service
+                AutomatedService automatedService = new AutomatedService();
+                RecurringJob.AddOrUpdate(() => automatedService.MarkAutoRenewalSubscription(subscriptionId, null), Cron.Minutely);
 
-                WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
-                windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
+
+                ////// Insert into execution service
+
+                //WindowsServiceExecution winservice = new WindowsServiceExecution();
+                //winservice.WindowsServiceFunction = "Automatic Charging";
+                //winservice.WindowsServiceArgumrnt = subscriptionId;
+                //winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
+                //winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
+                //winservice.IsActive = true;
+                //winservice.CreatedDate = DateTime.Now;
+
+                //WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
+                //windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
             }
 
 

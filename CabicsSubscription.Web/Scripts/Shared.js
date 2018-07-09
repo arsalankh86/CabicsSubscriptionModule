@@ -63,6 +63,7 @@
                 subscriptiongrid += '<th>End Credit</th>';
                 subscriptiongrid += '<th>Purchse Date</th>';
                 subscriptiongrid += '</tr>';
+                subscriptiongrid += '<tbody>';
                 var subshtml = "";
                 var subsType = "";
                 var isallow = true;
@@ -78,9 +79,15 @@
                     else if (value.SubscriptionTypeId == 2)
                         subscriptionname = "Monthly";
 
-                    subscriptiongrid += '<tbody><tr><td>' + value.PlanName + '</td><td>' + subscriptionname + '</td>';
+                    if (value.IsActive == true) {
+                        subscriptiongrid += '<tr style="background-color:green;" >';
+                    }
+                    else {
+                        subscriptiongrid += '<tr>';
+                    }
+                    subscriptiongrid += '<td>' + value.PlanName + '</td><td>' + subscriptionname + '</td>';
                     subscriptiongrid += '<td>' + value.TotalPrice + '</td><td>' + value.TotalCredit + '</td><td>' + value.RemainingCredit + '</td><td>' + value.StartDate + '</td><td>' + value.EndDate + '</td>';
-                    subscriptiongrid += '<td>' + value.CreatedDateTime + '</td></tr ></tbody> ';
+                    subscriptiongrid += '<td>' + value.CreatedDateTime + '</td></tr>';
 
                     
 
@@ -111,6 +118,8 @@
                         }
                     }
                 });
+
+                subscriptiongrid += '</tbody>';
 
                 $("#dvsubscriptiongrid").append(subscriptiongrid);
                 $("#divLoader").css("display", "none");

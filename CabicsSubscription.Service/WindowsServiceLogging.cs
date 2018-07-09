@@ -15,7 +15,7 @@ namespace CabicsSubscription.Service
             try
             {
                 string Date = System.DateTime.Now.ToString("dd-MM-yyyy");
-                sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\LogFolder\\DemoService" + Date + ".txt", true);
+                sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\LogFolder\\CabicsSubscriptionService" + Date + ".txt", true);
                 sw.WriteLine(DateTime.Now.ToString() + ":  " + message);
                 sw.Flush();
                 sw.Close();

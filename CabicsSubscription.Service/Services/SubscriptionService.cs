@@ -151,7 +151,7 @@ namespace CabicsSubscription.Service.Services
 
             List<Subscription> subscription = new List<Subscription>();
             if (account != null)
-                subscription = context.Subscriptions.Where(x => x.AccountId == account.Id).ToList();
+                subscription = context.Subscriptions.Where(x => x.AccountId == account.Id).OrderByDescending(x=>x.IsActive).ToList();
 
             return subscription;
 

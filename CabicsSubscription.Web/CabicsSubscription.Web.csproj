@@ -207,6 +207,7 @@
     </Compile>
     <Compile Include="Models\AccountRegistrationModelRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="add-plan.html" />
