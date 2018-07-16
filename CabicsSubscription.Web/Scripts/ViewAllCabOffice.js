@@ -21,7 +21,7 @@ var ViewAllCabOffice = new function () {
             dataType: "json",
             success: function (response) {
                 console.log(response);
-                var html = '<table class="table"> <thead> <tr><td>Full Name</td><td>Email</td><td>Token</td><td>Subscriptions</td></tr></thead>'
+                var html = '<table class="table"> <thead> <tr><td>Full Name</td><td>Email</td><td>Token</td><td>Subscriptions Popup</td>Subscriptions<td></td></tr></thead>'
 
                 $.each(response, function (index, value) {
 
@@ -31,9 +31,15 @@ var ViewAllCabOffice = new function () {
                         '<a data-AccountId ="' + value.Id +
                         '" data-AccountToken="' + value.Token +
                         '" data-email="' + value.Email +
-                        '" onclick="ViewAllSubscription(this)">View All Sunscriptiond(S)</a>'
+                        '" onclick="ViewAllSubscription(this)">View All Sunscriptiond Popup(S)</a>'
                     +
-                    '</td ></tr ></tbody> ';
+					 
+                    '</td ><td>'
+					 +
+                        '<a data-AccountId ="' + value.Id +                      
+                        '" onclick="ViewAllSubscription2(this)">View All Sunscriptiond(S)</a>'
+                    +
+					'</td></tr ></tbody> ';
 
                 });
 
@@ -62,13 +68,23 @@ ViewAllSubscription = function (obj) {
     var accountguid = $(obj).attr('data-AccountToken');
     var email = $(obj).attr('data-email');
 
-    window.open('/Admin/ViewUserSubscription?id=' + accountId + '&token=' + accountguid + '&email=' + email);
+    window.open('ViewUserSubscription?id=' + accountId + '&token=' + accountguid + '&email=' + email);
+   //window.location.href = 'ViewUserSubscription?id = ' + accountId + ' & token=' + accountguid + ' & email=' + email;
 
 
 
     return false;
 
 
+}
+
+
+
+ViewAllSubscription2 = function (obj) {
+
+    var accountId = $(obj).attr('data-AccountId');
+    
+   window.location.href = 'ViewUserSubscription?id='+accountId;
 }
 
 

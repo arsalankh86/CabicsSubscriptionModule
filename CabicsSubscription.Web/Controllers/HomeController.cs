@@ -176,6 +176,9 @@ namespace CabicsSubscription.Web.Controllers
             AccountService accountService = new AccountService();
             Account account = accountService.getCabOfficeByAccountId(accountid);
 
+            if (account == null)
+                return View();
+
             #endregion
 
             #region Payment Initilizer
@@ -248,10 +251,10 @@ namespace CabicsSubscription.Web.Controllers
             {
                 Amount = amount,
                 PaymentMethodNonce = nonce_Generated,
-                //Options = new TransactionOptionsRequest
-                //{
-                //    SubmitForSettlement = true
-                //}
+                Options = new TransactionOptionsRequest
+                {
+                    SubmitForSettlement = true
+                }
             };
 
             Result<Transaction> result = gateway.Transaction.Sale(request);
@@ -301,7 +304,7 @@ namespace CabicsSubscription.Web.Controllers
 
                 /// Mark Hangfire Service
                 AutomatedService automatedService = new AutomatedService();
-                RecurringJob.AddOrUpdate(() => automatedService.MarkAutoRenewalSubscription(subscriptionId, null), Cron.Minutely);
+                RecurringJob.AddOrUpdate(() => automatedService.MarkAutoRenewalSubscription(subscriptionId, null), Cron.Hourly);
 
 
                 ////// Insert into execution service

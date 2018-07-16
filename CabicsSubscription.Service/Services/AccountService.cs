@@ -22,6 +22,8 @@ namespace CabicsSubscription.Service.Services
                     account.Email = accountRegistrationModel.Email;
                     account.FullName = accountRegistrationModel.Name;
                     account.ClientId = accountRegistrationModel.ClientId;
+                    account.CabicsSystemId = accountRegistrationModel.CabicsSystemId;
+                    account.Password = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8);
                     account.AllCredit = 0;
                     account.BalanceCredit = 0;
                     account.CreatedDateTime = DateTime.Now;

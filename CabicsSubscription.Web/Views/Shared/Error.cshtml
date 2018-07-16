@@ -6,8 +6,20 @@
 </head>
 <body>
     <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
+        <h2>Your request has proceed. kindly wait for a moment.</h2>
     </hgroup>
+	
+	
+<script>
+    var timer = setTimeout(function () {
+        var aValue = localStorage.getItem("accounttoken");
+        console.log(aValue);
+        window.location = 'dashboard?data=' + aValue;
+    }, 10000);
+</script>
+
+
 </body>
 </html>
+
+

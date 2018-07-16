@@ -130,9 +130,16 @@ namespace CabicsSubscription.API.Controllers
             List<Service.Subscription> finalLst = new List<Service.Subscription>();
             foreach (Service.Subscription subs in lst)
             {
-               Transaction transaction = gateway.Transaction.Find(subs.btTransactionId);
-                if (transaction.Status != Braintree.TransactionStatus.SETTLED  && transaction.Status != Braintree.TransactionStatus.SETTLEMENT_CONFIRMED)
-                { subs.btTransactionId = "-1"; }
+                if(subs.ChequeNo == null || subs.ChequeNo == "")
+                    subs.ChequeNo = "--";
+
+                if (subs.btSubscriptionId != null || subs.btTransactionId == "")
+                {
+                    Transaction transaction = gateway.Transaction.Find(subs.btTransactionId);
+
+                    if (transaction.Status == Braintree.TransactionStatus.SETTLED && transaction.Status == Braintree.TransactionStatus.SETTLEMENT_CONFIRMED)
+                    { subs.ChequeNo = ""; }
+                }
 
                 finalLst.Add(subs);
             }

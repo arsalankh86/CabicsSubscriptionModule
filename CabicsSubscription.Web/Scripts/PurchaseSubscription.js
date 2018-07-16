@@ -50,7 +50,7 @@
 
 
             var planid = GetParameterValues('id');
-            var account = GetParameterValues('account');
+            var account = GetParameterValues('data');
 
             $(hdnaccount).val(account);
             $(hdnplanid).val(planid);

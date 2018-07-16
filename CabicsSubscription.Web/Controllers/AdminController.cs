@@ -90,108 +90,114 @@ namespace CabicsSubscription.Web.Controllers
         [HttpPost]
         public ActionResult SubmitRefund(FormCollection form)
         {
-            PlanService planService = new PlanService();
-
-            Braintree.Environment environment;
-            if (ConfigurationManager.AppSettings["BtEnvironmentTestMode"].ToString() == "1")
-                environment = Braintree.Environment.SANDBOX;
-            else
-                environment = Braintree.Environment.PRODUCTION;
-
-
-            var gateway = new BraintreeGateway
+            try
             {
-                Environment = environment,
-                MerchantId = ConfigurationManager.AppSettings["BtMerchantId"],
-                PublicKey = ConfigurationManager.AppSettings["BtPublicKey"],
-                PrivateKey = ConfigurationManager.AppSettings["BtPrivateKey"]
-            };
-            Result<Transaction> refundResult = null;
-            string transactionId = form["hdntransactionid"].ToString();
-            Service.Subscription subscription = subscriptionService.GetSubscriptionByTransactionId(transactionId);
-            int creditused = subscription.TotalCredit - subscription.RemainingCredit;
-            double amountused=0, remainingamount=0, creditAmount=0;
+                PlanService planService = new PlanService();
 
-            if (form["hdnmode"].ToString() == "1")
-            {
-                if (creditused != 0)
-                {
-                    ViewBag.Error = "Unable to Fully Refund due to "+creditused+" credit(s) used ";
-                    return View();
-                }
+                Braintree.Environment environment;
+                if (ConfigurationManager.AppSettings["BtEnvironmentTestMode"].ToString() == "1")
+                    environment = Braintree.Environment.SANDBOX;
+                else
+                    environment = Braintree.Environment.PRODUCTION;
 
-                refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString());
-                subscriptionService.DeactivateCurrentSubscription(transactionId);
-                
-            }
-            else
-            {
-                if (form["txtamount"] == "")
-                {
-                    ViewBag.Error = "Please Enter Amount";
-                    return View();
-                }
 
-                Service.Plan plan = planService.GetPlanDetailByPlanId(subscription.PlanId);
-                if (subscription.SubscriptionTypeId == 1)
+                var gateway = new BraintreeGateway
                 {
-                   
-                   creditAmount = Convert.ToDouble(plan.CreditPrice);
-                   amountused = creditAmount * creditused;
-                   remainingamount = subscription.SubscriptionPrice - amountused;
-                    double newTotalPrice = subscription.TotalPrice - Convert.ToDouble(form["txtamount"]);
-                    double totalCredit = newTotalPrice / creditAmount; 
-                    if (Convert.ToDouble(form["txtamount"]) > remainingamount)
+                    Environment = environment,
+                    MerchantId = ConfigurationManager.AppSettings["BtMerchantId"],
+                    PublicKey = ConfigurationManager.AppSettings["BtPublicKey"],
+                    PrivateKey = ConfigurationManager.AppSettings["BtPrivateKey"]
+                };
+                Result<Transaction> refundResult = null;
+                string transactionId = form["hdntransactionid"].ToString();
+                Service.Subscription subscription = subscriptionService.GetSubscriptionByTransactionId(transactionId);
+                int creditused = subscription.TotalCredit - subscription.RemainingCredit;
+                double amountused = 0, remainingamount = 0, creditAmount = 0;
+
+                if (form["hdnmode"].ToString() == "1")
+                {
+                    if (creditused != 0)
                     {
-                        ViewBag.Error = "Amount is greater than remaining amount ";
+                        ViewBag.Error = "Unable to Fully Refund due to " + creditused + " credit(s) used ";
                         return View();
                     }
-                    refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString(), Convert.ToDecimal(form["txtamount"]));
-                    if(refundResult.Message != "Cannot refund a transaction unless it is settled.")
-                        subscriptionService.UpdateTotalCreditAndAmount(subscription.Id, newTotalPrice, totalCredit);
+
+                    refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString());
+                    subscriptionService.DeactivateCurrentSubscription(transactionId);
+
                 }
-                else if(subscription.SubscriptionTypeId == 2)
+                else
                 {
-                    var daysInCurrentMonths = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
-                    var perDayCreditAmount = subscription.TotalPrice / daysInCurrentMonths;
-
-                    var dayspend = Convert.ToInt32(DateTime.Now.ToString("d"));
-
-                    var amountUsed = dayspend * perDayCreditAmount;
-
-
-                    if (Convert.ToDouble(form["txtamount"]) > amountused)
+                    if (form["txtamount"] == "")
                     {
-                        ViewBag.Error = "Amount is greater than remaining amount ";
+                        ViewBag.Error = "Please Enter Amount";
                         return View();
-
                     }
 
-                    var remainingAmount = subscription.TotalPrice - Convert.ToDouble(form["txtamount"]);
-                    refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString(), Convert.ToDecimal(form["txtamount"]));
-                    if (refundResult.Message != "Cannot refund a transaction unless it is settled.")
-                        subscriptionService.UpdateTotalCreditAndAmount(subscription.Id, remainingAmount, 0);
+                    Service.Plan plan = planService.GetPlanDetailByPlanId(subscription.PlanId);
+                    if (subscription.SubscriptionTypeId == 1)
+                    {
+
+                        creditAmount = Convert.ToDouble(plan.CreditPrice);
+                        amountused = creditAmount * creditused;
+                        remainingamount = subscription.SubscriptionPrice - amountused;
+                        double newTotalPrice = subscription.TotalPrice - Convert.ToDouble(form["txtamount"]);
+                        double totalCredit = newTotalPrice / creditAmount;
+                        if (Convert.ToDouble(form["txtamount"]) > remainingamount)
+                        {
+                            ViewBag.Error = "Amount is greater than remaining amount ";
+                            return View();
+                        }
+                        refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString(), Convert.ToDecimal(form["txtamount"]));
+                        if (refundResult.Message != "Cannot refund a transaction unless it is settled.")
+                            subscriptionService.UpdateTotalCreditAndAmount(subscription.Id, newTotalPrice, totalCredit);
+                    }
+                    else if (subscription.SubscriptionTypeId == 2)
+                    {
+                        var daysInCurrentMonths = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+                        var perDayCreditAmount = subscription.TotalPrice / daysInCurrentMonths;
+
+                        var dayspend = Convert.ToInt32(DateTime.Now.ToString("d"));
+
+                        var amountUsed = dayspend * perDayCreditAmount;
+
+
+                        if (Convert.ToDouble(form["txtamount"]) > amountused)
+                        {
+                            ViewBag.Error = "Amount is greater than remaining amount ";
+                            return View();
+
+                        }
+
+                        var remainingAmount = subscription.TotalPrice - Convert.ToDouble(form["txtamount"]);
+                        refundResult = gateway.Transaction.Refund(form["hdntransactionid"].ToString(), Convert.ToDecimal(form["txtamount"]));
+                        if (refundResult.Message != "Cannot refund a transaction unless it is settled.")
+                            subscriptionService.UpdateTotalCreditAndAmount(subscription.Id, remainingAmount, 0);
+                    }
+
                 }
 
+
+
+                RefundTranactionLog refundTranactionLog = new RefundTranactionLog();
+                refundTranactionLog.TransactionId = transactionId;
+                refundTranactionLog.Message = refundResult.Message;
+                if (refundResult.Errors != null)
+                    refundTranactionLog.Errors = refundResult.Errors.ToString();
+                refundTranactionLog.IsActive = true;
+                refundTranactionLog.CreatedDateTime = DateTime.Now;
+                refundTranactionLog.Gateway = Constant.Gateway.BrainTree.ToString();
+
+                if (refundResult.Target != null)
+                    refundTranactionLog.RefundTransactionId = refundResult.Target.RefundedTransactionId;
+
+
+                subscriptionService.InsertRefundTranactionLog(refundTranactionLog);
             }
-
-              
-
-            RefundTranactionLog refundTranactionLog = new RefundTranactionLog();
-            refundTranactionLog.TransactionId = transactionId;
-            refundTranactionLog.Message = refundResult.Message;
-            if(refundResult.Errors != null)
-                refundTranactionLog.Errors = refundResult.Errors.ToString();
-            refundTranactionLog.IsActive = true;
-            refundTranactionLog.CreatedDateTime = DateTime.Now;
-            refundTranactionLog.Gateway = Constant.Gateway.BrainTree.ToString();
-
-            if(refundResult.Target != null)
-                refundTranactionLog.RefundTransactionId = refundResult.Target.RefundedTransactionId;
-
-            
-            subscriptionService.InsertRefundTranactionLog(refundTranactionLog);
-
+            catch(Exception ex)
+            {
+                throw ex;
+            }
            
 
             return View();

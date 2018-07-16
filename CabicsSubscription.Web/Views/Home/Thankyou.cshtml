@@ -8,3 +8,10 @@
 
 <h2>Thankyou You have purchase subscription succesfully It will appear into your account shortly</h2>
 
+<script>
+    var timer = setTimeout(function () {
+        var aValue = localStorage.getItem("accounttoken");
+        console.log(aValue);
+        window.location = 'dashboard?data=' + aValue;
+    }, 10000);
+</script>

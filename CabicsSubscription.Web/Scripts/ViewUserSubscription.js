@@ -49,6 +49,7 @@
                 html += '<td>RemainingNoOfVehicles</td>';
                 html += '<td>PerSMSPrice</td>';
                 html += '<td>ChequeNo</td>';
+				html += '<td>PaymentTransactionId</td>';
                 html += '<td>Created Date</td>';
                 html += '<td>Refund</td>'
                 html += '<td>CreditUtilizationReport</td>'
@@ -81,14 +82,15 @@
                         html += '<td>' + value.RemainingNoOfAgents + '</td>';
                         html += '<td>' + value.RemainingNoOfDrivers + '</td>';
                         html += '<td>' + value.RemainingNoOfVehicles + '</td>';
-                        html += '<td>' + value.PerSMSPrice + '</td>';
+                        html += '<td>' + value.PerSMSPrice + '</td>';						 
                         html += '<td> ' + value.ChequeNo + '</td >';
+						html += '<td> ' + value.btTransactionId + '</td >';
                         html += '<td>' + value.CreatedDateTime + '</td>';
-                        if (value.btTransactionId == -1) {
-                            html += '<td>Refund Not Available</td >';
+                        if (value.ChequeNo == "") {
+                            html += '<td><a data-TransactionId="' + value.btTransactionId + '" onclick="RefudSubscription(this)">Refund Subscription(S)</a></td >';
                         }
                         else {
-                            html += '<td><a data-TransactionId="' + value.btTransactionId + '" onclick="RefudSubscription(this)">Refund Subscription(S)</a></td >';
+                            html += '<td>Refund Not Available</td >';
                         }
                         html += '<td><a data-accountid="' + id + '" data-subscriptionid= "' + value.Id + '" onclick="CreditUtilizationReport(this)" >Credit Utilization Report</a></td >';
                         html += '</tr > </tbody> ';

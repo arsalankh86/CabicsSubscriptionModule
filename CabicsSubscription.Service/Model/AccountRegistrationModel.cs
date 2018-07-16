@@ -10,5 +10,7 @@ namespace CabicsSubscription.Service
         public string Email { get; set; }
         public string Name { get; set; }
         public int ClientId { get; set; }
+        public int CabicsSystemId { get; set; }
+        
     }
 }

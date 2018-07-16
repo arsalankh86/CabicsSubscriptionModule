@@ -120,10 +120,10 @@ namespace CabicsSubscription.Service
                     {
                         Amount = Convert.ToDecimal(amount),
                         PaymentMethodNonce = nonce_Generated,
-                        //Options = new TransactionOptionsRequest
-                        //{
-                        //    SubmitForSettlement = true
-                        //}
+                        Options = new TransactionOptionsRequest
+                        {
+                            SubmitForSettlement = true
+                        }
                     };
 
                     Result<Transaction> result = gateway.Transaction.Sale(request);
@@ -136,11 +136,11 @@ namespace CabicsSubscription.Service
                     if (isSuccess)
                     {
                         //// Insert Re-Subscription
-                        subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount), account.Id, qty, "", smscreditqty, hdnsmscreditamount,
+                    int nSubscriptionId = subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount), account.Id, qty, "", smscreditqty, hdnsmscreditamount,
                            subscription.btTransactionId, subscription.btSubscriptionId, subscription.IsAutoRenewel, subscription.NoOfBillingCycle);
 
 
-                        RecurringJob.AddOrUpdate(() => MarkAutoRenewalSubscription(subscriptionId, null), Cron.Minutely);
+                        RecurringJob.AddOrUpdate(() => MarkAutoRenewalSubscription(nSubscriptionId, null), Cron.Hourly);
 
                         ////// Mark execution service Done
                         //windowsServiceExecutionService.MarkWindowsServiceStatus(windowsServiceExecution.Id, (int)Constant.WindowsServiceExecutionStatus.Done);

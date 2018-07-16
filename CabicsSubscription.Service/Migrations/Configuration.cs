@@ -19,6 +19,8 @@ namespace CabicsSubscription.Service.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
 
+
+
             /// Defualt Client Insertion
             Client client = new Client();
             client.Id = 1;
@@ -57,8 +59,6 @@ namespace CabicsSubscription.Service.Migrations
             smsCreditDeductionType.CreatedDate = DateTime.Now;
             context.CreditDeductionTypes.AddOrUpdate(smsCreditDeductionType);
             context.SaveChanges();
-
-
 
         }
     }

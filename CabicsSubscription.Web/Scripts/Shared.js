@@ -2,7 +2,7 @@
 
     var data = GetParameterValues('data');
 
-    localStorage.setItem("accounttoken", data);
+   // localStorage.setItem("accounttoken", data);
 
     var subs = "#subs";
     var dvlink = "#dvlink";
@@ -11,7 +11,7 @@
 
         shared.ShowCurrentSubscription();
 
-        var dashboardLink = "<a class='active' href=Dashboard?data=" + data + ">Dashboard</a>";
+        var dashboardLink = "<a class='active' href=Dashboard?data=" + data + ">Subscription</a>";
         var viewPlanLink = "<a class='active' href=ViewPlan?data=" + data + ">View Plan</a>";
         var textLocalConfigurationHtml = "<a href=TextLocalConfiguration?data=" + data + ">TextLocal Configuration</a>";
         var menu = dashboardLink + " | " + viewPlanLink + " | " + textLocalConfigurationHtml;
@@ -19,8 +19,14 @@
 
         $(dvlink).append(menu);
 
+        $("#goBack").click(function () {
+            window.history.back();
+        });
+
         
     }
+
+       
 
     function GetParameterValues(param) {
         var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -79,16 +85,24 @@
                     else if (value.SubscriptionTypeId == 2)
                         subscriptionname = "Monthly";
 
+                    var sdate = value.StartDate.split("T")[0];
+                    var edate = value.EndDate.split("T")[0];
+                    var cdate = value.CreatedDateTime.split("T")[0];
+
+
+                    subscriptiongrid += '<tr>';
                     if (value.IsActive == true) {
-                        subscriptiongrid += '<tr style="background-color:green;" >';
+                        subscriptiongrid += '<td style="background-color:#82f286;">' + value.PlanName + '</td><td style="background-color:#82f286;">' + subscriptionname + '</td>';
+                        subscriptiongrid += '<td style="background-color:#82f286;">' + value.TotalPrice + '</td><td style="background-color:#82f286;">' + value.TotalCredit + '</td><td style="background-color:#82f286;">' + value.RemainingCredit + '</td><td style="background-color:#82f286;">' + sdate + '</td><td style="background-color:#82f286;">' + edate + '</td>';
+                        subscriptiongrid += '<td style="background-color:#82f286;">' + cdate + '</td></tr>';
+
                     }
                     else {
-                        subscriptiongrid += '<tr>';
+                        subscriptiongrid += '<td ">' + value.PlanName + '</td><td ">' + subscriptionname + '</td>';
+                        subscriptiongrid += '<td ">' + value.TotalPrice + '</td><td ">' + value.TotalCredit + '</td><td ">' + value.RemainingCredit + '</td><td ">' + sdate + '</td><td ">' + edate + '</td>';
+                        subscriptiongrid += '<td ">' + cdate + '</td></tr>';
                     }
-                    subscriptiongrid += '<td>' + value.PlanName + '</td><td>' + subscriptionname + '</td>';
-                    subscriptiongrid += '<td>' + value.TotalPrice + '</td><td>' + value.TotalCredit + '</td><td>' + value.RemainingCredit + '</td><td>' + value.StartDate + '</td><td>' + value.EndDate + '</td>';
-                    subscriptiongrid += '<td>' + value.CreatedDateTime + '</td></tr>';
-
+               
                     
 
 
@@ -100,8 +114,8 @@
                      
                         if (value.SubscriptionTypeId == 2) {
 
-                            subshtml += "<a href='#' class='list-group-item'>Start Date <span class='badge'>" + value.StartDate + "</span></a>";
-                            subshtml += "<a href='#' class='list-group-item'>End Date <span class='badge'>" + value.EndDate + "</span></a>";
+                            subshtml += "<a href='#' class='list-group-item'>Start Date <span class='badge'>" + sdate + "</span></a>";
+                            subshtml += "<a href='#' class='list-group-item'>End Date <span class='badge'>" + edate + "</span></a>";
                             subsType = "Monthly";
                         }
                         else {

@@ -14,6 +14,8 @@ namespace CabicsSubscription.Service
         public string AccountCode { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
+        public int CabicsSystemId { get; set; }
         public Nullable<int> BalanceCredit { get; set; }
         public Nullable<int> AllCredit { get; set; }
         public Nullable<int> CurrentSubscriptionId { get; set; }

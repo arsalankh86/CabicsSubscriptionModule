@@ -24,6 +24,7 @@ namespace CabicsSubscription.API.Controllers
             accountRegistrationModel.Name = accountRegistrationModelRequest.Name;
             accountRegistrationModel.Email = accountRegistrationModelRequest.Email;
             accountRegistrationModel.ClientId = accountRegistrationModelRequest.ClientId;
+            accountRegistrationModel.CabicsSystemId = accountRegistrationModelRequest.CabicsSystemId;
             return accountService.ReturnToken(accountRegistrationModel);
 
 
