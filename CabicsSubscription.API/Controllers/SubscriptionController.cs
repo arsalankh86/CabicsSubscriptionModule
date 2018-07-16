@@ -137,7 +137,7 @@ namespace CabicsSubscription.API.Controllers
                 {
                     Transaction transaction = gateway.Transaction.Find(subs.btTransactionId);
 
-                    if (transaction.Status == Braintree.TransactionStatus.SETTLED && transaction.Status == Braintree.TransactionStatus.SETTLEMENT_CONFIRMED)
+                    if (transaction.Status == Braintree.TransactionStatus.SETTLED || transaction.Status == Braintree.TransactionStatus.SETTLEMENT_CONFIRMED)
                     { subs.ChequeNo = ""; }
                 }
 

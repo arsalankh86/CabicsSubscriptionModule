@@ -157,12 +157,12 @@ namespace CabicsSubscription.Web.Controllers
                         var daysInCurrentMonths = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
                         var perDayCreditAmount = subscription.TotalPrice / daysInCurrentMonths;
 
-                        var dayspend = Convert.ToInt32(DateTime.Now.ToString("d"));
+                        var dayspend = DateTime.Now.Date.Day;
 
                         var amountUsed = dayspend * perDayCreditAmount;
 
 
-                        if (Convert.ToDouble(form["txtamount"]) > amountused)
+                        if (Convert.ToDouble(form["txtamount"]) > amountUsed)
                         {
                             ViewBag.Error = "Amount is greater than remaining amount ";
                             return View();
