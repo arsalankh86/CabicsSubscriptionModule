@@ -181,14 +181,14 @@ namespace CabicsSubscription.Service.Services
 
                 subscription.PlanId = plan.Id;
                 subscription.PlanName = plan.Name;
-                subscription.StartDate = DateTime.Now;
+                subscription.StartDate = DateTime.UtcNow;
                 subscription.TotalPrice = totalAmonut;
                 subscription.AccountId = cabOfficeId;
                 subscription.SubscriptionTypeId = plan.PlanTypeId;
                 subscription.btTransactionId = transactionId;
                 if (plan.PlanTypeId == (int)Constant.PlayType.Monthly)
                 {
-                    subscription.EndDate = DateTime.Now.AddMonths(1);
+                    subscription.EndDate = DateTime.UtcNow.AddMonths(1);
                     subscription.NoOfAgents = plan.NoOfAgents;
                     subscription.NoOfDrivers = plan.NoOfDrivers;
                     subscription.NoOfVehicles = plan.NoOfVehicles;
@@ -213,7 +213,7 @@ namespace CabicsSubscription.Service.Services
                 subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Active;
                 subscription.IsActive = true;
                 subscription.ChequeNo = chequeNo;
-                subscription.CreatedDateTime = DateTime.Now;
+                subscription.CreatedDateTime = DateTime.UtcNow;
 
                 if (plan.PlanTypeId == 1)
                    subscription.IsAutoRenewel = false;

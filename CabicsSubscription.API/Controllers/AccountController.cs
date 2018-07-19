@@ -37,5 +37,12 @@ namespace CabicsSubscription.API.Controllers
             List<Account> lstAccount = accountService.GetAllCabOffice();
             return lstAccount;
         }
+
+        [HttpPost]
+        public string Login(CabOfficeAuth cabOfficeAuth)
+        {
+            AccountService accountService = new AccountService();
+            return accountService.GetAllCabToken(cabOfficeAuth.Email, cabOfficeAuth.CabOfficeId);
+        }
     }
 }

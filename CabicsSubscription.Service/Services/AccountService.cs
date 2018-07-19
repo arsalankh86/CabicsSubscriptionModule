@@ -40,12 +40,36 @@ namespace CabicsSubscription.Service.Services
 
         }
 
+        public Account getCabOfficeByToken(string token)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Account account = context.Accounts.FirstOrDefault(x => x.IsActive == true && x.Token == token);
+                return account;
+            }
+        }
+
         public List<Account> GetAllCabOffice()
         {
             using (DataContext contect = new DataContext())
             {
                 List<Account> lstccount = contect.Accounts.Where(x => x.IsActive == true).ToList();
                 return lstccount;
+            }
+        }
+
+        public string GetAllCabToken(string email, int cabOfficeId)
+        {
+            using (DataContext contect = new DataContext())
+            {
+                Account account = contect.Accounts.FirstOrDefault(x => x.Email == email
+                && x.CabicsSystemId == cabOfficeId
+                && x.IsActive == true );
+
+                if (account == null)
+                    return Constant.APIError.AccountNotFound.ToString();
+
+                return account.Token;
             }
         }
 

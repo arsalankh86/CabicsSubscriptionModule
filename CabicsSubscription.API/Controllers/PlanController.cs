@@ -54,8 +54,8 @@ namespace CabicsSubscription.API.Controllers
             plan.PerCreditSMSPrice = planrequest.PerSMSPrice;
             plan.BrainTreePlanName = planrequest.BrainTreePlan;
             plan.IsActive = true;
-            plan.CreatedDateTime = DateTime.Now;
-            plan.UpdatedDateTime = DateTime.Now;
+            plan.CreatedDateTime = DateTime.UtcNow;
+            plan.UpdatedDateTime = DateTime.UtcNow;
             plan.PlanExpiryDateString = planrequest.PlanExpiryDate.ToString();
             // plan.PlanExpiryDate = DateTime.Now.AddMonths(6); 
             //"7/10/2013"
@@ -81,7 +81,7 @@ namespace CabicsSubscription.API.Controllers
             plan.NoOfDrivers = planrequest.NoOfDrivers;
             plan.NoOfVehicles = planrequest.NoOfVehicles;
             plan.PerCreditSMSPrice = planrequest.PerSMSPrice;
-            plan.UpdatedDateTime = DateTime.Now;
+            plan.UpdatedDateTime = DateTime.UtcNow;
             string date = planrequest.PlanExpiryDate.ToString();
             DateTime utcDate = DateTime.SpecifyKind(Convert.ToDateTime(date), DateTimeKind.Utc);
             plan.PlanExpiryDate = utcDate; //Convert.ToDateTime(date);

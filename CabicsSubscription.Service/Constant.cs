@@ -8,6 +8,15 @@ namespace CabicsSubscription.Service
 {
     public static class Constant
     {
+        public enum APIError
+        {
+            AccountNotFound  = 1001,
+            NoSubscriptionFound = 2001,
+            SubscriptionExpired = 2002,
+            NotEnoughCredit = 2003
+        }
+        
+
         public enum SubscriptionStatus
         {
             

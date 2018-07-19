@@ -87,7 +87,7 @@ namespace CabicsSubscription.API.Controllers
                 winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
                 winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
                 winservice.IsActive = true;
-                winservice.CreatedDate = DateTime.Now;
+                winservice.CreatedDate = DateTime.UtcNow;
 
                 WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
                 windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
