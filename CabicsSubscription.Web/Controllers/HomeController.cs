@@ -72,8 +72,8 @@ namespace CabicsSubscription.Web.Controllers
 
         public ActionResult Dashboard()
         {
-            AccountService accountService = new AccountService();
-            Account account = accountService.getCabOfficeByAccountId("sadasd");
+           // AccountService accountService = new AccountService();
+           // Account account = accountService.getCabOfficeByAccountId("sadasd");
             return View();
         }
 
@@ -265,13 +265,16 @@ namespace CabicsSubscription.Web.Controllers
             #endregion
 
 
-            bool chkautorenewel = false;
-            var bit = "off";
-            if (form["chkautorenewel"] != null)
-                bit = form["chkautorenewel"].ToString();
+            if (resultVal)
+            {
 
-            if (bit == "on")
-                chkautorenewel = true;
+                bool chkautorenewel = false;
+                var bit = "off";
+                if (form["chkautorenewel"] != null)
+                    bit = form["chkautorenewel"].ToString();
+
+                if (bit == "on")
+                    chkautorenewel = true;
 
                 SubscriptionService subscriptionService = new SubscriptionService();
 
@@ -291,39 +294,46 @@ namespace CabicsSubscription.Web.Controllers
                 if (account != null)
                     accountId = account.Id;
 
-            int planId = 0;
-            if (form["hdnplanid"] != null)
-                planId = Convert.ToInt32(form["hdnplanid"].ToString());
+                int planId = 0;
+                if (form["hdnplanid"] != null)
+                    planId = Convert.ToInt32(form["hdnplanid"].ToString());
 
 
-            int subscriptionId = subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount), accountId, qty, "", smscreditqty, hdnsmscreditamount, 
-                    transaction.Id,"", chkautorenewel, 0);
-
-            if (chkautorenewel == true) {
-
-
-                /// Mark Hangfire Service
-                AutomatedService automatedService = new AutomatedService();
-                RecurringJob.AddOrUpdate(() => automatedService.MarkAutoRenewalSubscription(subscriptionId, null), Cron.Hourly);
+                int subscriptionId = subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(amount),
+                    accountId, qty, "", smscreditqty, hdnsmscreditamount,
+                    transaction.Id, "", chkautorenewel, 0);
 
 
-                ////// Insert into execution service
+                if (chkautorenewel == true)
+                {
 
-                WindowsServiceExecution winservice = new WindowsServiceExecution();
-                winservice.WindowsServiceFunction = "Automatic Charging";
-                winservice.WindowsServiceArgumrnt = subscriptionId;
-                winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
-                winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
-                winservice.IsActive = true;
-                winservice.CreatedDate = DateTime.Now;
 
-                //WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
-                //windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
+                    /// Mark Hangfire Service
+                    AutomatedService automatedService = new AutomatedService();
+                    RecurringJob.AddOrUpdate(() => automatedService.MarkAutoRenewalSubscription(subscriptionId, null), Cron.Hourly);
+
+
+                    ////// Insert into execution service
+
+                    WindowsServiceExecution winservice = new WindowsServiceExecution();
+                    winservice.WindowsServiceFunction = "Automatic Charging";
+                    winservice.WindowsServiceArgumrnt = subscriptionId;
+                    winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
+                    winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
+                    winservice.IsActive = true;
+                    winservice.CreatedDate = DateTime.Now;
+
+                    //WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
+                    //windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
+                }
+
+
+                return RedirectToAction("Thankyou");
             }
-
-
-            return RedirectToAction("Thankyou");
-
+            else
+            {
+                return RedirectToAction("CustomError?type=btpayment");
+            }
         }
 
 
@@ -334,5 +344,20 @@ namespace CabicsSubscription.Web.Controllers
         }
 
 
+        public ActionResult CustomError()
+        {
+            string errorType = "";
+            if (Request.QueryString["type"] != null)
+            {
+                errorType = Request.QueryString["type"].ToString();
+            }
+
+            if (errorType == "btpayment")
+                ViewBag.Error = "Your braintree payment transaction is unsuccesfull.";
+
+
+            return View();
+        }
+
     }
-    }
+ }

@@ -12,7 +12,7 @@ namespace CabicsSubscription.Service
         
         public int Id { get; set; }
         public string Name { get; set; }
-        public double Credit { get; set; }
+        public int Credit { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
 

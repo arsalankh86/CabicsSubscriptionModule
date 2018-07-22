@@ -96,6 +96,8 @@ namespace CabicsSubscription.Service.Services
                     List<Subscription> lstSubscription = context.Subscriptions.Where(x => x.AccountId == cabofficeid && x.Id != subscriptionId).ToList();
                     foreach(Subscription subscription in lstSubscription)
                     {
+                        subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Expired;
+                        subscription.Status = Constant.SubscriptionStatus.Expired.ToString();
                         subscription.IsActive = false;
                         context.SaveChanges();
                     }

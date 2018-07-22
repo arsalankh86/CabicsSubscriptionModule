@@ -165,7 +165,13 @@ namespace CabicsSubscription.Service
 
         }
 
-
+        public void DeductDailyCredit(int subscriptionId)
+        {
+                SubscriptionService subscriptionService = new SubscriptionService();
+                CreditDeductionType dailyCreditDeduction = subscriptionService.GetCreditDailyDeductionDetail();
+                int dailyCreditDeductionCreditValue = dailyCreditDeduction.Credit;
+                subscriptionService.UpdateSubscriptionRemainingCredit(subscriptionId, dailyCreditDeduction.Credit);
+        }
     }
 
     

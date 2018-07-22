@@ -36,6 +36,7 @@ namespace CabicsSubscription.Service
         public bool IsAutoRenewel { get; set; }
         public int NoOfBillingCycle { get; set; }
         public string btSubscriptionId { get; set; }
+        public string Status { get; set; }
 
         public int AccountId { get; set; }
         public int PlanId { get; set; }

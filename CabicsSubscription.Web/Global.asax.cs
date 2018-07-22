@@ -1,5 +1,6 @@
 ﻿using CabicsSubscription.Service;
 using Hangfire;
+//using Hangfire.MySql;
 using Owin;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,12 @@ namespace CabicsSubscription.Web
 
             AutomatedService automatedService = new AutomatedService();
             string sqlCon = System.Configuration.ConfigurationManager.AppSettings["SQLConnectionStrings"];
+            //string mySqlCon = System.Configuration.ConfigurationManager.AppSettings["HangFireMYSQLConnectionStrings"];
 
             Hangfire.GlobalConfiguration.Configuration
                 .UseSqlServerStorage(sqlCon);
+
+            //Hangfire.GlobalConfiguration.Configuration.UseStorage(new MySqlStorage(mySqlCon));
 
             _backgroundJobServer = new BackgroundJobServer();
 

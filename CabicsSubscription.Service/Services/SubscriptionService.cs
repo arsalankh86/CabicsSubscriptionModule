@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hangfire;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -124,7 +125,15 @@ namespace CabicsSubscription.Service.Services
 
         }
 
-     
+        public List<CreditDeductionType> GetCreditDeductionDetail()
+        {
+            using (DataContext context = new DataContext())
+            {
+                List<CreditDeductionType> lstCreditDeductionType = context.CreditDeductionTypes.Where(x => x.IsActive == true).ToList();
+                return lstCreditDeductionType;
+            }
+        }
+
         public List<Subscription> GetUserAllSubscriptionDetail(int cabOfficeId)
         {
             DataContext context = new DataContext();
@@ -212,6 +221,7 @@ namespace CabicsSubscription.Service.Services
                 
                 subscription.SubcriptionStatusCode = (int)Constant.SubscriptionStatus.Active;
                 subscription.IsActive = true;
+                subscription.Status = Constant.SubscriptionStatus.Active.ToString();
                 subscription.ChequeNo = chequeNo;
                 subscription.CreatedDateTime = DateTime.UtcNow;
 
@@ -232,17 +242,33 @@ namespace CabicsSubscription.Service.Services
                 context.SaveChanges();
             }
 
+            AutomatedService automatedService = new AutomatedService();
+            if(plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
+                RecurringJob.AddOrUpdate(() => automatedService.DeductDailyCredit(subscriptionId), Cron.Daily);
 
             return subscriptionId;
 
 
         }
 
-        public List<CreditDeductionType> GetCreditDeductionDetail()
+        public void UpdateSubscriptionRemainingCredit(int subscriptionId, int dailyCreditDeductionCredit)
         {
             using (DataContext context = new DataContext())
             {
-                List<CreditDeductionType> creditDeductiontype = context.CreditDeductionTypes.Where(x => x.IsActive == true).ToList();
+                Subscription upSubscription = context.Subscriptions.FirstOrDefault(x => x.Id == subscriptionId && x.IsActive == true);
+                if (upSubscription.RemainingCredit > 0)
+                {
+                    upSubscription.RemainingCredit = upSubscription.RemainingCredit - dailyCreditDeductionCredit;
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public CreditDeductionType GetCreditDailyDeductionDetail()
+        {
+            using (DataContext context = new DataContext())
+            {
+                CreditDeductionType creditDeductiontype = context.CreditDeductionTypes.FirstOrDefault(x => x.IsActive == true && x.Id == (int)Constant.CreditDeductionType.DailyCharges);
                 return creditDeductiontype;
 
             }

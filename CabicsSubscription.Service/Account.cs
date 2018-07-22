@@ -22,7 +22,7 @@ namespace CabicsSubscription.Service
         public DateTime CreatedDateTime { get; set; }
         public bool IsActive { get; set; }
         public string Token { get; set; }
-
+      
         //Foreign key for Client
         public int ClientId { get; set; }
         public string PaymentMethodNonce { get; set; }

@@ -61,6 +61,12 @@ namespace CabicsSubscription.Service
             AutomaticCharging = 1
         }
 
+        public enum CreditDeductionType
+        {
+            DailyCharges = 1,
+            PerJobCharges = 2,
+            SMSCharges = 3
+        }
 
     }
 }
