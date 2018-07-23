@@ -77,7 +77,7 @@ namespace CabicsSubscription.Service
                 string todayDate = DateTime.Now.ToString().Split(' ')[0];
 
                 var qty = 1;
-                int smscreditqty = Convert.ToInt32(subscription.NoOfSmsCreditPurchase);
+                int smscreditqty = Convert.ToInt32(subscription.NoOfSmsCreditPurchase) + Convert.ToInt32(subscription.RemainingSmsCreditPurchase);
                 double hdnsmscreditamount = Convert.ToInt32(subscription.SMSPrice);
                 string transactionId = subscription.btTransactionId;
 
@@ -170,7 +170,9 @@ namespace CabicsSubscription.Service
                 SubscriptionService subscriptionService = new SubscriptionService();
                 CreditDeductionType dailyCreditDeduction = subscriptionService.GetCreditDailyDeductionDetail();
                 int dailyCreditDeductionCreditValue = dailyCreditDeduction.Credit;
-                subscriptionService.UpdateSubscriptionRemainingMonthlySMSCredit(subscriptionId, dailyCreditDeduction.Credit);
+                subscriptionService.UpdateSubscriptionCredit(subscriptionId, dailyCreditDeduction.Credit, (int)Constant.CreditDeductionType.DailyCharges);
+
+           
         }
     }
 

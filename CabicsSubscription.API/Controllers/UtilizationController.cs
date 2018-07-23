@@ -87,8 +87,9 @@ namespace CabicsSubscription.API.Controllers
                         utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NotEnoughMonthlySMSCredit;
                         return Ok(utilizeSubscriptionResponse);
                     }
+
                     CreditDeductionType smsCreditDeduction = subscriptionService.GetCreditSMSDeductionDetail();
-                    subscriptionService.UpdateSubscriptionRemainingMonthlySMSCredit(subscription.Id, smsCreditDeduction.Credit);
+                    subscriptionService.UpdateSubscriptionRemainingMonthlySMSCredit(subscription.Id, smsCreditDeduction.Credit, (int)Constant.CreditDeductionType.SMSCharges);
                 }
 
             }
@@ -106,21 +107,17 @@ namespace CabicsSubscription.API.Controllers
                 if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.PerJobCharges)
                 {
                     CreditDeductionType jobCreditDeduction = subscriptionService.GetCreditJobDeductionDetail();
-                    subscriptionService.UpdateSubscriptionRemainingMonthlySMSCredit(subscription.Id, jobCreditDeduction.Credit);
+                    subscriptionService.UpdateSubscriptionCredit(subscription.Id, jobCreditDeduction.Credit, (int)Constant.CreditDeductionType.PerJobCharges);
 
                 }
                 else if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.SMSCharges)
                 {
                     CreditDeductionType smsCreditDeduction = subscriptionService.GetCreditSMSDeductionDetail();
-                    subscriptionService.UpdateSubscriptionRemainingMonthlySMSCredit(subscription.Id, smsCreditDeduction.Credit);
+                    subscriptionService.UpdateSubscriptionCredit(subscription.Id, smsCreditDeduction.Credit, (int)Constant.CreditDeductionType.SMSCharges);
                 }
             }
 
-            CreditDeductionLog creditDeductionLog = new CreditDeductionLog();
-            creditDeductionLog.AccountId = account.Id;
-            creditDeductionLog.subscriptionId = subscription.Id;
-            creditDeductionLog.CreditDeductionTypeId = utilizeSubscriptionModel.CreditUtilizationType;
-            creditDeductionLog.CreatedDate = DateTime.UtcNow;
+           
 
             utilizeSubscriptionResponse.Error = "";
             utilizeSubscriptionResponse.ErrorCode = 0;

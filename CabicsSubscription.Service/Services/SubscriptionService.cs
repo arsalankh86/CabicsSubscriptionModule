@@ -252,12 +252,38 @@ namespace CabicsSubscription.Service.Services
 
         }
 
-        public void UpdateSubscriptionRemainingMonthlySMSCredit(int subscriptionId, int dailyCreditDeductionCredit)
+        public void UpdateSubscriptionCredit(int subscriptionId, int dailyCreditDeductionCredit, int deductiontypes)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Subscription upSubscription = context.Subscriptions.FirstOrDefault(x => x.Id == subscriptionId && x.IsActive == true);
+                upSubscription.RemainingCredit = upSubscription.RemainingCredit - dailyCreditDeductionCredit;
+                context.SaveChanges();
+
+                CreditDeductionLog creditDeductionLog = new CreditDeductionLog();
+                creditDeductionLog.AccountId = upSubscription.Id;
+                creditDeductionLog.subscriptionId = upSubscription.Id;
+                creditDeductionLog.CreditDeductionTypeId = deductiontypes;
+                creditDeductionLog.CreatedDate = DateTime.UtcNow;
+                context.CreditDeductionLogs.Add(creditDeductionLog);
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdateSubscriptionRemainingMonthlySMSCredit(int subscriptionId, int dailyCreditDeductionCredit, int deductiontypes)
         {
             using (DataContext context = new DataContext())
             {
                 Subscription upSubscription = context.Subscriptions.FirstOrDefault(x => x.Id == subscriptionId && x.IsActive == true);
                 upSubscription.RemainingSmsCreditPurchase = upSubscription.RemainingSmsCreditPurchase - dailyCreditDeductionCredit;
+                context.SaveChanges();
+
+                CreditDeductionLog creditDeductionLog = new CreditDeductionLog();
+                creditDeductionLog.AccountId = upSubscription.Id;
+                creditDeductionLog.subscriptionId = upSubscription.Id;
+                creditDeductionLog.CreditDeductionTypeId = deductiontypes;
+                creditDeductionLog.CreatedDate = DateTime.UtcNow;
+                context.CreditDeductionLogs.Add(creditDeductionLog);
                 context.SaveChanges();
             }
         }
