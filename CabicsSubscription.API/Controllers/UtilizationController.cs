@@ -8,6 +8,8 @@ using System.Net.Http;
 using System.Web.Http;
 using CabicsSubscription.Service.Services;
 using System.Globalization;
+using System.Web.Http.Description;
+using System.Threading.Tasks;
 
 namespace CabicsSubscription.API.Controllers
 {
@@ -15,65 +17,116 @@ namespace CabicsSubscription.API.Controllers
     {
         PlanService planService = new PlanService();
 
-
-        public UtilizeSubscriptionResponse UtilizeSubscription(UtilizeSubscriptionModel utilizeSubscriptionModel)
+        [HttpPost]
+        [ResponseType(typeof(UtilizeSubscriptionDto))]
+        //public UtilizeSubscriptionResponse UtilizeSubscription(UtilizeSubscriptionModel utilizeSubscriptionModel)
+        public async Task<IHttpActionResult> UtilizeSubscription(UtilizeSubscriptionModel utilizeSubscriptionModel)
         {
-            UtilizeSubscriptionResponse utilizeSubscriptionResponse = new UtilizeSubscriptionResponse();
+            UtilizeSubscriptionDto utilizeSubscriptionResponse = new UtilizeSubscriptionDto();
             AccountService accountService = new AccountService();
             SubscriptionService subscriptionService = new SubscriptionService();
+       
             Account account = null;
-            var token = "";
-            if (Request.Headers.Contains("authtoken")) {
-                IEnumerable<string> headerValues = Request.Headers.GetValues("authtoken");
-                token = headerValues.FirstOrDefault();
-                account =  accountService.getCabOfficeByToken(token);
-                if(account == null)
-                {
-                    utilizeSubscriptionResponse.Error = Constant.APIError.AccountNotFound.ToString();
-                    utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.AccountNotFound;
-                    return utilizeSubscriptionResponse;
-                }
-
-                /// Check this account is able to create a job
-                Subscription subscription = subscriptionService.GetSubscriptionBySubscriptionId(Convert.ToInt32(account.CurrentSubscriptionId));
-                
-                if(subscription == null)
-                {
-                    utilizeSubscriptionResponse.Error = Constant.APIError.NoSubscriptionFound.ToString();
-                    utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NoSubscriptionFound;
-                    return utilizeSubscriptionResponse;
-                }
-
-                if (subscription == null)
-                {
-                    utilizeSubscriptionResponse.Error = Constant.APIError.NoSubscriptionFound.ToString();
-                    utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NoSubscriptionFound;
-                    return utilizeSubscriptionResponse;
-                }
-
-                int subscriptionType = subscription.SubscriptionTypeId;
-                if(subscriptionType == 1)
-                {
-                  // List<CreditDeductionLog> creditDeductionLog = subscriptionService.GetCreditDeductionDetail();
-                }
-
-               
-
-                //CreditDeductionLog creditDeductionLog = new CreditDeductionLog();
-                //creditDeductionLog.AccountId = account.Id;
-                //creditDeductionLog.subscriptionId = 0;
-                //creditDeductionLog.CreditDeductionTypeId = utilizeSubscriptionModel.CreditUtilizationType;
-                //creditDeductionLog.CreatedDate = DateTime.UtcNow;
-                
+            string email = "";
+            int cabOfficeId = 0;
+            if (Request.Headers.Contains("CabOfficeEmail")) {
+                IEnumerable<string> headerValues = Request.Headers.GetValues("CabOfficeEmail");
+                email = headerValues.FirstOrDefault();
             }
 
+            if (Request.Headers.Contains("CabOfficeId"))
+            {
+                IEnumerable<string> headerValues = Request.Headers.GetValues("CabOfficeId");
+                cabOfficeId = Convert.ToInt32(headerValues.FirstOrDefault());
+            }
+
+            account =  accountService.getCabOfficeByEmailAndCabOfficeId(email, cabOfficeId);
+            Subscription subscription = subscriptionService.GetSubscriptionBySubscriptionId(Convert.ToInt32(account.CurrentSubscriptionId));
+            int subscriptionType = subscription.SubscriptionTypeId;
 
 
+            if (account == null)
+            {
+                utilizeSubscriptionResponse.Response = "";
+                utilizeSubscriptionResponse.Result = false;
+                utilizeSubscriptionResponse.Error = Constant.APIError.AccountNotFound.ToString();
+                utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.AccountNotFound;
+                return Ok(utilizeSubscriptionResponse);
+            }
 
+            if (subscription == null)
+            {
+                utilizeSubscriptionResponse.Response = "";
+                utilizeSubscriptionResponse.Result = false;
+                utilizeSubscriptionResponse.Error = Constant.APIError.NoSubscriptionFound.ToString();
+                utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NoSubscriptionFound;
+                return Ok(utilizeSubscriptionResponse);
+            }
 
+        
 
+            if (subscriptionType == (int)Constant.SubscriptionType.Monthly)
+            {
+                if (subscription.EndDate < DateTime.Now)
+                {
+                    utilizeSubscriptionResponse.Response = "";
+                    utilizeSubscriptionResponse.Result = false;
+                    utilizeSubscriptionResponse.Error = Constant.APIError.SubscriptionExpired.ToString();
+                    utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.SubscriptionExpired;
+                    return Ok(utilizeSubscriptionResponse);
+                }
 
-            return utilizeSubscriptionResponse;
+                if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.SMSCharges)
+                {
+                        
+                    if (subscription.RemainingSmsCreditPurchase <= 0)
+                    {
+                        utilizeSubscriptionResponse.Response = "";
+                        utilizeSubscriptionResponse.Result = false;
+                        utilizeSubscriptionResponse.Error = Constant.APIError.NotEnoughMonthlySMSCredit.ToString();
+                        utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NotEnoughMonthlySMSCredit;
+                        return Ok(utilizeSubscriptionResponse);
+                    }
+                    CreditDeductionType smsCreditDeduction = subscriptionService.GetCreditSMSDeductionDetail();
+                    subscriptionService.UpdateSubscriptionRemainingMonthlySMSCredit(subscription.Id, smsCreditDeduction.Credit);
+                }
+
+            }
+            else
+            {
+                if (subscription.RemainingCredit <= 0)
+                {
+                    utilizeSubscriptionResponse.Response = "";
+                    utilizeSubscriptionResponse.Result = false;
+                    utilizeSubscriptionResponse.Error = Constant.APIError.NotEnoughCredit.ToString();
+                    utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NotEnoughCredit;
+                    return Ok(utilizeSubscriptionResponse);
+                }
+
+                if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.PerJobCharges)
+                {
+                    CreditDeductionType jobCreditDeduction = subscriptionService.GetCreditJobDeductionDetail();
+                    subscriptionService.UpdateSubscriptionRemainingMonthlySMSCredit(subscription.Id, jobCreditDeduction.Credit);
+
+                }
+                else if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.SMSCharges)
+                {
+                    CreditDeductionType smsCreditDeduction = subscriptionService.GetCreditSMSDeductionDetail();
+                    subscriptionService.UpdateSubscriptionRemainingMonthlySMSCredit(subscription.Id, smsCreditDeduction.Credit);
+                }
+            }
+
+            CreditDeductionLog creditDeductionLog = new CreditDeductionLog();
+            creditDeductionLog.AccountId = account.Id;
+            creditDeductionLog.subscriptionId = subscription.Id;
+            creditDeductionLog.CreditDeductionTypeId = utilizeSubscriptionModel.CreditUtilizationType;
+            creditDeductionLog.CreatedDate = DateTime.UtcNow;
+
+            utilizeSubscriptionResponse.Error = "";
+            utilizeSubscriptionResponse.ErrorCode = 0;
+            utilizeSubscriptionResponse.Result = true;
+            utilizeSubscriptionResponse.Response = "";
+            return Ok(utilizeSubscriptionResponse);
 
         }
 

@@ -45,6 +45,7 @@ namespace CabicsSubscription.Service.Services
             }
         }
 
+     
 
         //public int PurchaseSubscription(int planId, double totalAmonut, int cabOfficeId, int qty, string chequeNo)
         //{
@@ -251,16 +252,13 @@ namespace CabicsSubscription.Service.Services
 
         }
 
-        public void UpdateSubscriptionRemainingCredit(int subscriptionId, int dailyCreditDeductionCredit)
+        public void UpdateSubscriptionRemainingMonthlySMSCredit(int subscriptionId, int dailyCreditDeductionCredit)
         {
             using (DataContext context = new DataContext())
             {
                 Subscription upSubscription = context.Subscriptions.FirstOrDefault(x => x.Id == subscriptionId && x.IsActive == true);
-                if (upSubscription.RemainingCredit > 0)
-                {
-                    upSubscription.RemainingCredit = upSubscription.RemainingCredit - dailyCreditDeductionCredit;
-                    context.SaveChanges();
-                }
+                upSubscription.RemainingSmsCreditPurchase = upSubscription.RemainingSmsCreditPurchase - dailyCreditDeductionCredit;
+                context.SaveChanges();
             }
         }
 
@@ -274,6 +272,25 @@ namespace CabicsSubscription.Service.Services
             }
         }
 
+        public CreditDeductionType GetCreditJobDeductionDetail()
+        {
+            using (DataContext context = new DataContext())
+            {
+                CreditDeductionType creditDeductiontype = context.CreditDeductionTypes.FirstOrDefault(x => x.IsActive == true && x.Id == (int)Constant.CreditDeductionType.PerJobCharges);
+                return creditDeductiontype;
+
+            }
+        }
+
+        public CreditDeductionType GetCreditSMSDeductionDetail()
+        {
+            using (DataContext context = new DataContext())
+            {
+                CreditDeductionType creditDeductiontype = context.CreditDeductionTypes.FirstOrDefault(x => x.IsActive == true && x.Id == (int)Constant.CreditDeductionType.SMSCharges);
+                return creditDeductiontype;
+
+            }
+        }
 
     }
 }

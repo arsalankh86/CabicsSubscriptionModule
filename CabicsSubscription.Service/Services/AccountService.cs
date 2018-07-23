@@ -49,6 +49,15 @@ namespace CabicsSubscription.Service.Services
             }
         }
 
+        public Account getCabOfficeByEmailAndCabOfficeId(string email, int cabOfficeId)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Account account = context.Accounts.FirstOrDefault(x => x.IsActive == true && x.Email == email && x.CabicsSystemId == cabOfficeId);
+                return account;
+            }
+        }
+
         public List<Account> GetAllCabOffice()
         {
             using (DataContext contect = new DataContext())

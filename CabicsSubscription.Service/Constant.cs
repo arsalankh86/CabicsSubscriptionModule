@@ -13,7 +13,8 @@ namespace CabicsSubscription.Service
             AccountNotFound  = 1001,
             NoSubscriptionFound = 2001,
             SubscriptionExpired = 2002,
-            NotEnoughCredit = 2003
+            NotEnoughCredit = 2003,
+            NotEnoughMonthlySMSCredit = 2004,
         }
         
 

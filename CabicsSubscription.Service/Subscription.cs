@@ -16,6 +16,7 @@ namespace CabicsSubscription.Service
         public int SubcriptionStatusCode { get; set; }
         public double SubscriptionPrice { get; set; }
         public int NoOfSmsCreditPurchase { get; set; }
+        public int RemainingSmsCreditPurchase { get; set; }
         public double SMSPrice { get; set; }
         public double TotalPrice { get; set; }
         public int TotalCredit { get; set; }

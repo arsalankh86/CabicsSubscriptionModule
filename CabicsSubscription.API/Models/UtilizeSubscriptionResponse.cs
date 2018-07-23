@@ -1,8 +1,10 @@
 ﻿namespace CabicsSubscription.API.Models
 {
-    public class UtilizeSubscriptionResponse
+    public class UtilizeSubscriptionDto
     {
-        public int ErrorCode { get; set; }
+        public string Response { get; set; }
+        public bool Result { get; set; }
         public string Error { get; set; }
+        public int ErrorCode { get; set; }
     }
 }
