@@ -17,7 +17,7 @@ $(document).ready(function () {
     }  
 
     if ((email != undefined && firstname != undefined && email != "" && firstname != "")) {
-        var account = { "Email": email, "Name": firstname + lastname, "ClientId": "1", "CabicsSystemId": cabicsSystemId };
+        var account = { "Email": email, "Name": firstname + ' ' + lastname, "ClientId": "1", "CabicsSystemId": cabicsSystemId };
 
         $.ajax({
             type: "POST",

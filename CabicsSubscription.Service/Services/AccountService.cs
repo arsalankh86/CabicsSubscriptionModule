@@ -53,7 +53,7 @@ namespace CabicsSubscription.Service.Services
         {
             using (DataContext context = new DataContext())
             {
-                Account account = context.Accounts.FirstOrDefault(x => x.IsActive == true && x.Email == email && x.CabicsSystemId == cabOfficeId);
+                Account account = context.Accounts.FirstOrDefault(x => x.IsActive == true && (x.Email == email || x.CabicsSystemId == cabOfficeId));
                 return account;
             }
         }

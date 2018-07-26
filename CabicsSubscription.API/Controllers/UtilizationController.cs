@@ -15,7 +15,10 @@ namespace CabicsSubscription.API.Controllers
 {
     public class UtilizationController : ApiController
     {
-        PlanService planService = new PlanService();
+
+        
+        AccountService accountService = new AccountService();
+        SubscriptionService subscriptionService = new SubscriptionService();
 
         [HttpPost]
         [ResponseType(typeof(UtilizeSubscriptionDto))]
@@ -23,215 +26,390 @@ namespace CabicsSubscription.API.Controllers
         public async Task<IHttpActionResult> UtilizeSubscription(UtilizeSubscriptionModel utilizeSubscriptionModel)
         {
             UtilizeSubscriptionDto utilizeSubscriptionResponse = new UtilizeSubscriptionDto();
-            AccountService accountService = new AccountService();
-            SubscriptionService subscriptionService = new SubscriptionService();
-       
-            Account account = null;
-            string email = "";
-            int cabOfficeId = 0;
-            if (Request.Headers.Contains("CabOfficeEmail")) {
-                IEnumerable<string> headerValues = Request.Headers.GetValues("CabOfficeEmail");
-                email = headerValues.FirstOrDefault();
-            }
 
-            if (Request.Headers.Contains("CabOfficeId"))
+            try
             {
-                IEnumerable<string> headerValues = Request.Headers.GetValues("CabOfficeId");
-                cabOfficeId = Convert.ToInt32(headerValues.FirstOrDefault());
-            }
+                //AccountService accountService = new AccountService();
+                //SubscriptionService subscriptionService = new SubscriptionService();
 
-            account =  accountService.getCabOfficeByEmailAndCabOfficeId(email, cabOfficeId);
-            Subscription subscription = subscriptionService.GetSubscriptionBySubscriptionId(Convert.ToInt32(account.CurrentSubscriptionId));
-            int subscriptionType = subscription.SubscriptionTypeId;
-
-
-            if (account == null)
-            {
-                utilizeSubscriptionResponse.Response = "";
-                utilizeSubscriptionResponse.Result = false;
-                utilizeSubscriptionResponse.Error = Constant.APIError.AccountNotFound.ToString();
-                utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.AccountNotFound;
-                return Ok(utilizeSubscriptionResponse);
-            }
-
-            if (subscription == null)
-            {
-                utilizeSubscriptionResponse.Response = "";
-                utilizeSubscriptionResponse.Result = false;
-                utilizeSubscriptionResponse.Error = Constant.APIError.NoSubscriptionFound.ToString();
-                utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NoSubscriptionFound;
-                return Ok(utilizeSubscriptionResponse);
-            }
-
-        
-
-            if (subscriptionType == (int)Constant.SubscriptionType.Monthly)
-            {
-                if (subscription.EndDate < DateTime.Now)
+                Account account = null;
+                string email = "";
+                int cabOfficeId = 0;
+                if (Request.Headers.Contains("CabOfficeEmail"))
                 {
-                    utilizeSubscriptionResponse.Response = "";
+                    IEnumerable<string> headerValues = Request.Headers.GetValues("CabOfficeEmail");
+                    email = headerValues.FirstOrDefault();
+                }
+
+                if (Request.Headers.Contains("CabOfficeId"))
+                {
+                    IEnumerable<string> headerValues = Request.Headers.GetValues("CabOfficeId");
+                    cabOfficeId = Convert.ToInt32(headerValues.FirstOrDefault());
+                }
+
+                account = accountService.getCabOfficeByEmailAndCabOfficeId(email, cabOfficeId);
+
+
+
+                if (account == null)
+                {
                     utilizeSubscriptionResponse.Result = false;
-                    utilizeSubscriptionResponse.Error = Constant.APIError.SubscriptionExpired.ToString();
-                    utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.SubscriptionExpired;
+                    utilizeSubscriptionResponse.IsSuccess = true;
+                    utilizeSubscriptionResponse.Error = Constant.APIError.AccountNotFound.ToString();
+                    utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.AccountNotFound;
                     return Ok(utilizeSubscriptionResponse);
                 }
 
-                if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.SMSCharges)
+                Subscription subscription = subscriptionService.GetSubscriptionBySubscriptionId(Convert.ToInt32(account.CurrentSubscriptionId));
+
+                if (subscription == null)
                 {
-                        
-                    if (subscription.RemainingSmsCreditPurchase <= 0)
+                    utilizeSubscriptionResponse.Result = false;
+                    utilizeSubscriptionResponse.IsSuccess = true;
+                    utilizeSubscriptionResponse.Error = Constant.APIError.NoSubscriptionFound.ToString();
+                    utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NoSubscriptionFound;
+                    return Ok(utilizeSubscriptionResponse);
+                }
+
+                int subscriptionType = subscription.SubscriptionTypeId;
+
+                if (subscriptionType == (int)Constant.SubscriptionType.Monthly)
+                {
+                    if (subscription.EndDate < DateTime.Now)
                     {
-                        utilizeSubscriptionResponse.Response = "";
                         utilizeSubscriptionResponse.Result = false;
-                        utilizeSubscriptionResponse.Error = Constant.APIError.NotEnoughMonthlySMSCredit.ToString();
-                        utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NotEnoughMonthlySMSCredit;
+                        utilizeSubscriptionResponse.IsSuccess = true;
+                        utilizeSubscriptionResponse.Error = Constant.APIError.SubscriptionExpired.ToString();
+                        utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.SubscriptionExpired;
                         return Ok(utilizeSubscriptionResponse);
                     }
 
-                    CreditDeductionType smsCreditDeduction = subscriptionService.GetCreditSMSDeductionDetail();
-                    subscriptionService.UpdateSubscriptionRemainingMonthlySMSCredit(subscription.Id, smsCreditDeduction.Credit, (int)Constant.CreditDeductionType.SMSCharges);
+                    if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.SMSCharges)
+                    {
+
+                        if (subscription.RemainingSmsCreditPurchase <= 0)
+                        {
+                            utilizeSubscriptionResponse.Result = false;
+                            utilizeSubscriptionResponse.IsSuccess = true;
+                            utilizeSubscriptionResponse.Error = Constant.APIError.NotEnoughMonthlySMSCredit.ToString();
+                            utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NotEnoughMonthlySMSCredit;
+                            return Ok(utilizeSubscriptionResponse);
+                        }
+
+                        CreditDeductionType smsCreditDeduction = subscriptionService.GetCreditSMSDeductionDetail();
+                        subscriptionService.UpdateSubscriptionRemainingMonthlySMSCredit(subscription.Id, smsCreditDeduction.Credit, (int)Constant.CreditDeductionType.SMSCharges);
+                    }
+
+                }
+                else
+                {
+                    if (subscription.RemainingCredit <= 0)
+                    {
+                        utilizeSubscriptionResponse.Result = false;
+                        utilizeSubscriptionResponse.IsSuccess = true;
+                        utilizeSubscriptionResponse.Error = Constant.APIError.NotEnoughCredit.ToString();
+                        utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NotEnoughCredit;
+                        return Ok(utilizeSubscriptionResponse);
+                    }
+
+                    if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.PerJobCharges)
+                    {
+                        CreditDeductionType jobCreditDeduction = subscriptionService.GetCreditJobDeductionDetail();
+                        subscriptionService.UpdateSubscriptionCredit(subscription.Id, jobCreditDeduction.Credit, (int)Constant.CreditDeductionType.PerJobCharges);
+
+                    }
+                    else if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.SMSCharges)
+                    {
+                        CreditDeductionType smsCreditDeduction = subscriptionService.GetCreditSMSDeductionDetail();
+                        subscriptionService.UpdateSubscriptionCredit(subscription.Id, smsCreditDeduction.Credit, (int)Constant.CreditDeductionType.SMSCharges);
+                    }
                 }
 
+
+
+                utilizeSubscriptionResponse.Error = "";
+                utilizeSubscriptionResponse.ErrorCode = 0;
+                utilizeSubscriptionResponse.IsSuccess = true;
+                utilizeSubscriptionResponse.Result = true;
+                return Ok(utilizeSubscriptionResponse);
+
             }
-            else
+            catch(Exception ex)
             {
-                if (subscription.RemainingCredit <= 0)
-                {
-                    utilizeSubscriptionResponse.Response = "";
-                    utilizeSubscriptionResponse.Result = false;
-                    utilizeSubscriptionResponse.Error = Constant.APIError.NotEnoughCredit.ToString();
-                    utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.NotEnoughCredit;
-                    return Ok(utilizeSubscriptionResponse);
-                }
-
-                if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.PerJobCharges)
-                {
-                    CreditDeductionType jobCreditDeduction = subscriptionService.GetCreditJobDeductionDetail();
-                    subscriptionService.UpdateSubscriptionCredit(subscription.Id, jobCreditDeduction.Credit, (int)Constant.CreditDeductionType.PerJobCharges);
-
-                }
-                else if (utilizeSubscriptionModel.CreditUtilizationType == (int)Constant.CreditDeductionType.SMSCharges)
-                {
-                    CreditDeductionType smsCreditDeduction = subscriptionService.GetCreditSMSDeductionDetail();
-                    subscriptionService.UpdateSubscriptionCredit(subscription.Id, smsCreditDeduction.Credit, (int)Constant.CreditDeductionType.SMSCharges);
-                }
+                utilizeSubscriptionResponse.Error = ex.ToString();
+                utilizeSubscriptionResponse.ErrorCode = (int)Constant.APIError.Exception;
+                utilizeSubscriptionResponse.IsSuccess = false;
+                utilizeSubscriptionResponse.Result = false;
+                return Ok(utilizeSubscriptionResponse);
             }
-
-           
-
-            utilizeSubscriptionResponse.Error = "";
-            utilizeSubscriptionResponse.ErrorCode = 0;
-            utilizeSubscriptionResponse.Result = true;
-            utilizeSubscriptionResponse.Response = "";
-            return Ok(utilizeSubscriptionResponse);
-
-        }
-
-
-        public List<Plan> GetAllPlan()
-        {
-           return planService.GetAllPlan();
-        }
-
-
-        public List<Plan> GetAllPlanForCabOffice()
-        {
-            return planService.GetAllPlanForCabOffice();
         }
 
 
         [HttpGet]
-        public Plan GetPlanDetail(int planId)
+        [ResponseType(typeof(SubscriptionStatusDto))]
+        public async Task<IHttpActionResult> CheckSubscriptionStatus(int cabOfficeId, string cabOfficeEmail)
         {
-            return planService.GetPlanDetail(planId);
-        }
-
-
-        [HttpPost]
-        public int InsertPlan(InsertPlanRequest planrequest)
-        {
-            int result = PlanAlreadyExist(planrequest.PlanCode, planrequest.PlanTypeId);
-
-            if (result != 1)
-                return result;
-
-                Plan plan = new Plan();
-            plan.Name = planrequest.Name;
-            plan.PlanCode = planrequest.PlanCode;
-            plan.Description = planrequest.Description;
-            plan.Credit = planrequest.Credit;
-            plan.CreditPrice = planrequest.CreditPrice;
-            plan.PlanTypeId = planrequest.PlanTypeId;
-            plan.NoOfAgents = planrequest.NoOfAgents;
-            plan.NoOfDrivers = planrequest.NoOfDrivers;
-            plan.NoOfVehicles = planrequest.NoOfVehicles;
-            plan.PerCreditSMSPrice = planrequest.PerSMSPrice;
-            plan.BrainTreePlanName = planrequest.BrainTreePlan;
-            plan.IsActive = true;
-            plan.CreatedDateTime = DateTime.Now;
-            plan.UpdatedDateTime = DateTime.Now;
-            plan.PlanExpiryDateString = planrequest.PlanExpiryDate.ToString();
-            // plan.PlanExpiryDate = DateTime.Now.AddMonths(6); 
-            //"7/10/2013"
-            string date = planrequest.PlanExpiryDate.ToString();
-            DateTime utcDate = DateTime.SpecifyKind(Convert.ToDateTime(date), DateTimeKind.Utc);
-            plan.PlanExpiryDate = utcDate; //Convert.ToDateTime(date);
-            //plan.PlanExpiryDate = DateTime.ParseExact(planrequest.PlanExpiryDate.ToString(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            plan = planService.InsertPlan(plan);
-                return plan.Id;
-        }
-
-        [HttpPost]
-        public int EditPlan(InsertPlanRequest planrequest)
-        {
-            Plan plan = new Plan();
-            plan.Name = planrequest.Name;
-            plan.PlanCode = planrequest.PlanCode;
-            plan.Description = planrequest.Description;
-            plan.Credit = planrequest.Credit;
-            plan.CreditPrice = planrequest.CreditPrice;
-            plan.PlanTypeId = planrequest.PlanTypeId;
-            plan.NoOfAgents = planrequest.NoOfAgents;
-            plan.NoOfDrivers = planrequest.NoOfDrivers;
-            plan.NoOfVehicles = planrequest.NoOfVehicles;
-            plan.PerCreditSMSPrice = planrequest.PerSMSPrice;
-            plan.UpdatedDateTime = DateTime.Now;
-            string date = planrequest.PlanExpiryDate.ToString();
-            DateTime utcDate = DateTime.SpecifyKind(Convert.ToDateTime(date), DateTimeKind.Utc);
-            plan.PlanExpiryDate = utcDate; //Convert.ToDateTime(date);
-            plan = planService.Editplan(plan);
-            return plan.Id;
-        }
-
-        private int PlanAlreadyExist(string planCode, int planTypeId)
-        {
-            using (DataContext context = new DataContext())
+            SubscriptionStatusDto subscriptionStatusDto = new SubscriptionStatusDto();
+            try
             {
-                Plan planChk1 = context.plans.FirstOrDefault(x => x.PlanCode == planCode);
-                Plan planChk2 = context.plans.FirstOrDefault(x => x.PlanTypeId == 1);
                 
+                Account account = accountService.getCabOfficeByEmailAndCabOfficeId(cabOfficeEmail, cabOfficeId);
+                if (account == null)
+                {
+                    subscriptionStatusDto.isAllow = false;
+                    subscriptionStatusDto.IsSuccess = true;
+                    subscriptionStatusDto.Error = Constant.APIError.AccountNotFound.ToString();
+                    subscriptionStatusDto.ErrorCode = (int)Constant.APIError.AccountNotFound;
+                    return Ok(subscriptionStatusDto);
+                }
 
-                
-                if (planChk1 != null)
-                    return -1001;
-                if(planChk2 == null)
-                    return 1;
-                else if (planChk2.PlanTypeId == planTypeId)
-                    return -1002;
 
-                return 1;
+                Subscription subscription = subscriptionService.GetSubscriptionBySubscriptionId(Convert.ToInt32(account.CurrentSubscriptionId));
+
+                if (subscription == null)
+                {
+                    subscriptionStatusDto.isAllow = false;
+                    subscriptionStatusDto.IsSuccess = true;
+                    subscriptionStatusDto.Error = Constant.APIError.NoSubscriptionFound.ToString();
+                    subscriptionStatusDto.ErrorCode = (int)Constant.APIError.NoSubscriptionFound;
+                    return Ok(subscriptionStatusDto);
+                }
+
+                int subscriptionType = subscription.SubscriptionTypeId;
+
+
+                if (subscriptionType == (int)Constant.SubscriptionType.Monthly)
+                {
+                    if (subscription.EndDate < DateTime.Now)
+                    {
+                        subscriptionStatusDto.isAllow = false;
+                        subscriptionStatusDto.IsSuccess = true;
+                        subscriptionStatusDto.Error = Constant.APIError.SubscriptionExpired.ToString();
+                        subscriptionStatusDto.ErrorCode = (int)Constant.APIError.SubscriptionExpired;
+                        return Ok(subscriptionStatusDto);
+                    }
+                }
+
+                if (subscription.RemainingCredit <= 0)
+                {
+                        subscriptionStatusDto.isAllow = false;
+                        subscriptionStatusDto.IsSuccess = true;
+                        subscriptionStatusDto.Error = Constant.APIError.NotEnoughCredit.ToString();
+                        subscriptionStatusDto.ErrorCode = (int)Constant.APIError.NotEnoughCredit;
+                        return Ok(subscriptionStatusDto);
+                }
+
+
+                subscriptionStatusDto.isAllow = true;
+                subscriptionStatusDto.IsSuccess = true;
+                subscriptionStatusDto.Error = "";
+                subscriptionStatusDto.ErrorCode = 0;
+                return Ok(subscriptionStatusDto);
+
+            }
+            catch(Exception ex)
+            {
+                subscriptionStatusDto.isAllow = false;
+                subscriptionStatusDto.IsSuccess = false;
+                subscriptionStatusDto.Error = ex.ToString();
+                subscriptionStatusDto.ErrorCode = (int)Constant.APIError.Exception;
+                return Ok(subscriptionStatusDto);
+
             }
 
+
+
+
+
         }
 
+
+
         [HttpPost]
-        public bool DeletePlan(DeletePlanRequest deleteplanrequest)
+        [ResponseType(typeof(UpdateMonthlyQuotaDto))]
+        public async Task<IHttpActionResult> UpdateMonthlyQuota(UpdateMonthlyQuotaModel updateMonthlyQuotaModel)
         {
-            return planService.DeletePlan(deleteplanrequest.PlanId);
+            UpdateMonthlyQuotaDto updateMonthlyQuotaDto = new UpdateMonthlyQuotaDto();
+            try
+            {
+                Account account = null;
+                string email = "";
+                int cabOfficeId = 0;
+                if (Request.Headers.Contains("CabOfficeEmail"))
+                {
+                    IEnumerable<string> headerValues = Request.Headers.GetValues("CabOfficeEmail");
+                    email = headerValues.FirstOrDefault();
+                }
+
+                if (Request.Headers.Contains("CabOfficeId"))
+                {
+                    IEnumerable<string> headerValues = Request.Headers.GetValues("CabOfficeId");
+                    cabOfficeId = Convert.ToInt32(headerValues.FirstOrDefault());
+                }
+
+                account = accountService.getCabOfficeByEmailAndCabOfficeId(email, cabOfficeId);
+
+
+
+                if (account == null)
+                {
+                    updateMonthlyQuotaDto.Result = false;
+                    updateMonthlyQuotaDto.IsSuccess = true;
+                    updateMonthlyQuotaDto.Error = Constant.APIError.AccountNotFound.ToString();
+                    updateMonthlyQuotaDto.ErrorCode = (int)Constant.APIError.AccountNotFound;
+                    return Ok(updateMonthlyQuotaDto);
+                }
+
+                Subscription subscription = subscriptionService.GetSubscriptionBySubscriptionId(Convert.ToInt32(account.CurrentSubscriptionId));
+
+                if (subscription == null)
+                {
+                    updateMonthlyQuotaDto.Result = false;
+                    updateMonthlyQuotaDto.IsSuccess = true;
+                    updateMonthlyQuotaDto.Error = Constant.APIError.NoSubscriptionFound.ToString();
+                    updateMonthlyQuotaDto.ErrorCode = (int)Constant.APIError.NoSubscriptionFound;
+                    return Ok(updateMonthlyQuotaDto);
+                }
+
+                if(subscription.SubscriptionTypeId != (int)Constant.SubscriptionType.Monthly)
+                {
+                    updateMonthlyQuotaDto.Result = false;
+                    updateMonthlyQuotaDto.IsSuccess = false;
+                    updateMonthlyQuotaDto.Error = Constant.APIError.WorngSubscriptionException.ToString();
+                    updateMonthlyQuotaDto.ErrorCode = (int)Constant.APIError.WorngSubscriptionException;
+                    return Ok(updateMonthlyQuotaDto);
+                }
+                
+                if(updateMonthlyQuotaModel.QuotaType == (int)Constant.MonthlyQuotaType.Drivers)
+                {
+                    if(subscription.RemainingNoOfDrivers > 0)
+                        subscriptionService.MinusDriverFromSubscriptionofCabOffice(subscription.Id);
+                    else
+                    {
+                        updateMonthlyQuotaDto.Result = false;
+                        updateMonthlyQuotaDto.IsSuccess = true;
+                        updateMonthlyQuotaDto.Error = Constant.APIError.NotEnoughNoOfDriverExist.ToString();
+                        updateMonthlyQuotaDto.ErrorCode = (int)Constant.APIError.NotEnoughNoOfDriverExist;
+                        return Ok(updateMonthlyQuotaDto);
+                    }
+
+                }
+
+                if (updateMonthlyQuotaModel.QuotaType == (int)Constant.MonthlyQuotaType.Agents)
+                {
+                    if (subscription.RemainingNoOfAgents > 0)
+                        subscriptionService.MinusAgentFromSubscriptionofCabOffice(subscription.Id);
+                    else
+                    {
+                        updateMonthlyQuotaDto.Result = false;
+                        updateMonthlyQuotaDto.IsSuccess = true;
+                        updateMonthlyQuotaDto.Error = Constant.APIError.NotEnoughNoOfAgentExist.ToString();
+                        updateMonthlyQuotaDto.ErrorCode = (int)Constant.APIError.NotEnoughNoOfAgentExist;
+                        return Ok(updateMonthlyQuotaDto);
+                    }
+
+                }
+
+                if (updateMonthlyQuotaModel.QuotaType == (int)Constant.MonthlyQuotaType.Vehicles)
+                {
+                    if (subscription.RemainingNoOfVehicles > 0)
+                        subscriptionService.MinusVehicleFromSubscriptionofCabOffice(subscription.Id);
+                    else
+                    {
+                        updateMonthlyQuotaDto.Result = false;
+                        updateMonthlyQuotaDto.IsSuccess = true;
+                        updateMonthlyQuotaDto.Error = Constant.APIError.NotEnoughNoOfVehicleExist.ToString();
+                        updateMonthlyQuotaDto.ErrorCode = (int)Constant.APIError.NotEnoughNoOfVehicleExist;
+                        return Ok(updateMonthlyQuotaDto);
+                    }
+
+                }
+
+
+                updateMonthlyQuotaDto.Result = true;
+                updateMonthlyQuotaDto.IsSuccess = true;
+                updateMonthlyQuotaDto.Error = "";
+                updateMonthlyQuotaDto.ErrorCode = 0;
+                return Ok(updateMonthlyQuotaDto);
+
+            }
+            catch (Exception ex)
+            {
+                updateMonthlyQuotaDto.Result = false;
+                updateMonthlyQuotaDto.IsSuccess = false;
+                updateMonthlyQuotaDto.Error = ex.ToString();
+                updateMonthlyQuotaDto.ErrorCode = (int)Constant.APIError.Exception;
+                return Ok(updateMonthlyQuotaDto);
+
+            }
+
+
+        }
+
+
+        [HttpGet]
+        [ResponseType(typeof(MonthlyQuotaDto))]
+        public async Task<IHttpActionResult> CheckMonthlyQuotaStatus(int cabOfficeId, string cabOfficeEmail)
+        {
+            MonthlyQuotaDto monthlyQuotaDto = new MonthlyQuotaDto();
+            try
+            {
+
+                Account account = accountService.getCabOfficeByEmailAndCabOfficeId(cabOfficeEmail, cabOfficeId);
+                if (account == null)
+                {
+                    monthlyQuotaDto.QuoteDetailResponse = null; 
+                    monthlyQuotaDto.IsSuccess = true;
+                    monthlyQuotaDto.Error = Constant.APIError.AccountNotFound.ToString();
+                    monthlyQuotaDto.ErrorCode = (int)Constant.APIError.AccountNotFound;
+                    return Ok(monthlyQuotaDto);
+                }
+
+
+                Subscription subscription = subscriptionService.GetSubscriptionBySubscriptionId(Convert.ToInt32(account.CurrentSubscriptionId));
+
+                if (subscription == null)
+                {
+                    monthlyQuotaDto.QuoteDetailResponse = null;
+                    monthlyQuotaDto.IsSuccess = true;
+                    monthlyQuotaDto.Error = Constant.APIError.NoSubscriptionFound.ToString();
+                    monthlyQuotaDto.ErrorCode = (int)Constant.APIError.NoSubscriptionFound;
+                    return Ok(monthlyQuotaDto);
+                }
+
+                if (subscription.SubscriptionTypeId != (int)Constant.SubscriptionType.Monthly)
+                {
+                    monthlyQuotaDto.QuoteDetailResponse = null;
+                    monthlyQuotaDto.IsSuccess = false;
+                    monthlyQuotaDto.Error = Constant.APIError.WorngSubscriptionException.ToString();
+                    monthlyQuotaDto.ErrorCode = (int)Constant.APIError.WorngSubscriptionException;
+                    return Ok(monthlyQuotaDto);
+                }
+
+                QuoteDetail quoteDetail = new QuoteDetail();
+                quoteDetail.RemainingNoOfAgent = Convert.ToInt32(subscription.RemainingNoOfAgents);
+                quoteDetail.RemainingNoOfDriver = Convert.ToInt32(subscription.RemainingNoOfDrivers);
+                quoteDetail.RemainingNoOfVehicle = Convert.ToInt32(subscription.RemainingNoOfVehicles);
+
+                monthlyQuotaDto.QuoteDetailResponse = quoteDetail;
+                monthlyQuotaDto.IsSuccess = true;
+                monthlyQuotaDto.Error = "";
+                monthlyQuotaDto.ErrorCode = 0;
+                return Ok(monthlyQuotaDto);
+
+            }
+            catch (Exception ex)
+            {
+                monthlyQuotaDto.QuoteDetailResponse = null;
+                monthlyQuotaDto.IsSuccess = false;
+                monthlyQuotaDto.Error = ex.ToString();
+                monthlyQuotaDto.ErrorCode = (int)Constant.APIError.Exception;
+                return Ok(monthlyQuotaDto);
+
+            }
+
+
         }
 
     }
-
-
-
 }

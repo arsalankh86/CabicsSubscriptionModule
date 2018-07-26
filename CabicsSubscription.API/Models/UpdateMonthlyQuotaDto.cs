@@ -1,6 +1,6 @@
 ﻿namespace CabicsSubscription.API.Models
 {
-    public class UtilizeSubscriptionDto : DTO
+    public class UpdateMonthlyQuotaDto : DTO
     {
         public bool Result { get; set; }
     }

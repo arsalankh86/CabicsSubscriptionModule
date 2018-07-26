@@ -37,6 +37,8 @@
 
         PurchaseSubscription.SetPlanValue();
 
+        PurchaseSubscription.SetCabOfficeAccountDetail();
+
         
 
         $(qty).bind('input', function () {
@@ -181,6 +183,31 @@
         });
     }
 
+
+
+    this.SetCabOfficeAccountDetail = function () {
+
+        var account = GetParameterValues('data');
+        $(hdnaccount).val(account);
+
+        $.ajax({
+            type: "Get",
+            url: servicePath + "/Account/GetCabOffice?token=" + account,
+            //data: JSON.stringify(account),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                
+                console.log(data);
+                var fullName = data.FullName;
+                $(fname).val(fullName.split(' ')[0]);
+                $(lname).val(fullName.split(' ')[1]);
+            },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
 
     this.SetCreditDeduction = function () {
 

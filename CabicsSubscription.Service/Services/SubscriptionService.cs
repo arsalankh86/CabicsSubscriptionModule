@@ -261,11 +261,45 @@ namespace CabicsSubscription.Service.Services
                 context.SaveChanges();
 
                 CreditDeductionLog creditDeductionLog = new CreditDeductionLog();
-                creditDeductionLog.AccountId = upSubscription.Id;
+                creditDeductionLog.AccountId = upSubscription.AccountId;
                 creditDeductionLog.subscriptionId = upSubscription.Id;
                 creditDeductionLog.CreditDeductionTypeId = deductiontypes;
+                creditDeductionLog.Credits = dailyCreditDeductionCredit;
                 creditDeductionLog.CreatedDate = DateTime.UtcNow;
+                creditDeductionLog.UpdatedDate = DateTime.UtcNow;
+                creditDeductionLog.IsActive = true;
+
                 context.CreditDeductionLogs.Add(creditDeductionLog);
+                context.SaveChanges();
+            }
+        }
+
+        public void MinusDriverFromSubscriptionofCabOffice(int subscriptionId)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Subscription upSubscription = context.Subscriptions.FirstOrDefault(x => x.Id == subscriptionId && x.IsActive == true);
+                upSubscription.RemainingNoOfDrivers = upSubscription.RemainingNoOfDrivers - 1;
+                context.SaveChanges();
+            }
+        }
+
+        public void MinusAgentFromSubscriptionofCabOffice(int subscriptionId)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Subscription upSubscription = context.Subscriptions.FirstOrDefault(x => x.Id == subscriptionId && x.IsActive == true);
+                upSubscription.RemainingNoOfAgents = upSubscription.RemainingNoOfAgents - 1;
+                context.SaveChanges();
+            }
+        }
+
+        public void MinusVehicleFromSubscriptionofCabOffice(int subscriptionId)
+        {
+            using (DataContext context = new DataContext())
+            {
+                Subscription upSubscription = context.Subscriptions.FirstOrDefault(x => x.Id == subscriptionId && x.IsActive == true);
+                upSubscription.RemainingNoOfVehicles = upSubscription.RemainingNoOfVehicles - 1;
                 context.SaveChanges();
             }
         }

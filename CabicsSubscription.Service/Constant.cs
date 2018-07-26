@@ -10,11 +10,19 @@ namespace CabicsSubscription.Service
     {
         public enum APIError
         {
+           
             AccountNotFound  = 1001,
             NoSubscriptionFound = 2001,
             SubscriptionExpired = 2002,
             NotEnoughCredit = 2003,
             NotEnoughMonthlySMSCredit = 2004,
+
+            NotEnoughNoOfAgentExist = 2005,
+            NotEnoughNoOfDriverExist = 2006,
+            NotEnoughNoOfVehicleExist = 2007,
+
+            Exception = 4000,
+            WorngSubscriptionException = 4001
         }
         
 
@@ -67,6 +75,13 @@ namespace CabicsSubscription.Service
             DailyCharges = 1,
             PerJobCharges = 2,
             SMSCharges = 3
+        }
+
+        public enum MonthlyQuotaType
+        {
+            Drivers = 1,
+            Vehicles = 2,
+            Agents = 3
         }
 
     }

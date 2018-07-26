@@ -38,6 +38,15 @@ namespace CabicsSubscription.API.Controllers
             return lstAccount;
         }
 
+        [HttpGet]
+        public Account GetCabOffice(string token)
+        {
+            AccountService accountService = new AccountService();
+            Account account = accountService.getCabOfficeByToken(token);
+            return account;
+        }
+
+
         [HttpPost]
         public string Login(CabOfficeAuth cabOfficeAuth)
         {
