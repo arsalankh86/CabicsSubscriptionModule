@@ -140,7 +140,7 @@ namespace CabicsSubscription.Service
                            subscription.btTransactionId, subscription.btSubscriptionId, subscription.IsAutoRenewel, subscription.NoOfBillingCycle);
 
 
-                        RecurringJob.AddOrUpdate(() => MarkAutoRenewalSubscription(nSubscriptionId, null), Cron.Hourly);
+                        RecurringJob.AddOrUpdate(() => MarkAutoRenewalSubscription(nSubscriptionId, null), Cron.Minutely);
 
                         ////// Mark execution service Done
                         //windowsServiceExecutionService.MarkWindowsServiceStatus(windowsServiceExecution.Id, (int)Constant.WindowsServiceExecutionStatus.Done);

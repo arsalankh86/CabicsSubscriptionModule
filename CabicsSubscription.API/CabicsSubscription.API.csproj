@@ -188,6 +188,8 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Models\MonthlyQuotaDto.cs" />
+    <Compile Include="Models\TextLocalConfigurationDto.cs" />
+    <Compile Include="Models\TextLocalConfigurationModel.cs" />
     <Compile Include="Models\UpdateMonthlyQuotaModel.cs" />
     <Compile Include="Models\UpdateMonthlyQuotaDto.cs" />
     <Compile Include="Models\CabOfficeAuth.cs" />

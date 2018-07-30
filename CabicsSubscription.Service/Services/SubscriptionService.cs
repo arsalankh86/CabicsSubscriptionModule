@@ -257,20 +257,23 @@ namespace CabicsSubscription.Service.Services
             using (DataContext context = new DataContext())
             {
                 Subscription upSubscription = context.Subscriptions.FirstOrDefault(x => x.Id == subscriptionId && x.IsActive == true);
-                upSubscription.RemainingCredit = upSubscription.RemainingCredit - dailyCreditDeductionCredit;
-                context.SaveChanges();
+                if (upSubscription != null)
+                {
+                    upSubscription.RemainingCredit = upSubscription.RemainingCredit - dailyCreditDeductionCredit;
+                    context.SaveChanges();
 
-                CreditDeductionLog creditDeductionLog = new CreditDeductionLog();
-                creditDeductionLog.AccountId = upSubscription.AccountId;
-                creditDeductionLog.subscriptionId = upSubscription.Id;
-                creditDeductionLog.CreditDeductionTypeId = deductiontypes;
-                creditDeductionLog.Credits = dailyCreditDeductionCredit;
-                creditDeductionLog.CreatedDate = DateTime.UtcNow;
-                creditDeductionLog.UpdatedDate = DateTime.UtcNow;
-                creditDeductionLog.IsActive = true;
+                    CreditDeductionLog creditDeductionLog = new CreditDeductionLog();
+                    creditDeductionLog.AccountId = upSubscription.AccountId;
+                    creditDeductionLog.subscriptionId = upSubscription.Id;
+                    creditDeductionLog.CreditDeductionTypeId = deductiontypes;
+                    creditDeductionLog.Credits = dailyCreditDeductionCredit;
+                    creditDeductionLog.CreatedDate = DateTime.UtcNow;
+                    creditDeductionLog.UpdatedDate = DateTime.UtcNow;
+                    creditDeductionLog.IsActive = true;
 
-                context.CreditDeductionLogs.Add(creditDeductionLog);
-                context.SaveChanges();
+                    context.CreditDeductionLogs.Add(creditDeductionLog);
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -309,16 +312,19 @@ namespace CabicsSubscription.Service.Services
             using (DataContext context = new DataContext())
             {
                 Subscription upSubscription = context.Subscriptions.FirstOrDefault(x => x.Id == subscriptionId && x.IsActive == true);
-                upSubscription.RemainingSmsCreditPurchase = upSubscription.RemainingSmsCreditPurchase - dailyCreditDeductionCredit;
-                context.SaveChanges();
+                if (upSubscription != null)
+                {
+                    upSubscription.RemainingSmsCreditPurchase = upSubscription.RemainingSmsCreditPurchase - dailyCreditDeductionCredit;
+                    context.SaveChanges();
 
-                CreditDeductionLog creditDeductionLog = new CreditDeductionLog();
-                creditDeductionLog.AccountId = upSubscription.Id;
-                creditDeductionLog.subscriptionId = upSubscription.Id;
-                creditDeductionLog.CreditDeductionTypeId = deductiontypes;
-                creditDeductionLog.CreatedDate = DateTime.UtcNow;
-                context.CreditDeductionLogs.Add(creditDeductionLog);
-                context.SaveChanges();
+                    CreditDeductionLog creditDeductionLog = new CreditDeductionLog();
+                    creditDeductionLog.AccountId = upSubscription.Id;
+                    creditDeductionLog.subscriptionId = upSubscription.Id;
+                    creditDeductionLog.CreditDeductionTypeId = deductiontypes;
+                    creditDeductionLog.CreatedDate = DateTime.UtcNow;
+                    context.CreditDeductionLogs.Add(creditDeductionLog);
+                    context.SaveChanges();
+                }
             }
         }
 

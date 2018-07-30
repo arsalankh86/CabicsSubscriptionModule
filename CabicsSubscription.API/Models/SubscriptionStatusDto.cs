@@ -8,5 +8,6 @@ namespace CabicsSubscription.API.Models
     public class SubscriptionStatusDto : DTO
     {
         public bool isAllow { get; set; }
+        public QuoteDetail QuoteDetailResponse { get; set; }
     }
 }

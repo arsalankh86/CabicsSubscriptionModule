@@ -150,12 +150,16 @@ namespace CabicsSubscription.API.Controllers
         public async Task<IHttpActionResult> CheckSubscriptionStatus(int cabOfficeId, string cabOfficeEmail)
         {
             SubscriptionStatusDto subscriptionStatusDto = new SubscriptionStatusDto();
+            QuoteDetail quoteDetail = new QuoteDetail();
+            SubscriptionMonthly subscriptionMonthly = new SubscriptionMonthly();
+            SubscriptionPayAsYouGo subscriptionPayAsYouGo = new SubscriptionPayAsYouGo();
             try
             {
                 
                 Account account = accountService.getCabOfficeByEmailAndCabOfficeId(cabOfficeEmail, cabOfficeId);
                 if (account == null)
                 {
+                    subscriptionStatusDto.QuoteDetailResponse = null;
                     subscriptionStatusDto.isAllow = false;
                     subscriptionStatusDto.IsSuccess = true;
                     subscriptionStatusDto.Error = Constant.APIError.AccountNotFound.ToString();
@@ -168,6 +172,7 @@ namespace CabicsSubscription.API.Controllers
 
                 if (subscription == null)
                 {
+                    subscriptionStatusDto.QuoteDetailResponse = null;
                     subscriptionStatusDto.isAllow = false;
                     subscriptionStatusDto.IsSuccess = true;
                     subscriptionStatusDto.Error = Constant.APIError.NoSubscriptionFound.ToString();
@@ -176,30 +181,53 @@ namespace CabicsSubscription.API.Controllers
                 }
 
                 int subscriptionType = subscription.SubscriptionTypeId;
-
+                quoteDetail.SubscriptionTypeId = subscriptionType;
 
                 if (subscriptionType == (int)Constant.SubscriptionType.Monthly)
                 {
+                    quoteDetail.SubscriptionType = Constant.SubscriptionType.Monthly.ToString();
                     if (subscription.EndDate < DateTime.Now)
                     {
+                        subscriptionStatusDto.QuoteDetailResponse = null;
                         subscriptionStatusDto.isAllow = false;
                         subscriptionStatusDto.IsSuccess = true;
                         subscriptionStatusDto.Error = Constant.APIError.SubscriptionExpired.ToString();
                         subscriptionStatusDto.ErrorCode = (int)Constant.APIError.SubscriptionExpired;
                         return Ok(subscriptionStatusDto);
                     }
-                }
+                    else
+                    {
 
-                if (subscription.RemainingCredit <= 0)
+                        subscriptionMonthly.RemainingNoOfAgent = Convert.ToInt32(subscription.RemainingNoOfAgents);
+                        subscriptionMonthly.RemainingNoOfDriver = Convert.ToInt32(subscription.RemainingNoOfDrivers);
+                        subscriptionMonthly.RemainingNoOfVehicle = Convert.ToInt32(subscription.RemainingNoOfVehicles);
+                        quoteDetail.subscriptionMonthly = subscriptionMonthly;
+                        quoteDetail.subscriptionPayAsYouGo = null;
+                    }
+
+                }
+                else if (subscriptionType == (int)Constant.SubscriptionType.PayAsYouGo) 
                 {
+                    quoteDetail.SubscriptionType = Constant.SubscriptionType.PayAsYouGo.ToString();
+                    if (subscription.RemainingCredit <= 0)
+                    {
+                        subscriptionStatusDto.QuoteDetailResponse = null;
                         subscriptionStatusDto.isAllow = false;
                         subscriptionStatusDto.IsSuccess = true;
                         subscriptionStatusDto.Error = Constant.APIError.NotEnoughCredit.ToString();
                         subscriptionStatusDto.ErrorCode = (int)Constant.APIError.NotEnoughCredit;
                         return Ok(subscriptionStatusDto);
+                    }
+                    else
+                    {
+                        subscriptionPayAsYouGo.TotalCredit = subscription.TotalCredit;
+                        subscriptionPayAsYouGo.RemainingCredit = subscription.RemainingCredit;
+                        quoteDetail.subscriptionPayAsYouGo = subscriptionPayAsYouGo;
+                        quoteDetail.subscriptionMonthly = null;
+                    }
                 }
 
-
+                subscriptionStatusDto.QuoteDetailResponse = quoteDetail;
                 subscriptionStatusDto.isAllow = true;
                 subscriptionStatusDto.IsSuccess = true;
                 subscriptionStatusDto.Error = "";
@@ -209,6 +237,7 @@ namespace CabicsSubscription.API.Controllers
             }
             catch(Exception ex)
             {
+                subscriptionStatusDto.QuoteDetailResponse = null;
                 subscriptionStatusDto.isAllow = false;
                 subscriptionStatusDto.IsSuccess = false;
                 subscriptionStatusDto.Error = ex.ToString();
@@ -349,7 +378,7 @@ namespace CabicsSubscription.API.Controllers
 
         [HttpGet]
         [ResponseType(typeof(MonthlyQuotaDto))]
-        public async Task<IHttpActionResult> CheckMonthlyQuotaStatus(int cabOfficeId, string cabOfficeEmail)
+        public async Task<IHttpActionResult> CheckMonthlyQuotaStatus(int cabOfficeId, string cabOfficeEmail, int monthlyQuotaType)
         {
             MonthlyQuotaDto monthlyQuotaDto = new MonthlyQuotaDto();
             try
@@ -358,7 +387,7 @@ namespace CabicsSubscription.API.Controllers
                 Account account = accountService.getCabOfficeByEmailAndCabOfficeId(cabOfficeEmail, cabOfficeId);
                 if (account == null)
                 {
-                    monthlyQuotaDto.QuoteDetailResponse = null; 
+                    monthlyQuotaDto.SubscriptionMonthlyResponse = null;
                     monthlyQuotaDto.IsSuccess = true;
                     monthlyQuotaDto.Error = Constant.APIError.AccountNotFound.ToString();
                     monthlyQuotaDto.ErrorCode = (int)Constant.APIError.AccountNotFound;
@@ -370,7 +399,7 @@ namespace CabicsSubscription.API.Controllers
 
                 if (subscription == null)
                 {
-                    monthlyQuotaDto.QuoteDetailResponse = null;
+                    monthlyQuotaDto.SubscriptionMonthlyResponse = null;
                     monthlyQuotaDto.IsSuccess = true;
                     monthlyQuotaDto.Error = Constant.APIError.NoSubscriptionFound.ToString();
                     monthlyQuotaDto.ErrorCode = (int)Constant.APIError.NoSubscriptionFound;
@@ -379,19 +408,40 @@ namespace CabicsSubscription.API.Controllers
 
                 if (subscription.SubscriptionTypeId != (int)Constant.SubscriptionType.Monthly)
                 {
-                    monthlyQuotaDto.QuoteDetailResponse = null;
-                    monthlyQuotaDto.IsSuccess = false;
+                    monthlyQuotaDto.SubscriptionMonthlyResponse = null;
+                    monthlyQuotaDto.IsSuccess = true ;
                     monthlyQuotaDto.Error = Constant.APIError.WorngSubscriptionException.ToString();
                     monthlyQuotaDto.ErrorCode = (int)Constant.APIError.WorngSubscriptionException;
                     return Ok(monthlyQuotaDto);
                 }
 
-                QuoteDetail quoteDetail = new QuoteDetail();
-                quoteDetail.RemainingNoOfAgent = Convert.ToInt32(subscription.RemainingNoOfAgents);
-                quoteDetail.RemainingNoOfDriver = Convert.ToInt32(subscription.RemainingNoOfDrivers);
-                quoteDetail.RemainingNoOfVehicle = Convert.ToInt32(subscription.RemainingNoOfVehicles);
 
-                monthlyQuotaDto.QuoteDetailResponse = quoteDetail;
+                SubscriptionMonthly subscriptionMonthly = new SubscriptionMonthly();
+
+                if (monthlyQuotaType == (int)Constant.MonthlyQuotaType.Agents)
+                {
+                    if (subscription.RemainingNoOfAgents > 0)
+                        subscriptionMonthly.IsAllowAddition = true;
+                }
+
+                if (monthlyQuotaType == (int)Constant.MonthlyQuotaType.Drivers)
+                {
+                    if (subscription.RemainingNoOfDrivers > 0)
+                        subscriptionMonthly.IsAllowAddition = true;
+                }
+
+                if (monthlyQuotaType == (int)Constant.MonthlyQuotaType.Vehicles)
+                {
+                    if (subscription.RemainingNoOfVehicles > 0)
+                        subscriptionMonthly.IsAllowAddition = true;
+                }
+
+
+                subscriptionMonthly.RemainingNoOfAgent = Convert.ToInt32(subscription.RemainingNoOfAgents);
+                subscriptionMonthly.RemainingNoOfDriver = Convert.ToInt32(subscription.RemainingNoOfDrivers);
+                subscriptionMonthly.RemainingNoOfVehicle = Convert.ToInt32(subscription.RemainingNoOfVehicles);
+
+                monthlyQuotaDto.SubscriptionMonthlyResponse = subscriptionMonthly;
                 monthlyQuotaDto.IsSuccess = true;
                 monthlyQuotaDto.Error = "";
                 monthlyQuotaDto.ErrorCode = 0;
@@ -400,7 +450,7 @@ namespace CabicsSubscription.API.Controllers
             }
             catch (Exception ex)
             {
-                monthlyQuotaDto.QuoteDetailResponse = null;
+                monthlyQuotaDto.SubscriptionMonthlyResponse = null;
                 monthlyQuotaDto.IsSuccess = false;
                 monthlyQuotaDto.Error = ex.ToString();
                 monthlyQuotaDto.ErrorCode = (int)Constant.APIError.Exception;

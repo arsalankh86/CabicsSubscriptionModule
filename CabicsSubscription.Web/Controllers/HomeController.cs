@@ -310,7 +310,7 @@ namespace CabicsSubscription.Web.Controllers
 
                     /// Mark Hangfire Service
                     AutomatedService automatedService = new AutomatedService();
-                    RecurringJob.AddOrUpdate(() => automatedService.MarkAutoRenewalSubscription(subscriptionId, null), Cron.Hourly);
+                    RecurringJob.AddOrUpdate(() => automatedService.MarkAutoRenewalSubscription(subscriptionId, null), Cron.Minutely);
 
 
                     ////// Insert into execution service
