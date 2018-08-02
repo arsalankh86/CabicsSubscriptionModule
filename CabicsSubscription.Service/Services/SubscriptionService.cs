@@ -1,6 +1,8 @@
-﻿using Hangfire;
+﻿using CabicsSubscription.Service.Model;
+using Hangfire;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -104,9 +106,52 @@ namespace CabicsSubscription.Service.Services
             context.SaveChanges();
         }
 
-        public List<Subscription> GetCredititUtilizationReport(int cabOfficeId, int subscriptionId)
+        public List<CustomCreditDeductionLog> GetCredititUtilizationReport(int cabOfficeId, int subscriptionId)
         {
-            throw new NotImplementedException();
+            using (DataContext context = new DataContext())
+            {
+                //var lst = context.Database.SqlQuery<string>(@"
+                //                                            select a.FullName, s.PlanName, c.Name, cc.CreatedDate, cc.Credits from
+                //                                            cabicssubscriptiondb.creditdeductionlogs cc join cabicssubscriptiondb.creditdeductiontypes c on c.Id = cc.CreditDeductionTypeId
+                //                                            join cabicssubscriptiondb.subscriptions s on s.Id = cc.subscriptionId
+                //                                            join cabicssubscriptiondb.accounts a on a.Id = cc.AccountId
+                //                                            where a.Id = "+cabOfficeId +" and s.Id ="+subscriptionId+"")
+                //                                            .ToList();
+
+                var lst1 = (from cl in context.CreditDeductionLogs
+                            join ct in context.CreditDeductionTypes on cl.CreditDeductionTypeId equals ct.Id
+                            join s in context.Subscriptions on cl.subscriptionId equals s.Id
+                            join acc in context.Accounts on cl.AccountId equals acc.Id
+                            select new
+                            {
+                                cl.Credits,
+                                cl.CreatedDate,
+                                cl.JobId,
+                                ct.Name,
+                                s.PlanName,
+                                acc.FullName
+                                
+                            }).ToList();
+
+                List<CustomCreditDeductionLog> lst2 = new List<CustomCreditDeductionLog>();
+                foreach(var ccdl in lst1)
+                {
+                    CustomCreditDeductionLog customCreditDeductionLog = new CustomCreditDeductionLog();
+                    customCreditDeductionLog.FullName = ccdl.FullName;
+                    customCreditDeductionLog.Credits = ccdl.Credits;
+                    customCreditDeductionLog.PlanName = ccdl.PlanName;
+                    customCreditDeductionLog.Name = ccdl.Name;
+                    customCreditDeductionLog.CreatedDate = ccdl.CreatedDate;
+                    customCreditDeductionLog.JobId = ccdl.JobId;
+                    lst2.Add(customCreditDeductionLog);
+                
+                }
+
+                return lst2;
+
+            }
+
+          
         }
 
         public void MinusCreditFromSubscription(string transactionId, double amount)
@@ -233,6 +278,11 @@ namespace CabicsSubscription.Service.Services
 
                 AccountService accountService = new AccountService();
                 accountService.UpdateActiveSubsctionForAccount(subscriptionId, cabOfficeId);
+
+
+                AutomatedService automatedService = new AutomatedService();
+                if (plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
+                    RecurringJob.AddOrUpdate(() => automatedService.DeductDailyCredit(subscriptionId), Cron.Daily);
             }
             else
             {
@@ -243,9 +293,9 @@ namespace CabicsSubscription.Service.Services
                 context.SaveChanges();
             }
 
-            AutomatedService automatedService = new AutomatedService();
-            if(plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
-                RecurringJob.AddOrUpdate(() => automatedService.DeductDailyCredit(subscriptionId), Cron.Daily);
+            //AutomatedService automatedService = new AutomatedService();
+            //if(plan.PlanTypeId == (int)Constant.PlayType.PayAsYouGo)
+            //    RecurringJob.AddOrUpdate(() => automatedService.DeductDailyCredit(subscriptionId), Cron.Daily);
 
             return subscriptionId;
 

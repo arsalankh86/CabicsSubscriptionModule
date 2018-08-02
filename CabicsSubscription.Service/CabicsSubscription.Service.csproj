@@ -105,6 +105,7 @@
     <Compile Include="Migrations\201807152214393_subscriptionv8.Designer.cs">
       <DependentUpon>201807152214393_subscriptionv8.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\CustomCreditDeductionLog.cs" />
     <Compile Include="Services\DbErrorLogService.cs" />
     <Compile Include="Migrations\201805232110550_subscriptionv3.cs" />
     <Compile Include="Migrations\201805232110550_subscriptionv3.Designer.cs">

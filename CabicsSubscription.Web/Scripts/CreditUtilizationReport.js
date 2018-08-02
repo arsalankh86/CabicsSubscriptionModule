@@ -32,7 +32,7 @@
                 var html = '<table class="table table-bordered table-striped">';
                 html += '<thead><tr>';
                 html += '<td> Cab Office Name</td >';
-                html += '<td>Subscription Type</td>';
+                //html += '<td>Subscription Type</td>';
                 html += '<td>Plan Name</td>';
                 html += '<td>Credit Deduction Type</td>';
                 html += '<td>No of Credit Used</td>';
@@ -44,20 +44,18 @@
                 $.each(data, function (index, value) {
                     console.log(value);
 
-                    var subscriptionname = "";
-                    if (value.SubscriptionTypeId == 1)
-                        subscriptionname = "Pay as you go";
-                    else if (value.SubscriptionTypeId == 2)
-                        subscriptionname = "Monthly";
+                    var date = value.CreatedDate.split('T')[0];
+
+                 
 
                     html += '<tbody><tr>';
-                    html += '<td> ' + value.CabOfficeName + '</td>';
-                    html += '<td>' + value.SubscriptionType + '</td>';
+                    html += '<td> ' + value.FullName + '</td>';
+                    //html += '<td>' + value.SubscriptionType + '</td>';
                     html += '<td> ' + value.PlanName + '</td >';
-                    html += '<td> ' + value.CreditDeductionType + '</td >';
+                    html += '<td> ' + value.Name + '</td >';
                     html += '<td>' + value.Credits + '</td>';
                     html += '<td>' + value.JobId + '</td>';
-                    html += '<td>' + value.CreatedDateTime + '</td>';              
+                    html += '<td>' + formatDate(date) + '</td>';              
                     html += '</tr > </tbody> ';
 
                 });
@@ -66,7 +64,7 @@
                 console.log(html);
                 html += '</table>';
 
-                $("#dvusrsubs").append(html);
+                $("#dvrpt").append(html);
                 $("#divLoader").css("display", "none");
 
                 // window.location.href = webUrl + "/Home/Index?data=" + data;
@@ -78,6 +76,18 @@
             }
         });
 
+    }
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
     }
 
     RefudSubscription = function (obj) {

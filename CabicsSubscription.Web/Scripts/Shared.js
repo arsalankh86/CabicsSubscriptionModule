@@ -11,7 +11,7 @@
 
         shared.ShowCurrentSubscription();
 
-        var dashboardLink = "<a class='active' href=Dashboard?data=" + data + ">Subscription</a>";
+        var dashboardLink = "<a class='active' href=Dashboard?data=" + data + ">Home</a>";
         var viewPlanLink = "<a class='active' href=ViewPlan?data=" + data + ">View Plan</a>";
         var textLocalConfigurationHtml = "<a href=TextLocalConfiguration?data=" + data + ">TextLocal Configuration</a>";
         var menu = dashboardLink + " | " + viewPlanLink + " | " + textLocalConfigurationHtml;
