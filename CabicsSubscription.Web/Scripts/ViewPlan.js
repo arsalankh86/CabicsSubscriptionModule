@@ -76,7 +76,7 @@
                         html2 += "  </li>";
                         html2 += "      <li>";
                         html2 += "          <span>Credit</span>";
-                        html2 += "          " + value.Credit + "";
+                        html2 += "          Unlimited Credit";
                         html2 += "  </li>";
                         html2 += "  </ul>";
                         html2 += " </div>";

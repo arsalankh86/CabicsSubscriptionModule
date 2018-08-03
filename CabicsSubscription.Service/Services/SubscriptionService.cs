@@ -290,6 +290,15 @@ namespace CabicsSubscription.Service.Services
                 subscription.TotalCredit = subscription.TotalCredit + qty;
                 subscription.RemainingCredit = subscription.RemainingCredit + qty;
                 subscription.TotalPrice = subscription.TotalPrice + totalAmonut;
+
+                if (btSubsccriptionId != null && btSubsccriptionId != "")
+                    subscription.btTransactionId = btSubsccriptionId;
+
+                if (chequeNo != null && chequeNo != "")
+                    subscription.ChequeNo = chequeNo;
+
+
+
                 context.SaveChanges();
             }
 

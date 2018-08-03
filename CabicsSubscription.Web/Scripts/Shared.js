@@ -89,17 +89,29 @@
                     var edate = value.EndDate.split("T")[0];
                     var cdate = value.CreatedDateTime.split("T")[0];
 
+                    var tcredit = value.TotalCredit;
+                    var rcredit = value.RemainingCredit;
+
+                    if (value.SubscriptionTypeId == 1) {
+                        sdate = "N/A";
+                        edate = "N/A";
+                    }
+                    else if (value.SubscriptionTypeId == 2) {
+
+                        tcredit = "N/A";
+                        rcredit = "N/A";
+                    }
 
                     subscriptiongrid += '<tr>';
                     if (value.IsActive == true) {
                         subscriptiongrid += '<td style="background-color:#82f286;">' + value.PlanName + '</td><td style="background-color:#82f286;">' + subscriptionname + '</td>';
-                        subscriptiongrid += '<td style="background-color:#82f286;">' + value.TotalPrice + '</td><td style="background-color:#82f286;">' + value.TotalCredit + '</td><td style="background-color:#82f286;">' + value.RemainingCredit + '</td><td style="background-color:#82f286;">' + sdate + '</td><td style="background-color:#82f286;">' + edate + '</td>';
+                        subscriptiongrid += '<td style="background-color:#82f286;">' + value.TotalPrice + '</td><td style="background-color:#82f286;">' + tcredit + '</td><td style="background-color:#82f286;">' + rcredit + '</td><td style="background-color:#82f286;">' + sdate + '</td><td style="background-color:#82f286;">' + edate + '</td>';
                         subscriptiongrid += '<td style="background-color:#82f286;">' + cdate + '</td></tr>';
 
                     }
                     else {
                         subscriptiongrid += '<td ">' + value.PlanName + '</td><td ">' + subscriptionname + '</td>';
-                        subscriptiongrid += '<td ">' + value.TotalPrice + '</td><td ">' + value.TotalCredit + '</td><td ">' + value.RemainingCredit + '</td><td ">' + sdate + '</td><td ">' + edate + '</td>';
+                        subscriptiongrid += '<td ">' + value.TotalPrice + '</td><td ">' + tcredit + '</td><td ">' + rcredit + '</td><td ">' + sdate + '</td><td ">' + edate + '</td>';
                         subscriptiongrid += '<td ">' + cdate + '</td></tr>';
                     }
                
