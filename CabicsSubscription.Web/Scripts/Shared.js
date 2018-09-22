@@ -66,7 +66,7 @@
                 subscriptiongrid += '<th>Total Credit</th>';
                 subscriptiongrid += '<th>Remaining Credit</th>';
                 subscriptiongrid += '<th>Start Date</th>';
-                subscriptiongrid += '<th>End Credit</th>';
+                subscriptiongrid += '<th>End Date</th > ';
                 subscriptiongrid += '<th>Purchse Date</th>';
                 subscriptiongrid += '</tr>';
                 subscriptiongrid += '<tbody>';
@@ -110,9 +110,9 @@
 
                     }
                     else {
-                        subscriptiongrid += '<td ">' + value.PlanName + '</td><td ">' + subscriptionname + '</td>';
-                        subscriptiongrid += '<td ">' + value.TotalPrice + '</td><td ">' + tcredit + '</td><td ">' + rcredit + '</td><td ">' + sdate + '</td><td ">' + edate + '</td>';
-                        subscriptiongrid += '<td ">' + cdate + '</td></tr>';
+                        subscriptiongrid += '<td style="background-color:#FFC200;">' + value.PlanName + '</td><td style="background-color:#FFC200; ">' + subscriptionname + '</td>';
+                        subscriptiongrid += '<td style="background-color:#FFC200;">' + value.TotalPrice + '</td><td style="background-color:#FFC200; ">' + tcredit + '</td><td style="background-color:#FFC200; ">' + rcredit + '</td><td style="background-color:#FFC200; ">' + sdate + '</td><td style="background-color:#FFC200; ">' + edate + '</td>';
+                        subscriptiongrid += '<td style="background-color:#FFC200;">' + cdate + '</td></tr>';
                     }
                
                     

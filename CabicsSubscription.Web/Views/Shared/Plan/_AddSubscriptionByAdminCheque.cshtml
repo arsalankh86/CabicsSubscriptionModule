@@ -1,4 +1,9 @@
-﻿<!-- Bootstrape CSS and JS -->
+﻿
+@{
+    ViewBag.Title = "_AddSubscriptionByAdminCheque";
+}
+
+<!-- Bootstrape CSS and JS -->
 <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -13,15 +18,12 @@
 
 
 <div id="divLoader" name="divLoader" style="display:block"><img src="~/Content/Images/loader.gif" /></div>
-<div id="links">
-    <button id="goBack">Go Back</button>
-</div>
-<br />
+
 <h1 class="text-center">Purchase Subscription</h1>
 <h3 class="text-center"> <span id="dvbuycredit" name="dvbuycredit">   </span></h3>
 @*<div id="dvmonthly" name="dvmonthly"></div>*@
-<div id="dvcreditdeductiondetail">
-</div>
+@*<div id="dvcreditdeductiondetail">
+    </div>*@
 <br />
 <div class="row" id="dvmonthlynew" style="display:none;">
     <div class="col-md-3 col-sm-3 col-xs-6">
@@ -50,25 +52,31 @@
     </div>
 </div>
 
-
-<form id="payment-form" method="post" class="smart-form" action="SubmitContact">
-    <input type="hidden" name="hdnplanid" id="hdnplanid" />
-    <input type="hidden" name="hdnaccount" id="hdnaccount" />
+<form id="form" action="SubmitSubscription" method="post">
 
     <div class="my-body">
         <div class="row">
-            <div class="col-md-4">
+
+            <div class="col-md-6">
                 <div class="my-field">
-                    <label>First Name</label>
-                    <input type="text" id="fname" name="fname" placeholder="First Name" disabled="disabled">
+                    <ul>
+                        <li>
+                            <label>Cab Office</label>
+                            <select id="ddlcaboofice" class="myDropDownLisTId"></select>
+                        </li>
+                        <li>
+                            <label>&nbsp;</label>
+                            @*<input type="text" placeholder="">*@
+                        </li>
+                    </ul>
+                </div>
+                <div class="my-field">
+                    <label>Cheque no</label>
+                    <input type="text" placeholder="Cheque no" id="chqueno" name="chqueno">
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="my-field">
-                    <label>Last Name</label>
-                    <input type="text" id="lname" name="lname" placeholder="Last Name" disabled="disabled">
-                </div>
-            </div>
+
+
 
             <div class="col-md-4" id="dvsmscreditqty" name="dvsmscreditqty">
                 <label>SMS Credit Quantity: (Per SMS Credit Price £<span id="lblsmscreditprice" name="lblsmsreditprice"></span>)</label>
@@ -87,9 +95,8 @@
                 Total: <input type="text" class="form-control" id="totalamount" name="totalamount" disabled="disabled">
             </div>
 
-            <div class="col-md-4" id="dvAutoRenewel" name="dvAutoRenewel" style="display:none; background-color:yellowgreen;">
-                Auto Renewel: (It will bring you your monthly package automatically.) <input type="checkbox" class="form-control" id="chkautorenewel" name="chkautorenewel">
-
+            <div class="col-md-4" id="dvAutoRenewel" name="dvAutoRenewel" style="display:none;">
+                Auto Renewel: <input type="checkbox" class="form-control" id="chkautorenewel" name="chkautorenewel">
             </div>
             <div class="col-md-4" id="dvbillingcycle" name="dvbillingcycle" style="display:none;">
                 No. Of Billing Cycle:  <input type="text" class="form-control" id="noOfBillingCycle" name="noOfBillingCycle">
@@ -103,58 +110,9 @@
         <input id="nonce" name="payment_method_nonce" type="hidden" />
 
         <div class="my-footer">
-            <button class="btn btn-success btn-lg" type="submit" onclick="ValidateSubscription(this)"><span>Purchase</span></button>
+            <button class="btn btn-success btn-lg" type="submit" id="btnsubmut" name="btnsubmut" ><span>Purchase For CabOffice</span></button>
         </div>
 
 
-        
 
-        
-        
 </form>
-
-
-
-
-<script src="https://js.braintreegateway.com/web/dropin/1.10.0/js/dropin.min.js"></script>
-<script>
-    var client_token = "@ViewBag.ClientToken";
-    var form = document.querySelector('#payment-form');
-
-    braintree.dropin.create({
-        authorization: client_token,
-        container: '#bt-dropin',
-        card: {
-            overrides: {
-                styles: {
-                    input: {
-                        color: 'blue',
-                        'font-size': '18px'
-                    }
-                   
-                }
-            }
-        },
-        paypal: {
-            flow: 'vault'
-        }
-    }, function (createErr, instance) {
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-           
-
-
-            instance.requestPaymentMethod(function (err, payload) {
-                if (err) {
-                    console.log('Error', err);
-                    return;
-                }
-
-                // Add the nonce to the form and submit
-                document.querySelector('#nonce').value = payload.nonce;
-                form.submit();
-            });
-        });
-    });
-</script>

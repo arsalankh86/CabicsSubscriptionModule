@@ -53,7 +53,7 @@ namespace CabicsSubscription.Service.Migrations
             /// Per SMS Client Insertion
             CreditDeductionType smsCreditDeductionType = new CreditDeductionType();
             smsCreditDeductionType.Id = 3;
-            smsCreditDeductionType.Name = "Daily charges";
+            smsCreditDeductionType.Name = "SMS Credit charges";
             smsCreditDeductionType.Credit = 6;
             smsCreditDeductionType.IsActive = true;
             smsCreditDeductionType.CreatedDate = DateTime.Now;

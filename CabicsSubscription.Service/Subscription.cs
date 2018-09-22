@@ -38,9 +38,13 @@ namespace CabicsSubscription.Service
         public int NoOfBillingCycle { get; set; }
         public string btSubscriptionId { get; set; }
         public string Status { get; set; }
+        public int PreviousRemainingSMSCredit { get; set; }
+        public int CurrentPurchseSMSCredit { get; set; }
 
         public int AccountId { get; set; }
         public int PlanId { get; set; }
-        
+
+        public bool IsPurchaseSmsCredit { get; set; }
+
     }
 }

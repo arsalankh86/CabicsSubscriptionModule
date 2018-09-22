@@ -202,5 +202,184 @@ namespace CabicsSubscription.Web.Controllers
 
             return View();
         }
+
+
+        [HttpPost]
+        public int SubmitSubscription(FormCollection insertSubscriptionByAdminRequest)
+        {
+            try
+            {
+                double planamount = 0, smscreditamount = 0, amount = 0;
+
+                if (insertSubscriptionByAdminRequest["hdnsmscreditamount"] != null && insertSubscriptionByAdminRequest["hdnsmscreditamount"] != "" && insertSubscriptionByAdminRequest["hdnsmscreditamount"] != "0")
+                        smscreditamount = Convert.ToDouble(insertSubscriptionByAdminRequest["hdnsmscreditamount"]) * Convert.ToDouble(insertSubscriptionByAdminRequest["smscreditqty"]);
+
+                amount = Convert.ToDouble(insertSubscriptionByAdminRequest["hdnamount"]);
+
+
+                PlanService planService = new PlanService();
+                int planId = 0;
+                int accountid = 0;
+
+                if (insertSubscriptionByAdminRequest["hdnplanid"] != "0")
+                    planId = Convert.ToInt32(insertSubscriptionByAdminRequest["hdnplanid"]);
+
+                CabicsSubscription.Service.Plan plan = planService.GetPlanDetailByPlanId(planId);
+
+                if (insertSubscriptionByAdminRequest["ddlcaboofice"] != "0")
+                    accountid = Convert.ToInt32(insertSubscriptionByAdminRequest["ddlcaboofice"]);
+
+                bool resultt;
+                Transaction transactionid;
+
+                bool chkautorenewel = false;
+                int noOfInstallment = 0;
+
+                var bit = "off";
+                if (insertSubscriptionByAdminRequest["chkautorenewel"] != null)
+                    bit = insertSubscriptionByAdminRequest["chkautorenewel"].ToString();
+
+                if (bit == "on")
+                    chkautorenewel = true;
+
+
+                //return RedirectToAction("Show", new { id = transaction.Id });
+                SubscriptionService subscriptionService = new SubscriptionService();
+
+                int qty = 1;
+                if (insertSubscriptionByAdminRequest["qty"] != null)
+                    qty = Convert.ToInt32(insertSubscriptionByAdminRequest["qty"]);
+
+                int smscreditqty = 0;
+                if (insertSubscriptionByAdminRequest["smscreditqty"] != "0")
+                    smscreditqty = Convert.ToInt32(insertSubscriptionByAdminRequest["smscreditqty"]);
+
+                double hdnsmscreditamount = 0;
+                hdnsmscreditamount = Convert.ToInt32(insertSubscriptionByAdminRequest["hdnsmscreditotaltamount"]);
+
+
+                int subscriptionId = subscriptionService.PurchaseSubscription(planId, amount,
+                        accountid, qty, insertSubscriptionByAdminRequest["chequeNo"], smscreditqty, smscreditamount,
+                       "adminsubscriptionbycheque", "", chkautorenewel, noOfInstallment);
+
+                if (chkautorenewel == true)
+                {
+
+                    //// Insert into execution service
+
+                    WindowsServiceExecution winservice = new WindowsServiceExecution();
+                    winservice.WindowsServiceFunction = "Automatic Charging";
+                    winservice.WindowsServiceArgumrnt = subscriptionId;
+                    winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
+                    winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
+                    winservice.IsActive = true;
+                    winservice.CreatedDate = DateTime.UtcNow;
+
+                    WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
+                    windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
+
+
+                }
+
+                return subscriptionId;
+            }
+            catch (Exception ex)
+            {
+                DbErrorLogService.LogError("error", "InsertSubscriptionbyAdmin", "", ex.ToString());
+
+                return 0;
+            }
+        }
+
+
+        [HttpPost]
+        public int InsertSubscriptionbyAdmin(Models.InsertSubscriptionByAdminRequest insertSubscriptionByAdminRequest)
+        {
+            try
+            {
+                double planamount = 0, smscreditamount = 0, amount = 0;
+
+                if (insertSubscriptionByAdminRequest.hdnsmscreditamount != null && insertSubscriptionByAdminRequest.hdnsmscreditamount != 0)
+                    smscreditamount = Convert.ToDouble(insertSubscriptionByAdminRequest.hdnsmscreditamount) * insertSubscriptionByAdminRequest.smscreditqty;
+
+                amount = Convert.ToDouble(insertSubscriptionByAdminRequest.hdnamount);
+
+
+                PlanService planService = new PlanService();
+                int planId = 0;
+                int accountid = 0;
+
+                if (insertSubscriptionByAdminRequest.PlanId != 0)
+                    planId = insertSubscriptionByAdminRequest.PlanId;
+
+                CabicsSubscription.Service.Plan plan = planService.GetPlanDetailByPlanId(planId);
+
+                if (insertSubscriptionByAdminRequest.cabofficeid != 0)
+                    accountid = insertSubscriptionByAdminRequest.cabofficeid;
+
+                bool resultt;
+                Transaction transactionid;
+
+                bool chkautorenewel = false;
+                int noOfInstallment = 0;
+
+                var bit = "off";
+                if (insertSubscriptionByAdminRequest.chkautorenewel != null)
+                    bit = insertSubscriptionByAdminRequest.chkautorenewel.ToString();
+
+                if (bit == "on")
+                    chkautorenewel = true;
+
+
+                //return RedirectToAction("Show", new { id = transaction.Id });
+                SubscriptionService subscriptionService = new SubscriptionService();
+
+                int qty = 1;
+                if (insertSubscriptionByAdminRequest.qty != null)
+                    qty = Convert.ToInt32(insertSubscriptionByAdminRequest.qty);
+
+                int smscreditqty = 0;
+                if (insertSubscriptionByAdminRequest.smscreditqty != 0)
+                    smscreditqty = insertSubscriptionByAdminRequest.smscreditqty;
+
+                double hdnsmscreditamount = 0;
+                hdnsmscreditamount = Convert.ToInt32(insertSubscriptionByAdminRequest.hdnsmscreditotaltamount);
+
+
+                int subscriptionId = subscriptionService.PurchaseSubscription(planId, Convert.ToDouble(insertSubscriptionByAdminRequest.hdnamount),
+                        insertSubscriptionByAdminRequest.cabofficeid, qty, insertSubscriptionByAdminRequest.chequeNo, smscreditqty, smscreditamount,
+                       "adminsubscriptionbycheque", "", chkautorenewel, noOfInstallment);
+
+                if (chkautorenewel == true)
+                {
+
+                    //// Insert into execution service
+
+                    WindowsServiceExecution winservice = new WindowsServiceExecution();
+                    winservice.WindowsServiceFunction = "Automatic Charging";
+                    winservice.WindowsServiceArgumrnt = subscriptionId;
+                    winservice.WindowsServiceFunctionCode = (int)Constant.WindowsFunction.AutomaticCharging;
+                    winservice.WindowsServiceStatus = (int)Constant.WindowsServiceExecutionStatus.Pending;
+                    winservice.IsActive = true;
+                    winservice.CreatedDate = DateTime.UtcNow;
+
+                    WindowsServiceExecutionService windowsServiceExecutionService = new WindowsServiceExecutionService();
+                    windowsServiceExecutionService.InsertWindowsServiceExecutionService(winservice);
+
+
+                }
+
+                return subscriptionId;
+            }
+            catch (Exception ex)
+            {
+                DbErrorLogService.LogError("error", "InsertSubscriptionbyAdmin", "", ex.ToString());
+
+                return 0;
+            }
+        }
+
+
     }
+
 }

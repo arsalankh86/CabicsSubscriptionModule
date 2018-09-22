@@ -264,11 +264,12 @@ var addsubscriptionbyadmin = new function () {
 
         $.ajax({
             type: "POST",
-            url: servicePath + "/Subscription/InsertSubscriptionbyAdmin",
+            url: webUrl + "/Admin/InsertSubscriptionbyAdmin",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(subscriptionbyadmin),
             dataType: "json",
             complete: function () {
+
             },
 
             success: function (response) {
